@@ -10,16 +10,38 @@
 void init_citylist()
 {
 	allcities.cities[0] = &zander;
+	zander.owner = &balder;
+
 	allcities.cities[1] = &adriin;
+	adriin.owner = &viscountess;
+
 	allcities.cities[2] = &doxoun;
+	doxoun.owner = &raegai;
+
 	allcities.cities[3] = &calia;
+	calia.owner = &kieran;
+
 	allcities.cities[4] = &grelin;
+	grelin.owner = &usoro;
+
 	allcities.cities[5] = &amelo;
+	amelo.owner = &torace;
+		
 	allcities.cities[6] = &yefhold;
+	yefhold.owner = &viscountess;
+
 	allcities.cities[7] = &grii;
+	grii.owner = &viscountess;
+
 	allcities.cities[8] = &todt;
+	todt.owner = &alinna;
+
 	allcities.cities[9] = &joeton;
+	joeton.owner = &alinna;
+
 	allcities.cities[10] = &salls;
+	salls.owner = &torace;
+
 	allcities.size = 11;
 }
 

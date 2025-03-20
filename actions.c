@@ -120,7 +120,13 @@ void action_draft_letter()
 void action_view_party()
 {
 	wclear(win);
-	wprintw(win, "Your party:\n\nCompanions:\nGren of Halix\n\nTroops:\nx4 Men-at-arms\nx2 Peasant spearmen\nx4 Peasant bowmen\n\nTotal: 13");
+	wprintw(win, "Your party:\n\nCompanions:\n");
+	for (size_t i = 0; i < buddies.size; ++i) wprintw(win, "%s\n", buddies.buddies[i].name);
+	wprintw(win, "\nTroops:\n");
+	for (size_t i = 0; i < buddies.size; ++i) wprintw(win, "%zux Men-at-arms\n", party.maa);
+	for (size_t i = 0; i < buddies.size; ++i) wprintw(win, "%zux Peasant spearmen\n", party.pspear);
+	for (size_t i = 0; i < buddies.size; ++i) wprintw(win, "%zux Peasant bowmen", party.pbow);
+	wprintw(win, "\n\nTotal: %zu", buddies.size + party.maa + party.pspear + party.pbow);
 	wgetch(win);
 }
 

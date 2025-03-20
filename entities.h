@@ -6,6 +6,7 @@
 typedef struct {
 	char name[6]; 
 	size_t army;
+	size_t armycap;
 	size_t charisma;
 	int denars;
 	char title[8];
@@ -17,12 +18,18 @@ typedef struct {
 } User;
 
 typedef struct {
+	char title;
+	int rank;
+} RankList;
+
+typedef struct {
 	char name[7];
 	char location[20];
 	char noble[20];
 	size_t pop;
 	size_t danger;
 	size_t wealth;
+	char wealthnote[35];
 	int x;
 	int y;
 	int xy;
@@ -46,6 +53,8 @@ extern City grii;
 extern City todt;
 extern City joeton;
 extern City salls;
+
 extern CityList allcities;
+extern RankList allranks;
 
 #endif

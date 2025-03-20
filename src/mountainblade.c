@@ -90,10 +90,7 @@ int main(void)
 	srand(time(NULL));
 	init_window();
 
-	init_citylist();
-	init_noblelist();
-	init_buddylist();
-	init_partylist();
+	init_gamelists();
 
 	print_title();
 

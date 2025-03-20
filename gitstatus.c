@@ -106,8 +106,8 @@ VarList get_repos(char const *home, VarList list)
 				);
 			char* result = (char*)malloc(resultSize);
 			sprintf(result, "%s%s", home, p);
-
-			append_safearray(&list, result);
+            
+            if (strlen(p) > 2) append_safearray(&list, result);
 		}
 	closedir(d);
 	}
@@ -156,7 +156,6 @@ void run_gitfetch(VarList listFetchCommand, VarList listRepo)
 {
     for (size_t i = 0; i < listFetchCommand.size; i++) {
         system(listFetchCommand.strings[i]);
-        puts("How long does this take exactly?");
     }
 }
 
@@ -213,7 +212,7 @@ void send_notif(char* gitFinalResult, VarList listRepo, size_t i)
 	const char *behind = "Your branch is behind";
 	const char *ahead = "Your branch is ahead";
 	const char *diverged = "have diverged";
-	const char *unstaged = "Changes not staged";
+	const char *unstaged = "Changes not staged for commit";
 
 	const char *behindNotif = "notify-send 'Branch behind' '";
 	const char *aheadNotif = "notify-send 'Branch ahead' '";
@@ -269,7 +268,6 @@ void send_notif(char* gitFinalResult, VarList listRepo, size_t i)
 	}
 }
 
-// TODO: Rename some vague variables
 int main(void)
 {
 	char *home, *homerepo;

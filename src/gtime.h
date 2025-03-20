@@ -15,9 +15,11 @@ typedef struct {
 
 extern Time gtime;
 
-void advance_hour(int value);
-void advance_day(int value);
-void advance_week(int value, User* p);
-void advance_month(int value);
+void advance_hour(Time* gtime, int value);
+void advance_day(Time* gtime, int value);
+void advance_week(Time* gtime, int value, User* p);
+void advance_month(Time* gtime, int value);
+
+void season_check(User* p);
 
 #endif

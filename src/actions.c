@@ -8,7 +8,7 @@
 
 void action_enter_city(City* town)
 {
-	wclear(win);
+	werase(win);
 	mvwprintw(win, 0, 0,
 		"You approach the gates to the %s\nThe guard ushers"
 		" your party through without\ncomplaint.",
@@ -17,7 +17,7 @@ void action_enter_city(City* town)
 
 	int cityloop = 1;
 	while (cityloop) {
-		wclear(win);
+		werase(win);
 		mvwprintw(win, 0, 0, "%s", p.location);
 		mvwprintw(win, 1, 0, "%s", town->wealthnote);
 		mvwprintw(win, 4, 0, "Who would you like to see?");
@@ -49,17 +49,20 @@ void action_enter_city(City* town)
 
 void action_enter_city_guildmaster(City* town)
 {
-	wclear(win);
+	werase(win);
 	int guildloop = 1;
 	while (guildloop) {
-		wclear(win);
+		werase(win);
 		wprintw(win,
-			"Guild Master:\n\nIt's good to see you %s, "
+			"Guild Master %s:\n\nIt's good to see you %s, "
 			"how can we help you\non this fine day?\n\nThere is work to do"
 			", if you're interested...\n\n"
 			"1. Accept some work\n2. Inquire about business\n\n(b) to go back",
-			p.name
+			town->name, p.name
 		);
+		if (town->hassla == 1) {
+			wprintw(win, "\n\n3. Turn in some work\n\n");
+		}
 		int response = wgetch(win);
 		switch (response) {
 			case '1':
@@ -71,6 +74,12 @@ void action_enter_city_guildmaster(City* town)
 			case '2':
 				guildloop = 0;
 				break;
+			case '3':
+				complete_quest(town, &bag, 2);
+				wprintw(win, "\n\n Yo sick, thanks dude");
+				wgetch(win);
+				guildloop = 0;
+				break;
 			case 'b':
 				guildloop = 0;
 				break;
@@ -80,7 +89,7 @@ void action_enter_city_guildmaster(City* town)
 
 void action_enter_city_tailor()
 {
-	wclear(win);
+	werase(win);
 	wprintw(win,
 		"Tailor:\n\nGreetings %s, "
 		"you have an impeccable style,\nbut if I may make some suggestions...",
@@ -91,7 +100,7 @@ void action_enter_city_tailor()
 
 void action_enter_city_blacksmith()
 {
-	wclear(win);
+	werase(win);
 	wprintw(win,
 	"Blacksmith:\n\nHello %s, "
 	"we have arms and armor that would be\nmost suitable for you.",
@@ -102,7 +111,7 @@ void action_enter_city_blacksmith()
 
 void action_enter_city_stablekeeper()
 {
-	wclear(win);
+	werase(win);
 	wprintw(win,
 	"Stablekeeper:\n\nHowdy %s, "
 	"interested in the finest horses in\nthe realm?",
@@ -117,7 +126,7 @@ void action_contact_noble(City* town)
 
 	while (contactloop) {
 		if (town->hasdel == 1) {
-		wclear(win);
+		werase(win);
 		wprintw(win, "You approach the estate of the local\nnoble, %s\n\n", town->owner->name);
 		wprintw(win, "1. Request an audience\n2. Deliver a letter\n\n(b) to go back");
 		int response = wgetch(win);
@@ -140,7 +149,7 @@ void action_contact_noble(City* town)
 					break;
 			}
 		} else {
-		wclear(win);
+		werase(win);
 		wprintw(win, "You approach the estate of the local\nnoble, %s\n\n", town->owner->name);
 		wprintw(win, "1. Request an audience\n2. Offer to deliver a letter\n\n(b) to go back");
 		int response = wgetch(win);
@@ -186,7 +195,7 @@ void action_hire_mercs_peasants()
 	int peasants = (rand() % 3) + 2;
 	int cost = peasants * 5;
 	int weeklycost = peasants * party.pspearupkeep;
-	wclear(win);
+	werase(win);
 	wprintw(win, 
 		"%i locals seem adventurous enough.\n\n"
 		"It'll cost %i denars to equip them,\nas well as an extra %d denars weekly.\n(Your total: %i)\n\n"
@@ -212,13 +221,13 @@ void action_hire_mercs_peasants_yes(int peasants, int cost)
 	int chance = rand() % 11;
 	if (chance > 2) {
 		party.pspear += peasants;
-		wclear(win);
+		werase(win);
 		wprintw(win, " %i %s have joined your party.", peasants, party.pspearname);
 		if (debug) wprintw(win, "\n\n DEBUG: %i/10\n", chance);
 		wgetch(win);
 	} else { 
 		party.pbow += peasants;
-		wclear(win);
+		werase(win);
 		wprintw(win, " %i %s have joined your party.", peasants, party.pbowname);
 		if (debug) wprintw(win, "\n\n DEBUG: %i/10\n", chance);
 		wgetch(win);
@@ -231,7 +240,7 @@ void action_hire_mercs_maa()
 	int maa = (rand() % 3) + 2;
 	int cost = maa * 15;
 	int weeklycost = maa * party.maaupkeep;
-	wclear(win);
+	werase(win);
 	wprintw(win, 
 		"%i veteran soldiers are seeking work.\n\n"
 		"It'll cost %i denars to equip them,\nas well as an extra %d denars weekly.\n(Your total: %i)\n\n"
@@ -256,7 +265,7 @@ void action_hire_mercs_maa_yes(int maa, int cost)
 		return;
 	}
 	party.maa += maa;
-	wclear(win);
+	werase(win);
 	wprintw(win, " %i %s have joined your party.", maa, party.maaname);
 	wgetch(win);
 	p.denars -= cost;
@@ -265,10 +274,10 @@ void action_hire_mercs_maa_yes(int maa, int cost)
 void action_setup_camp()
 {
 	print_event("You order your troops to construct some\nhasty fortifications", "to continue");
-	wclear(win);
+	werase(win);
 	int camploop = 1;
 	while (camploop) {
-		wclear(win);
+		werase(win);
 		wprintw(win, 
 			"Fortified Camp\n\n"
 			"Your troops are waiting in defensive positions.\n\n1. Wait some time\n2. Break camp\n"
@@ -289,7 +298,7 @@ void action_setup_camp()
 void action_draft_letter()
 {
 	int letterloop = 1;
-	wclear(win);
+	werase(win);
 	wprintw(win, "You sit down to draft a letter, who will\nyou address it to?\n\n");
 	for (int i = 0; i < allnobles.size; ++i) {
 		wprintw(win, "%d. %s\n", i + 1, allnobles.nobles[i]->name);	
@@ -357,7 +366,7 @@ void action_draft_letter()
 
 void action_view_party()
 {
-	wclear(win);
+	werase(win);
 	wprintw(win, "Party:\n\nYourself, of course\n\nCompanions:\n");
 	for (int i = 0; i < buddies.size; ++i) wprintw(win, "%s\n", buddies.buddies[i].name);
 	wprintw(win, "\nTroops:\n");
@@ -379,7 +388,7 @@ void action_view_party()
 void action_view_character()
 {
 	int characterloop = 1;
-	wclear(win);
+	werase(win);
 	mvwprintw(win, 0, 0, "Character Info:");
 	mvwprintw(win, 2, 0, "Name:\t %s", p.name);
 	mvwprintw(win, 4, 0, "Rank:\t %s", p.title);
@@ -404,7 +413,7 @@ void action_view_inventory()
 {
 	int inventoryloop = 1;
 	int row;
-	wclear(win);
+	werase(win);
 	mvwprintw(win, 0, 0, "Inventory:");
 	if (bag.size == 0) { 
 		row = 4;
@@ -434,7 +443,7 @@ void action_view_inventory()
 void action_view_relations()
 {
 	int relationloop = 1;
-	wclear(win);
+	werase(win);
 	wprintw(win, "Relevant Nobles:\n\n");
 	for (int i = 0; i < allnobles.size; ++i) {
 		Noble* noble = allnobles.nobles[i];
@@ -458,7 +467,7 @@ void action_view_relations()
 void action_view_quests()
 {
 	int questloop = 1;
-	wclear(win);
+	werase(win);
 	wprintw(win, "Current Quests:\n\n");
 	if (allquests.totaldel == 0 && allquests.totalsla == 0) 
 		wprintw(win, "You don't currently have any quests.\n\n");
@@ -491,20 +500,25 @@ void action_view_quests()
 
 }
 
-void action_enter_debug(User* p, Time* gtime)
+void action_view_debug(User* p, Time* gtime)
 {
-	wclear(win);
+	werase(win);
 	int debugloop = 1;
-	wprintw(win,
+	while (debugloop) {
+		wprintw(win,
 		"debug menu\n\n"
+		"d. view debug stats\n\n"
 		"1. give 125 denars\n2. advance time 1 month\n3. teleport randomly\n"
 		"4. get stronger\n5. kill a peasant with your bare hands\n"
 		"6. payout weekly wages\n\n(b) to go back\n\n"
-	);
-	while (debugloop) {
-		//wclear(win);
+		);
+
+		//werase(win);
 		int response = wgetch(win);
 		switch (response) {
+			case 'd':
+				action_view_debug_stats(p, gtime);
+				break;
 			case '1':
 				wprintw(win, "money money money\t\t--> + $125 = $%d\n",
 					p->denars + 125);
@@ -537,6 +551,149 @@ void action_enter_debug(User* p, Time* gtime)
 			case 'b':
 				debugloop = 0;
 				break;
+			default:
+				werase(win);
+				break;
 		};
 	};
+}
+
+void action_view_debug_stats(User* p, Time* gtime)
+{
+	werase(win);
+	int debugloop = 1;
+	while (debugloop) {
+		werase(win);
+		wprintw(win,
+			"debug stats\n\n"
+			"1. cities\n"
+			"2. nobles\n"
+			"3. quests"
+			"\n\n(b) to go back"
+		);
+		int response = wgetch(win);
+		switch (response) {
+			case 'b':
+				debugloop = 0;
+				werase(win);
+				break;
+			case '1':
+				action_view_debug_cities();
+				break;
+			case '2':
+				action_view_debug_nobles();
+				break;
+			case '3':
+				action_view_debug_quests();
+				break;
+
+		}
+	}
+	
+}
+
+void action_view_debug_cities()
+{
+	int counter = 0;
+	werase(win);
+	int debugloop = 1;
+	while (debugloop) {
+		if (counter == 11) counter = 0;
+		werase(win);
+		wprintw(win, "City ID: \t%d\n\n", counter);
+		wprintw(win, "Name: \t\t%s\n", allcities.cities[counter]->name);
+		wprintw(win, "Owner: \t\t%s\n", allcities.cities[counter]->owner->name);
+		wprintw(win, "Location: \t%s\n", allcities.cities[counter]->location);
+		wprintw(win, "GM: \t\t%s\n", allcities.cities[counter]->gm);
+		wprintw(win, "WealthNote: \t\t%s\n", allcities.cities[counter]->wealthnote);
+		wprintw(win, "Pop: \t\t%d\n", allcities.cities[counter]->pop);
+		wprintw(win, "Danger: \t%d\n", allcities.cities[counter]->danger);
+		wprintw(win, "Wealth: \t%d\n", allcities.cities[counter]->wealth);
+		wprintw(win, "IsCity: \t%d\n", allcities.cities[counter]->iscity);
+		wprintw(win, "X: \t\t%d\n", allcities.cities[counter]->x);
+		wprintw(win, "Y: \t\t%d\n", allcities.cities[counter]->y);
+		wprintw(win, "HasDel: \t%d\n", allcities.cities[counter]->hasdel);
+		wprintw(win, "HasSla: \t%d\n", allcities.cities[counter]->hassla);
+		wprintw(win, "\n1. next city\n\n(b) to go back");
+		int response = wgetch(win);
+		switch (response) {
+			case 'b':
+				debugloop = 0;
+				break;
+			case '1':
+				counter += 1;
+				break;
+
+		}
+	}
+	
+}
+
+void action_view_debug_nobles()
+{
+	int counter = 0;
+	werase(win);
+	int debugloop = 1;
+	while (debugloop) {
+		if (counter == 7) counter = 0;
+		werase(win);
+		wprintw(win, "Noble ID: \t%d\n\n", counter);
+		wprintw(win, "Name: \t\t%s\n", allnobles.nobles[counter]->name);
+		wprintw(win, "TotalFiefs: \t%d\n", allnobles.nobles[counter]->totalfiefs);
+		wprintw(win, "Relations: \t%d\n", allnobles.nobles[counter]->relations);
+		wprintw(win, "\n1. next noble\n\n(b) to go back");
+		int response = wgetch(win);
+		switch (response) {
+			case 'b':
+				debugloop = 0;
+				break;
+			case '1':
+				counter += 1;
+				break;
+
+		}
+	}
+	
+}
+
+void action_view_debug_quests()
+{
+	int counter = 0;
+	werase(win);
+	int debugloop = 1;
+	while (debugloop) {
+		if (counter == allquests.totaldel) counter = 0;
+		if (counter == allquests.totalsla) counter = 0;
+		if (allquests.totaldel >= 1) {
+			wprintw(win, "Deliveries: \t%d\n\n", counter);
+			wprintw(win, "QuestID: \t%d\n", allquests.deliveries[counter].questid);
+			wprintw(win, "RenownGain: \t%d\n", allquests.deliveries[counter].renown_gain);
+			wprintw(win, "RelationBuff: \t%d\n", allquests.deliveries[counter].relation_buff);
+			wprintw(win, "Giver: \t\t%s\n", allquests.deliveries[counter].giver->name);
+			wprintw(win, "Target: \t%s\n\n", allquests.deliveries[counter].target->name);
+			if (allquests.totalsla < 1) wprintw(win, "\n1. next quest\n\n(b) to go back");
+		}
+		if (allquests.totalsla >= 1) {
+			wprintw(win, "Slayings: \t%d\n\n", counter);
+			wprintw(win, "QuestID: \t%d\n", allquests.slayings[counter].questid);
+			wprintw(win, "RenownGain: \t%d\n", allquests.slayings[counter].renown_gain);
+			wprintw(win, "RelationBuff: \t%d\n", allquests.slayings[counter].relation_buff);
+			wprintw(win, "Giver: \t\t%s\n", allquests.slayings[counter].giver->name);
+			wprintw(win, "StartingKills: \t%d\n", allquests.slayings[counter].starting_kills);
+			wprintw(win, "ToKill: \t%d\n", allquests.slayings[counter].to_kill);
+			wprintw(win, "\n1. next quest\n\n(b) to go back");
+		}
+		int response = wgetch(win);
+		switch (response) {
+			case 'b':
+				debugloop = 0;
+				break;
+			case '1':
+				counter += 1;
+				werase(win);
+				break;
+
+		}
+	}
+	
 }

@@ -7,7 +7,7 @@ implement cash shop
 
 feature horizon:
 
-movement:  
+### movement:  
 ~~move around on map~~  
 speed based on party size/configuration  
 speed affected by terrain  

@@ -225,6 +225,27 @@ void action_view_party()
 	if (!(party.pspear == 0)) for (size_t i = 0; i < buddies.size; ++i) wprintw(win, "%zux Peasant spearmen\n", party.pspear);
 	if (!(party.pbow == 0))for (size_t i = 0; i < buddies.size; ++i) wprintw(win, "%zux Peasant bowmen", party.pbow);
 	wprintw(win, "\n\nTotal: %zu", buddies.size + party.maa + party.pspear + party.pbow + 1);
+	wprintw(win, "\n\n\n\nPress (b) to go back");
+	int partyloop = 1;
+	while (partyloop) {
+		int response = wgetch(win);		
+		switch (response) {
+			case 'b': 
+				partyloop = 0;
+		}
+	}
+}
+
+void action_view_character()
+{
+	wclear(win);
+	mvwprintw(win, 0, 0, "Character Info:");
+	mvwprintw(win, 2, 0, "Name:\t %s", p.name);
+	mvwprintw(win, 4, 0, "Rank:\t %s", p.title);
+	mvwprintw(win, 6, 0, "Renown:\t %d", p.renown);
+	mvwprintw(win, 8, 0, "Honor:\t %d", p.honor);
+	mvwprintw(win, 10, 0, "Level:\t %zu", p.level);
+	mvwprintw(win, 12, 0, "Prowess: %zu", p.prowess);
 	wgetch(win);
 }
 
@@ -238,7 +259,7 @@ void action_view_inventory()
 		int row = 2;
 		for (size_t i = 0; i < bag.size; ++i) {
 			mvwprintw(win, row, 0, "%zu. %s", i + 1, bag.items[i].name);
-			row++;
+			row += 2;
 		}
 
 	};
@@ -258,6 +279,7 @@ void action_view_relations()
 		wprintw(win, "\n");
 	};
 	wgetch(win);
+	add_to_inventory(&sword1);
 }
 
 void action_view_quests()

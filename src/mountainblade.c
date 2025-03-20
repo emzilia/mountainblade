@@ -35,7 +35,7 @@ void input_mainloop()
 	if (p.intown) {
 		switch (response) {
 			case '1':
-				action_enter_city(&currenttown);
+				action_enter_citytesting(&currenttown);
 				break;
 			case '2': 
 				action_contact_noble(&currenttown);
@@ -83,8 +83,8 @@ void input_mainloop()
 int main(void)
 {
 	srand(time(NULL));
-	init_window();
 
+	init_window();
 	init_gamelists();
 
 	print_title();

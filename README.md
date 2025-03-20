@@ -12,7 +12,7 @@ implement cash shop
 **movement:**  
 ~~move around on map~~  
 speed based on party size/configuration  
-speed affected by terrain
+speed affected by terrain     
 ~~speed affected by season~~    
 
 **party:**   

@@ -3,7 +3,12 @@
 
 #include <stdlib.h>
 
-typedef struct {
+typedef struct Noble Noble;
+typedef struct City City;
+typedef struct User User;
+typedef struct Buddy Buddy;
+
+typedef struct User {
 	char name[13]; 
 	size_t level;
 	size_t prowess;
@@ -20,7 +25,7 @@ typedef struct {
 	int xy;
 } User;
 
-typedef struct {
+typedef struct Buddy {
 	char name[13];
 	size_t level;
 	size_t prowess;
@@ -49,10 +54,10 @@ typedef struct{
 	size_t totalupkeep;
 } PartyList;
 
-typedef struct {
+typedef struct City {
 	char name[7];
 	char location[25];
-	char noble[20];
+	Noble* owner;
 	int iscity;
 	size_t pop;
 	size_t danger;
@@ -68,7 +73,7 @@ typedef struct {
 	size_t size;
 } CityList;
 
-typedef struct {
+typedef struct Noble{
 	char name[20];
 	City* fiefs[3];
 	size_t totalfiefs;
@@ -78,6 +83,18 @@ typedef struct {
 	Noble* nobles[7];
 	size_t size;
 } NobleList;
+
+typedef struct {
+	char name[10];
+	size_t quantity;
+	size_t quality;
+	Noble* owner;
+} Item;
+
+typedef struct {
+	Item items[10];	
+} Inventory;
+
 
 extern User p;
 extern Buddy gren;

@@ -6,6 +6,19 @@
 
 int display(char *text);
 void look();
+void city_all();
+
+typedef struct {
+	char name[6]; 
+	size_t army;
+	size_t charisma;
+	int denars;
+	char title[6];
+	char location[14];
+	int intown;
+	size_t x;
+	size_t y;
+} User;
 
 typedef struct {
 	char name[6];
@@ -18,7 +31,7 @@ typedef struct {
 
 City zander = {
 	.name = "Zander",
-	.pop = 45000,
+	.pop = 22300,
 	.danger = 5,
 	.wealth = 3,
 	.x = 2,
@@ -27,7 +40,7 @@ City zander = {
 
 City talis = {
 	.name = "Talis",
-	.pop = 103000,
+	.pop = 27400,
 	.danger = 3,
 	.wealth = 7,
 	.x = 3,
@@ -36,7 +49,7 @@ City talis = {
 
 City adriin = {
 	.name = "Adriin",
-	.pop = 122500,
+	.pop = 38500,
 	.danger = 1,
 	.wealth = 5,
 	.x = 6,
@@ -45,7 +58,7 @@ City adriin = {
 
 City doxoun = {
 	.name = "Doxoun",
-	.pop = 241000,
+	.pop = 11600,
 	.danger = 7,
 	.wealth = 9,
 	.x = 6,
@@ -54,7 +67,7 @@ City doxoun = {
 
 City calia = {
 	.name = "Calia",
-	.pop = 23500,
+	.pop = 2350,
 	.danger = 2,
 	.wealth = 2,
 	.x = 9,
@@ -63,20 +76,28 @@ City calia = {
 
 City grelin = {
 	.name = "Grelin",
-	.pop = 12000,
+	.pop = 870,
 	.danger = 4,
 	.wealth = 1,
 	.x = 11,
 	.y = 3,
 };
 
-char user = '@';
-size_t army = 235;
+
+User p = {
+	.name = '@',
+	.army = 235,
+	.charisma = 5,
+	.denars = 450,
+	.title = "Knight",
+	.x = 1,
+	.y = 1,
+};
 
 int posX = 1;
 int posY = 1;
 
-char map[8][16] = {
+char map[8][14] = {
 	"o============o",
 	"|.....c......|",
 	"|.t..........|",
@@ -91,87 +112,122 @@ char map[8][16] = {
 int rows = sizeof(map) / sizeof(map[0]);
 int columns = sizeof(map[0]) / sizeof(map[0][0]);
 
-void main_display()
+void title_screen()
 {
-	char world[6] = "Tania";
-	printw("Hello and welcome to %s", world);
+	printw("Hello and welcome to Tania!");
 
 	getch();
 	clear();
 }
 
-void print2DArray(char arr[][16], int rows, int columns) {
+void user_display()
+{
+	
+}
+
+void print_map(char arr[][14], int rows, int columns) {
+	printw("Realm of Tania\n");
 	for (int r = 0; r < rows; r++) {
 		for (int c = 0; c < columns; c++) {
-			if (r == posY && c == posX)
+			if (r == p.y && c == p.x)
 				addch('@');
 			else
 				printw("%c", arr[r][c]);
 		}
-	addch('\n');
-	}
-	//printw(" %d, %d\n", posX, posY);
-	look();
+	addch('\n'); }
+	//printw(" %zu, %zu\n", p.x, p.y);
+	city_all();
+	printw("Actions:\n");
 }
 
-void look()
+int city_look(City town)
 {
-	if (posX == zander.x && posY == zander.y) {
-		printw("Town of %s\nPopulation of %zu\n\n", zander.name, zander.pop);	
-		printw("You have %zu warriors in your band", army);
-	} else if (posX == talis.x && posY == talis.y) {
-		printw("City of %s\nPopulation of %zu\n\n", talis.name, talis.pop);	
-		printw("You have %zu warriors in your band", army);
-	} else if (posX == adriin.x && posY == adriin.y) {
-		printw("City of %s\nPopulation of %zu\n\n", adriin.name, adriin.pop);	
-		printw("You have %zu warriors in your band", army);
-	} else if (posX == doxoun.x && posY == doxoun.y) {
-		printw("City of %s\nPopulation of %zu\n\n", doxoun.name, doxoun.pop);	
-		printw("You have %zu warriors in your band", army);
-	} else if (posX == calia.x && posY == calia.y) {
-		printw("Town of %s\nPopulation of %zu\n\n", calia.name, calia.pop);	
-		printw("You have %zu warriors in your band", army);
-	} else if (posX == grelin.x && posY == grelin.y) {
-		printw("Town of %s\nPopulation of %zu\n\n", grelin.name, grelin.pop);	
-		printw("You have %zu warriors in your band", army);
-
-	} else {
-		printw("Plains of Castamere\n\n\n");
-		printw("You have %zu warriors in your band", army);
+	if (p.x == town.x && p.y == town.y) {
+		p.intown = 1;
+		printw("City of %s\nPopulation of %zu\n\n", town.name, town.pop);
+		printw("Your title is %s\n", p.title);
+		printw("You have $%i in silver coins\n", p.denars);
+		printw("You have %zu warriors in your band\n\n", p.army);	
+		return 1;
 	}
-	
+	return 0;
+}
+
+void city_all()
+{
+	if (city_look(zander)) {
+		return;
+	} else if (city_look(talis)) {
+		return;
+	} else if (city_look(adriin)) {
+		return;
+	} else if (city_look(doxoun)) {
+		return;
+	} else if (city_look(calia)) {
+		return;
+	} else if (city_look(grelin)) {
+		return;
+	} else {
+		p.intown = 0;
+		printw("Plains of Castamere\n\n\n");
+		printw("Your title is %s\n", p.title);
+		printw("You have $%i in silver coins\n", p.denars);
+		printw("You have %zu warriors in your band\n\n", p.army);
+	}
+
+}
+
+void actions()
+{
+	if (p.intown) {
+	printw("1. Enter city\n2. Contact nobleman"); 
+	} else if (!p.intown) {
+	printw("1. Setup fortified camp\n2. Draft correspondence");
+	}
 }
 
 void movement()
 {
 	int response = getch();
-
 	switch (response) {
 		case KEY_UP:
-			if (posY > 1)
-				posY--;
+			if (p.y > 1)
+				p.y--;
 			break;
 		case KEY_DOWN:
-			if (posY < columns - 2)
-				posY++; 
+			if (p.y < columns - 2)
+				p.y++; 
 			break;
 		case KEY_LEFT:
-			if (posX > 1)
-				posX--;
+			if (p.x > 1)
+				p.x--;
 			break;
 		case KEY_RIGHT:
-			if (posX < columns - 2)
-				posX++;
+			if (p.x < columns - 2)
+				p.x++;
 			break;
 	}
+	
+	if (p.intown) {
+		switch (response) {
+			case 1:
+				//enter_city();
+				break;
+			case 2: 
+				//contact_noble;
+				break;
+		}
+	} else if (!p.intown) {
+		switch (response) {
+			case 1:
+				//setup_camp();
+				break;
+			case 2:
+				//draft_letter();
+				break;
+		}
+	}
 }
-
-
-
-char *story0 = (
-	"\n Siege of Tania\n\n A feudal management simulator\n\n\n\n\n\n\n\n"
-	" Press enter to continue..."
-);
 
 char *story1 = (
 	"\n    Twelve hundred of Elara's roughest and most savage bandits\n"
@@ -181,8 +237,7 @@ char *story1 = (
 	"    Outriders have spotted their host lumbering down the windy\n"
 	" Sari river. We estimate we have perhaps two weeks before the full\n"
 	" weight of their forces are brought to bear upon us.\n\n"
-	" \"We must adopt a plan of action. How do we proceed, Princess?\"\n\n"
-	" Oh bother. You're going to need more tea. \"Assemble the council.\""
+	" \"We must adopt a plan of action. How do we proceed?\"\n\n"
 	" \n\n\n Press enter to continue..."
 );
 
@@ -193,11 +248,12 @@ int main(void)
 	curs_set(0);
 	keypad(stdscr, TRUE);
 	
-	main_display();
+	title_screen();
 
 	int running = 1;
 	while (running) {
-		print2DArray(map, rows, columns);
+		print_map(map, rows, columns);
+		actions();
 		movement();
 		refresh();
 		clear();

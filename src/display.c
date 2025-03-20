@@ -14,8 +14,8 @@ void init_window()
 {
 	initscr();
 	refresh();
-	borderwin = newwin(40, 55, 1, 1);
-	win = newwin(38, 50, 2, 3);
+	borderwin = newwin(37, 55, 1, 1);
+	win = newwin(35, 50, 2, 3);
 	noecho();	
 	curs_set(0);
 	keypad(win, TRUE);
@@ -91,7 +91,7 @@ void print_actions()
     	mvwprintw(win, 17, 9, "Actions:\n");
 	if (p.intown) {
 		mvwprintw(win, 18, 9, "1. Enter city"); 
-		mvwprintw(win, 19, 9, "2. Contact constable");
+		mvwprintw(win, 19, 9, "2. Contact noble estate");
     		mvwprintw(win, 20, 9, "3. Hire local mercenaries");
 	} else if (!p.intown) {
 		mvwprintw(win, 18, 9, "1. Setup fortified camp");

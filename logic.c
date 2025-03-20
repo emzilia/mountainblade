@@ -28,32 +28,30 @@ void init_noblelist()
 	allnobles.nobles[0] = &viscountess;
 	viscountess.fiefs[0] = &adriin;
 	viscountess.fiefs[1] = &grii;
+	viscountess.fiefs[2] = &yefhold;
 
 	allnobles.nobles[1] = &alinna;
-	alinna.fiefs[0] = &yefhold;
-	alinna.fiefs[1] = &grelin;
+	alinna.fiefs[0] = &joeton;
+	alinna.fiefs[1] = &todt;
 
-	allnobles.nobles[2] = &nazia;
-	nazia.fiefs[0] = &joeton;
-
-	allnobles.nobles[3] = &raegai;
+	allnobles.nobles[2] = &raegai;
 	raegai.fiefs[0] = &doxoun;
 
-	allnobles.nobles[4] = &torace;
+	allnobles.nobles[3] = &torace;
 	torace.fiefs[0] = &amelo;
 	torace.fiefs[1] = &salls;
 
-	allnobles.nobles[5] = &balder;
+	allnobles.nobles[4] = &balder;
 	balder.fiefs[0] = &zander;
 
-	allnobles.nobles[6] = &usoro;
-	usoro.fiefs[0] = &todt;
+	allnobles.nobles[5] = &usoro;
+	usoro.fiefs[0] = &grelin;
 
-	allnobles.nobles[7] = &kieran;
+	allnobles.nobles[6] = &kieran;
 	kieran.fiefs[0] = &calia;
 
 
-	allnobles.size = 8;
+	allnobles.size = 7;
 }
 
 void init_buddylist()
@@ -64,7 +62,7 @@ void init_buddylist()
 
 void init_partylist()
 {
-	party.maa = 4;
+	party.maa = 3;
 	party.maaupkeep = 10;
 	strcpy(party.maaname, "Men-at-arms");
 
@@ -76,12 +74,12 @@ void init_partylist()
 	party.pbowupkeep = 2;
 	strcpy(party.pbowname, "Peasant bowmen");
 
-	party.total = party.maa + party.pspear + party.pbow + buddies.size;
+	party.total = party.maa + party.pspear + party.pbow + buddies.size + 1;
 }
 
 void update_partyupkeep()
 {
-	party.total = party.maa + party.pspear + party.pbow + buddies.size;
+	party.total = party.maa + party.pspear + party.pbow + buddies.size + 1;
 	if (party.total > p.armycap) {
 		int diff = party.total - p.armycap;
 		party.pspear -= diff;
@@ -92,7 +90,7 @@ void update_partyupkeep()
 		wgetch(win);
 		wclear(win);
 
-		party.total = party.maa + party.pspear + party.pbow + buddies.size;
+		party.total = party.maa + party.pspear + party.pbow + buddies.size + 1;
 	}
 	party.totalupkeep = (party.maa * party.maaupkeep) + (party.pspear * party.pspearupkeep) + (party.pbow * party.pbowupkeep);
 }

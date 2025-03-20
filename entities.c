@@ -84,7 +84,7 @@ City calia = {
 City grelin = {
 	.name = "Grelin",
 	.location = "Town of Grelin",
-	.noble = "Marquise Alinna",
+	.noble = "Sir Usoro",
 	.iscity = 0,
 	.pop = 870,
 	.danger = 4,
@@ -109,9 +109,9 @@ City amelo = {
 
 City yefhold = {
 	.name = "Yefhold",
-	.location = "City of Yefhold",
-	.noble = "Marquise Alinna",
-	.iscity = 1,
+	.location = "Village of Yefhold",
+	.noble = "The Viscountess",
+	.iscity = 0,
 	.pop = 11430,
 	.danger = 4,
 	.wealth = 5,
@@ -122,9 +122,9 @@ City yefhold = {
 
 City grii = {
 	.name = "Grii",
-	.location = "City of Grii",
+	.location = "Village of Grii",
 	.noble = "The Viscountess",
-	.iscity = 1,
+	.iscity = 0,
 	.pop = 9340,
 	.danger = 4,
 	.wealth = 5,
@@ -136,7 +136,7 @@ City grii = {
 City todt = {
 	.name = "Todt",
 	.location = "Town of Todt",
-	.noble = "Sir Usoro",
+	.noble = "Marquise Alinna",
 	.iscity = 0,
 	.pop = 2380,
 	.danger = 4,
@@ -149,7 +149,7 @@ City todt = {
 City joeton = {
 	.name = "Joeton",
 	.location = "City of Joeton",
-	.noble = "Lady Nazia",
+	.noble = "Marquise Alinna",
 	.iscity = 1,
 	.pop = 11430,
 	.danger = 4,
@@ -174,16 +174,12 @@ City salls = {
 
 Noble viscountess = {
 	.name = "The Viscountess",
-	.totalfiefs = 2,
+	.totalfiefs = 3,
 };
 
 Noble alinna = {
 	.name = "Marquise Alinna",
 	.totalfiefs = 2,
-};
-Noble nazia = {
-	.name = "Lady Nazia",
-	.totalfiefs = 1,
 };
 
 Noble balder = {

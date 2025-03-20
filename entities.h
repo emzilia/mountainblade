@@ -75,7 +75,7 @@ typedef struct {
 } Noble;
 
 typedef struct {
-	Noble* nobles[8];
+	Noble* nobles[7];
 	size_t size;
 } NobleList;
 

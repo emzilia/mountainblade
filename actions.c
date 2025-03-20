@@ -20,24 +20,24 @@ void action_enter_city()
 		printw(
 			"%s\n\nWho would you like to see?\n\n"
 			"1. Guild Master\n2. Tailor\n"
-            "3. Blacksmith\n4. Stablekeeper\n"
-            "\n(b) to go back",
+			"3. Blacksmith\n4. Stablekeeper\n"
+			"\n(b) to go back",
 			p.location
 		);	
 		refresh();
 		int response = getch();
 		switch (response) {
 			case '1':
-                action_enter_city_guildmaster();
+				action_enter_city_guildmaster();
 				break;
 			case '2':
-                action_enter_city_tailor();
+				action_enter_city_tailor();
 				break;
 			case '3':
-                action_enter_city_blacksmith();
+				action_enter_city_blacksmith();
 				break;
 			case '4':
-                action_enter_city_stablekeeper();
+				action_enter_city_stablekeeper();
 				break;
 			case 'b':
 				cityloop = 0;
@@ -48,50 +48,50 @@ void action_enter_city()
 
 void action_enter_city_guildmaster()
 {
-    clear();
+	clear();
 	printw(
-	    "Guild Master:      ($%d in your inventory)\n\nHello %s, "
-        "how can we help you today?\n",
-	    p.denars, p.name
-    );
-    refresh();
-    getch();
+		"Guild Master:      ($%d in your inventory)\n\nHello %s, "
+		"how can we help you today?\n",
+		p.denars, p.name
+	);
+	refresh();
+	getch();
 }
 
 void action_enter_city_tailor()
 {
-    clear();
+	clear();
 	printw(
-	    "Tailor:\n\nHello %s, "
-        "how can we help you today?",
-	    p.name
-    );
-    refresh();
-    getch();
+		"Tailor:\n\nHello %s, "
+		"how can we help you today?",
+		p.name
+	);
+	refresh();
+	getch();
 }
 
 void action_enter_city_blacksmith()
 {
-    clear();
+	clear();
 	printw(
-	    "Blacksmith:\n\nHello %s, "
-        "how can we help you today?",
-	    p.name
-    );
-    refresh();
-    getch();
+	"Blacksmith:\n\nHello %s, "
+	"how can we help you today?",
+	p.name
+	);
+	refresh();
+	getch();
 }
 
 void action_enter_city_stablekeeper()
 {
-    clear();
+	clear();
 	printw(
-	    "Stablekeeper:\n\nHello %s, "
-        "how can we help you today?",
-	    p.name
-    );
-    refresh();
-    getch();
+	"Stablekeeper:\n\nHello %s, "
+	"how can we help you today?",
+	p.name
+	);
+	refresh();
+	getch();
 }
 
 void action_contact_noble()

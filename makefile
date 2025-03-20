@@ -31,4 +31,4 @@ uninstall:
 clean:
 	rm -rf $(BIN_DIR) $(BUILD_DIR)
 
-.PHONY: all install clean
+.PHONY: install uninstall clean

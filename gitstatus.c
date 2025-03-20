@@ -4,7 +4,7 @@
 #include <string.h>
 #include <dirent.h>
 
-#define INITIAL_CAPACITY 15
+#define INITIAL_CAPACITY 10
 
 typedef struct {
 	char** strings;
@@ -14,13 +14,14 @@ typedef struct {
 
 char *get_home(void);
 char *combine_home(char const *home);
-VarList get_repos(char const *home, VarList listRepo);
-void run_gitstatus(VarList listStatusCommand, VarList listRepo);
-VarList get_gitfetchcommands(VarList listRepo, VarList listFetchCommand);
-VarList get_gitstatuscommands(VarList listRepo, VarList listStatusCommand);
-void send_notif(char* gitFinalResult, VarList listRepo, size_t i);
 void init_safearray(VarList* listRepo);
 void append_safearray(VarList* listRepo, const char* repo);
+VarList get_repos(char const *home, VarList listRepo);
+VarList get_gitfetchcommands(VarList listRepo, VarList listFetchCommand);
+VarList get_gitstatuscommands(VarList listRepo, VarList listStatusCommand);
+void run_gitfetch(VarList listFetchCommand, VarList listRepo);
+void run_gitstatus(VarList listStatusCommand, VarList listRepo);
+void send_notif(char* gitFinalResult, VarList listRepo, size_t i);
 
 // Gets home by echoing $HOME'.
 char *get_home(void)
@@ -155,6 +156,7 @@ void run_gitfetch(VarList listFetchCommand, VarList listRepo)
 {
     for (size_t i = 0; i < listFetchCommand.size; i++) {
         system(listFetchCommand.strings[i]);
+        puts("How long does this take exactly?");
     }
 }
 

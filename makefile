@@ -1,6 +1,6 @@
 # mountain blade
 CC = gcc
-CC_FLAGS = -lncurses
+CC_FLAGS = -lncurses -Wall
 
 SRC_DIR = src
 BIN_DIR = bin

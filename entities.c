@@ -3,12 +3,12 @@
 User p = {
 	.name = "Tony",
 	.level = 1,
-	.prowess = 2,
+	.prowess = 1,
 	.army = 13,
 	.armycap = 35,
 	.charisma = 5,
 	.denars = 300,
-	.rank = 1,
+	.renown = 1,
 	.title = "Esquire",
 	.intown = 0,
 	.x = 1,
@@ -161,9 +161,9 @@ City joeton = {
 
 City salls = {
 	.name = "Salls",
-	.location = "City of Salls",
-	.noble = "Baron Octirion",
-	.iscity = 1,
+	.location = "Town of Salls",
+	.noble = "Baron Torace",
+	.iscity = 0,
 	.pop = 9340,
 	.danger = 4,
 	.wealth = 5,
@@ -172,6 +172,39 @@ City salls = {
 	.xy = 11 + 3,
 };
 
+Noble balder = {
+	.name = "Baron Balder",
+};
+
+Noble viscountess = {
+	.name = "The Viscountess",
+};
+
+Noble raegai = {
+	.name = "Baroness Raegai",
+};
+
+Noble kieran = {
+	.name = "Sir Kieran",
+};
+
+Noble alinna = {
+	.name = "Marquise Alinna",
+};
+
+Noble torace = {
+	.name = "Baron Torace",
+};
+
+Noble usoro = {
+	.name = "Sir Usoro",
+};
+
+Noble nazia = {
+	.name = "Lady Nazia",
+};
+
 CityList allcities;
+NobleList allnobles;
 BuddyList buddies;
 PartyList party;

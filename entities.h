@@ -11,7 +11,7 @@ typedef struct {
 	size_t armycap;
 	size_t charisma;
 	int denars;
-	int rank;
+	int renown;
 	char title[10];
 	char location[20];
 	int intown;
@@ -34,6 +34,7 @@ typedef struct {
 	Buddy buddies[6];
 	size_t size;
 } BuddyList;
+
 typedef struct{
 	size_t maa;
 	char maaname[20];
@@ -56,7 +57,7 @@ typedef struct {
 	size_t pop;
 	size_t danger;
 	size_t wealth;
-	char wealthnote[35];
+	char wealthnote[100];
 	int x;
 	int y;
 	int xy;
@@ -66,6 +67,16 @@ typedef struct {
 	City cities[12];
 	size_t size;
 } CityList;
+
+typedef struct {
+	char name[20];
+	City fiefs[3];
+} Noble;
+
+typedef struct {
+	Noble nobles[8];
+	size_t size;
+} NobleList;
 
 extern User p;
 extern Buddy gren;
@@ -83,8 +94,18 @@ extern City todt;
 extern City joeton;
 extern City salls;
 
+extern Noble balder;
+extern Noble viscountess;
+extern Noble raegai;
+extern Noble kieran;
+extern Noble alinna;
+extern Noble torace;
+extern Noble usoro;
+extern Noble nazia;
+
 extern PartyList party;
 extern CityList allcities;
+extern NobleList allnobles;
 extern BuddyList buddies;
 
 #endif

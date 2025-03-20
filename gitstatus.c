@@ -21,6 +21,7 @@ void send_notif(char* gitfinalResult, RepoList list, size_t i);
 void init_repolist(RepoList* list);
 void append_repolist(RepoList* list, const char* repo);
 
+// Gets username by opening a pipe and returning the output of 'whoami'.
 char *get_user(void)
 {
 	const int bufferSize = 128;
@@ -51,6 +52,7 @@ char *get_user(void)
 	return finalResult;
 }
 
+// Adds username between /home/ and /repos/, returns full path to repos dir.
 char *get_home(char const *user)
 {
 	const char* home = "/home/";
@@ -69,6 +71,7 @@ char *get_home(char const *user)
 	return result;
 }
 
+// Initializes a list of indeterminate size, for repo list and command list.
 void init_repolist(RepoList* list)
 {
 	list->strings = (char**)malloc(INITIAL_CAPACITY * sizeof(char*));
@@ -76,6 +79,7 @@ void init_repolist(RepoList* list)
 	list->capacity = INITIAL_CAPACITY;
 }
 
+// Appends an item to a list of indeterminate size.
 void append_repolist(RepoList* list, const char* repo)
 {
 	if (list->size >= list->capacity) {
@@ -86,6 +90,8 @@ void append_repolist(RepoList* list, const char* repo)
 	list->size++;
 }
 
+// Using the full repo path returned by get_home(), each dir path within is
+// added to the list of repos and the list is returned.
 RepoList get_repos(char const *home, RepoList list)
 {
 	DIR *d;
@@ -105,11 +111,11 @@ RepoList get_repos(char const *home, RepoList list)
 	closedir(d);
 	}
 	return list;
-	for (size_t i = 0; i < list.size; i++) {
-		printf("%s\n", list.strings[i]);
-	}
 }
 
+// Using the list completed by get_repos(), each path is placed between two
+// strings to form the full git command, each full git command is then
+// appended to the commandlist which is returned.
 RepoList get_gitcommands(RepoList list, RepoList commandlist)
 {
 	const char* git1 = "git -C ";
@@ -129,6 +135,52 @@ RepoList get_gitcommands(RepoList list, RepoList commandlist)
 
 }
 
+// Using the commandlist returned by get_gitcommands(), a loop is run and each
+// command opens a pipe and saves the output of git status to the variable
+// gitfinalResult. This variable, along with the original path list and
+// the list index is passed to the send_notif() function.
+void run_gits(RepoList commandlist, RepoList list)
+{
+	const int bufferSize = 128;
+	char buffer[bufferSize];
+	char *gitresult = NULL;
+	size_t gitresultSize = 0;
+
+	for (size_t i = 0; i < commandlist.size; i++) {
+		char *gitfinalResult = NULL;
+
+		FILE *p = popen( commandlist.strings[i], "r");
+		if (p == NULL) exit(1);
+
+		while (fgets(buffer, bufferSize, p) != NULL) {
+			size_t fragmentSize = strlen(buffer);
+			char *newResult = realloc(
+				gitresult, gitresultSize + fragmentSize + 1
+			);
+			gitresult = newResult;
+			memcpy(gitresult + gitresultSize, buffer, fragmentSize);
+			gitresultSize += fragmentSize;
+		}	
+
+		int status = pclose(p);
+		if (status == -1) free(gitresult);
+
+		gitfinalResult = malloc(gitresultSize + 1);
+		memcpy(gitfinalResult, gitresult, gitresultSize);
+		gitfinalResult[gitresultSize] = '\0';
+	
+		send_notif(gitfinalResult, list, i);
+
+		free(gitfinalResult);
+		gitresultSize = 0;
+	}
+	free(gitresult);
+
+}
+
+// With the gitfinalResult from run_gits(), the string is compared and if the
+// status contains specific strings, a notification is sent describing it.
+// The original path list and index are included to give context to the notif.
 void send_notif(char* gitfinalResult, RepoList list, size_t i)
 {
     	printf("%s \n\n\n\n\n", gitfinalResult);	
@@ -192,45 +244,7 @@ void send_notif(char* gitfinalResult, RepoList list, size_t i)
 	}
 }
 
-void run_gits(RepoList commandlist, RepoList list)
-{
-	const int bufferSize = 128;
-	char buffer[bufferSize];
-	char *gitresult = NULL;
-	size_t gitresultSize = 0;
-
-	for (size_t i = 0; i < commandlist.size; i++) {
-		char *gitfinalResult = NULL;
-
-		FILE *p = popen( commandlist.strings[i], "r");
-		if (p == NULL) exit(1);
-
-		while (fgets(buffer, bufferSize, p) != NULL) {
-			size_t fragmentSize = strlen(buffer);
-			char *newResult = realloc(
-				gitresult, gitresultSize + fragmentSize + 1
-			);
-			gitresult = newResult;
-			memcpy(gitresult + gitresultSize, buffer, fragmentSize);
-			gitresultSize += fragmentSize;
-		}	
-
-		int status = pclose(p);
-		if (status == -1) free(gitresult);
-
-		gitfinalResult = malloc(gitresultSize + 1);
-		memcpy(gitfinalResult, gitresult, gitresultSize);
-		gitfinalResult[gitresultSize] = '\0';
-	
-		send_notif(gitfinalResult, list, i);
-
-		free(gitfinalResult);
-		gitresultSize = 0;
-	}
-	free(gitresult);
-
-}
-
+// TODO: Rename some vague variables
 int main(void)
 {
 	char *home;

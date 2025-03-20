@@ -5,15 +5,16 @@
 
 extern City currenttown;
 
-void action_enter_city(City town);
+void action_enter_city(City* town);
 void action_enter_city_guildmaster(City* town);
 void action_enter_city_tailor();
 void action_enter_city_blacksmith();
 void action_enter_city_stablekeeper();
 
-void action_contact_noble();
+void action_contact_noble(City* town);
+void action_contact_noble_audience(City* town);
 
-void action_hire_mercs(City town);
+void action_hire_mercs(City* town);
 void action_hire_mercs_peasants();
 void action_hire_mercs_peasants_yes(int peasants, int cost);
 void action_hire_mercs_maa();

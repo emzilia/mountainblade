@@ -74,6 +74,8 @@ void input_mainloop()
 		case 'q':
 			action_view_quests();
 			break;
+		case 'k':
+			exit(0);
 	}
 }
 

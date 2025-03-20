@@ -3,10 +3,10 @@
 
 #include <stdlib.h>
 
-typedef struct Noble Noble;
-typedef struct City City;
-typedef struct User User;
-typedef struct Buddy Buddy;
+struct User;
+struct Buddy;
+struct Noble;
+struct City;
 
 typedef struct User {
 	char name[13]; 
@@ -18,12 +18,12 @@ typedef struct User {
 	int denars;
 	int renown;
 	int honor;
-	char title[10];
-	char location[20];
+	int kills;
+	char title[20];
+	char location[30];
 	int intown;
 	int x;
 	int y;
-	int xy;
 } User;
 
 typedef struct Buddy {
@@ -56,8 +56,8 @@ typedef struct{
 } PartyList;
 
 typedef struct City {
-	char name[7];
-	char location[25];
+	char name[10];
+	char location[30];
 	Noble* owner;
 	int iscity;
 	size_t pop;
@@ -86,11 +86,11 @@ typedef struct {
 } NobleList;
 
 typedef struct {
-	char name[20];
-	char info[20];
+	char name[50];
+	char info[50];
 	size_t quantity;
 	size_t quality;
-	Noble* owner;
+	Noble* recipient;
 } Item;
 
 typedef struct {

@@ -15,6 +15,16 @@ User p = {
 	.y = 1,
 };
 
+Inventory bag = {
+	.size = 0,
+};
+
+Item sword1 = {
+	.name = "Father's sword",
+	.quantity = 1,
+	.quality = 1,
+};
+
 Buddy gren = {
 	.name = "Gren of Halix",
 	.level = 1,

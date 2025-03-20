@@ -85,7 +85,7 @@ typedef struct {
 } NobleList;
 
 typedef struct {
-	char name[10];
+	char name[20];
 	size_t quantity;
 	size_t quality;
 	Noble* owner;
@@ -93,11 +93,15 @@ typedef struct {
 
 typedef struct {
 	Item items[10];	
+	size_t size;
 } Inventory;
 
 
 extern User p;
 extern Buddy gren;
+
+extern Inventory bag;
+extern Item sword1;
 
 extern City zander;
 extern City talis;

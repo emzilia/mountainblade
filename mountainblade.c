@@ -32,7 +32,7 @@ typedef struct {
 	size_t y;
 } City;
 
-City zander = {
+const City zander = {
 	.name = "Zander",
 	.location = "Town of Zander",
 	.noble = "Lord Balder",
@@ -43,7 +43,7 @@ City zander = {
 	.y = 2,
 };
 
-City talis = {
+const City talis = {
 	.name = "Talis",
 	.location = "City of Talis",
 	.noble = "Lady Alinna",
@@ -54,7 +54,7 @@ City talis = {
 	.y = 6,
 };
 
-City adriin = {
+const City adriin = {
 	.name = "Adriin",
 	.location = "City of Adriin",
 	.noble = "Lady Merisa",
@@ -65,7 +65,7 @@ City adriin = {
 	.y = 4,
 };
 
-City doxoun = {
+const City doxoun = {
 	.name = "Doxoun",
 	.location = "City of Doxoun",
 	.noble = "Lord Raegan",
@@ -76,7 +76,7 @@ City doxoun = {
 	.y = 1,
 };
 
-City calia = {
+const City calia = {
 	.name = "Calia",
 	.location = "Town of Calia",
 	.noble = "Lord Kieran",
@@ -87,7 +87,7 @@ City calia = {
 	.y = 5,
 };
 
-City grelin = {
+const City grelin = {
 	.name = "Grelin",
 	.location = "Town of Grelin",
 	.noble = "Lady Alinna",
@@ -103,7 +103,7 @@ User p = {
 	.name = '@',
 	.army = 40,
 	.charisma = 5,
-	.denars = 450,
+	.denars = 120,
 	.title = "Knight",
 	.x = 1,
 	.y = 1,
@@ -152,8 +152,6 @@ void print_map(char arr[][14], int rows, int columns) {
 	addch('\n'); }
 	//printw(" %zu, %zu\n", p.x, p.y);
 	city_all();
-	print_userinfo();
-	printw("Actions:\n");
 }
 
 void print_userinfo()
@@ -187,6 +185,7 @@ void city_all()
 		return;
 	} else if (city_look(grelin)) {
 		return;
+
 	} else if ((p.x > 6 && p.y > 4) || (p.x == 6 && p.y == 6)) {
 		p.intown = 0;
 		printw("Forest of Grensdale\n\n\n");
@@ -200,8 +199,9 @@ void city_all()
 
 }
 
-void actions()
+void print_actions()
 {
+    	printw("Actions:\n");
 	if (p.intown) {
 	printw("1. Enter city\n2. Contact nobleman\n3. Hire local mercenaries\n\n"); 
 	} else if (!p.intown) {
@@ -212,22 +212,42 @@ void actions()
 	printw("q. View Current Quests\n");
 }
 
+void action_enter_city()
+{
+	clear();
+	printw("You approach the settlement gates and present\nyourself to the guard. He ushers your party\nthrough without complaint.");
+	refresh();
+	getch();
+}
+
+void action_hire_mercs()
+{
+	clear();
+	printw("You send messengers to the local taverns,\nhoping to find some troops to hire.");
+	refresh();
+	getch();
+}
+
 void movement()
 {
 	int response = getch();
 	switch (response) {
+		case 'k':
 		case KEY_UP:
 			if (p.y > 1)
 				p.y--;
 			break;
+		case 'j':
 		case KEY_DOWN:
 			if (p.y < rows - 2)
 				p.y++; 
 			break;
+		case 'h':
 		case KEY_LEFT:
 			if (p.x > 1)
 				p.x--;
 			break;
+		case 'l':
 		case KEY_RIGHT:
 			if (p.x < columns - 2)
 				p.x++;
@@ -236,14 +256,14 @@ void movement()
 	
 	if (p.intown) {
 		switch (response) {
-			case 1:
-				//action_enter_city();
+			case '1':
+				action_enter_city();
 				break;
 			case 2: 
 				//action_contact_noble();
 				break;
-			case 3:
-				//action_hire_mercs();
+			case '3':
+				action_hire_mercs();
 				break;
 		}
 	} else if (!p.intown) {
@@ -282,7 +302,8 @@ int main(void)
 	int running = 1;
 	while (running) {
 		print_map(map, rows, columns);
-		actions();
+		print_userinfo();
+		print_actions();
 		movement();
 		refresh();
 		clear();

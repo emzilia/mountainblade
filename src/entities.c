@@ -2,13 +2,14 @@
 
 User p = {
 	.level = 1,
+	.xp = 0,
 	.prowess = 1,
 	.army = 13,
 	.armycap = 35,
 	.charisma = 5,
 	.denars = 300,
-	.renown = 1,
-	.honor = 1,
+	.renown = 0,
+	.honor = 0,
 	.kills = 0,
 	.intown = 0,
 	.x = 1,

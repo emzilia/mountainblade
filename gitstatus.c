@@ -127,7 +127,7 @@ RepoList get_gitcommands(RepoList list, RepoList commandlist)
 
 void send_notif(char* gitfinalResult, RepoList list, size_t i)
 {
-    	printf("%s \n\n\n", gitfinalResult);	
+    	printf("%s \n\n\n\n\n", gitfinalResult);	
 
 	const char *behind = "Your branch is behind";
 	const char *ahead = "Your branch is ahead";

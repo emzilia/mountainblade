@@ -51,7 +51,7 @@ typedef struct{
 
 typedef struct {
 	char name[7];
-	char location[20];
+	char location[25];
 	char noble[20];
 	int iscity;
 	size_t pop;
@@ -64,17 +64,18 @@ typedef struct {
 } City;
 
 typedef struct {
-	City cities[12];
+	City* cities[12];
 	size_t size;
 } CityList;
 
 typedef struct {
 	char name[20];
-	City fiefs[3];
+	City* fiefs[3];
+	size_t totalfiefs;
 } Noble;
 
 typedef struct {
-	Noble nobles[8];
+	Noble* nobles[8];
 	size_t size;
 } NobleList;
 

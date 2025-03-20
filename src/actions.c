@@ -126,9 +126,13 @@ void action_contact_noble(City* town)
 		wprintw(win, "1. Request an audience\n2. Deliver a letter\n\n(b) to go back");
 		int response = wgetch(win);
 		switch (response) {
-			case 1:
+			case '1':
+				generate_quest1(town);
+				wprintw(win, "\n\nGreat! I'll send the details over to your aid."); 
+				wgetch(win);
+				contactloop = 0;
 				break;
-			case 2:
+			case '2':
 				break;
 			case 'b':
 				contactloop = 0;
@@ -143,12 +147,9 @@ void action_contact_noble_audience(City* town)
 
 void action_hire_mercs(City* town)
 {
-	wclear(win);
-	wprintw(win, "You send messengers to the local taverns,\nhoping to find some troops to hire.");
-	wgetch(win);
+	print_event("You send messengers to the local taverns,\nhoping to find some troops to hire.");
 	if (town->iscity) action_hire_mercs_maa();
 	else action_hire_mercs_peasants();
-	wgetch(win);
 }
 
 void action_hire_mercs_peasants()
@@ -175,9 +176,7 @@ void action_hire_mercs_peasants()
 void action_hire_mercs_peasants_yes(int peasants, int cost)
 {
 	if (cost > p.denars) {
-		wclear(win);
-		wprintw(win, "You can't afford that price right now.");
-		wgetch(win);
+		print_event("You can't afford that price right now.");
 		return;
 	}
 	int chance = rand() % 11;
@@ -222,9 +221,7 @@ void action_hire_mercs_maa()
 void action_hire_mercs_maa_yes(int maa, int cost)
 {
 	if (cost > p.denars) {
-		wclear(win);
-		wprintw(win, "You can't afford that price right now.");
-		wgetch(win);
+		print_event("You can't afford that price right now.");
 		return;
 	}
 	party.maa += maa;
@@ -236,9 +233,7 @@ void action_hire_mercs_maa_yes(int maa, int cost)
 
 void action_setup_camp()
 {
-	wclear(win);
-	wprintw(win, "You order your troops to construct some\n hasty fortifications..");
-	wgetch(win);
+	print_event("You order your troops to construct some\nhasty fortifications");
 }
 
 void action_draft_letter()
@@ -306,10 +301,10 @@ void action_view_character()
 	mvwprintw(win, 2, 0, "Name:\t %s", p.name);
 	mvwprintw(win, 4, 0, "Rank:\t %s", p.title);
 	mvwprintw(win, 6, 0, "Level:\t %zu", p.level);
-	mvwprintw(win, 8, 0, "Prowess: %zu", p.prowess);
-	mvwprintw(win, 10, 0, "Kills:\t %d", p.kills);
-	mvwprintw(win, 12, 0, "Renown:\t %d", p.renown);
-	mvwprintw(win, 14, 0, "Honor:\t %d", p.honor);
+	mvwprintw(win, 16, 0, "Prowess: %zu", p.prowess);
+	mvwprintw(win, 18, 0, "Kills:\t %d", p.kills);
+	mvwprintw(win, 10, 0, "Renown:\t %d", p.renown);
+	mvwprintw(win, 12, 0, "Honor:\t %d", p.honor);
 	wgetch(win);
 }
 
@@ -323,8 +318,8 @@ void action_view_inventory()
 		int row = 2;
 		for (size_t i = 0; i < bag.size; ++i) {
 			mvwprintw(
-				win, row, 0, "%zu. %s  \t- %s\n\t> Return to %s", i + 1, 
-				bag.items[i].name, bag.items[i].info, bag.items[i].recipient->name
+				win, row, 0, "%zu. %s  \t- %s\n", i + 1, 
+				bag.items[i].name, bag.items[i].info
 			);
 			row += 3;
 		}
@@ -367,7 +362,7 @@ void action_view_quests()
 		for (size_t i = 0; i < allquests.totalsla; ++i) {
 			wprintw(
 				win, "Slay %i bandits on the road\n\t- For %s\n\n", 
-				allquests.slayings[i].to_kill, allquests.slayings[i].giver->name
+				allquests.slayings[i].to_kill, allquests.slayings[i].giver->location
 			);
 		}
 	}

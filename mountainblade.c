@@ -3,6 +3,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <ncurses.h>
+#include <time.h>
 
 #include "actions.h"
 #include "entities.h"
@@ -50,7 +51,7 @@ void input_mainloop()
 				action_contact_noble();
 				break;
 			case '3':
-				action_hire_mercs();
+				action_hire_mercs(currenttown);
 				break;
 		}
 	} else if (!p.intown) {
@@ -85,6 +86,7 @@ void input_mainloop()
 
 int main(void)
 {
+	srand(time(NULL));
 	init_window();
 	init_citylist();
 	init_buddylist();
@@ -94,6 +96,8 @@ int main(void)
 
 	int running = 1;
 	while (running) {
+		update_partyupkeep();
+		set_user_rank(&p);
 		print_map(map, rows, columns);
 		set_location();
 		print_userinfo();
@@ -101,7 +105,6 @@ int main(void)
 		input_mainloop();
 		wrefresh(win);
 		werase(win);
-		set_user_rank(&p);
 	};
 
 	endwin();

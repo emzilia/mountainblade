@@ -19,15 +19,12 @@ void advance_day(int value)
 {
 	gtime.hour = 1;
 	gtime.day += value;
-	if (gtime.day > 7) advance_week(1);
+	if (gtime.day > 7) advance_week(1, &p);
 }
 
-void advance_week(int value)
+void advance_week(int value, User* p)
 {
-	char change[6];
-	sprintf(change, "%zu", party.totalupkeep);
-	print_event_args("Weekly wages have been paid out: %s denars", change);
-	p.denars -= party.totalupkeep;
+	weekly_partyupkeep(p);
 	gtime.day = 1;
 	gtime.week += value;
 	if (gtime.week > 4) advance_month(1);

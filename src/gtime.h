@@ -3,6 +3,9 @@
 
 #include <stdlib.h>
 
+#include "entities.h"
+#include "logic.h"
+
 typedef struct {
 	size_t hour;
 	size_t day;
@@ -14,7 +17,7 @@ extern Time gtime;
 
 void advance_hour(int value);
 void advance_day(int value);
-void advance_week(int value);
+void advance_week(int value, User* p);
 void advance_month(int value);
 
 #endif

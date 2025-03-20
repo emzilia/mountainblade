@@ -115,7 +115,6 @@ void action_hire_mercs(City town)
 	wgetch(win);
 	if (town.iscity) action_hire_mercs_maa();
 	else action_hire_mercs_peasants();
-	wgetch(win);
 }
 
 void action_hire_mercs_peasants()

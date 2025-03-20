@@ -1,10 +1,8 @@
-#include <stdlib.h>
-#include <stdio.h>
 #include <ncurses.h>
 
 #include "entities.h"
 #include "display.h"
-#include "logic.h"
+#include "text.h"
 #include "gtime.h"
 
 WINDOW *win;
@@ -25,30 +23,12 @@ void init_window()
 	wmove(win, 2, 6);
 }
 
-char map[8][28] = {
-	"o==========================o",
-	"|.....c./^^^^^^^^^^^^^^^t..|",
-	"|....../........v^^^^^^^...|",
-	"|.t___/....C.............c.|",
-	"|./............v...........|",
-	"|/.....**t*******..t.......|",
-	"|..t..************......t..|",
-	"o==========================o"
-};
-	
-
 int rows = sizeof(map) / sizeof(map[0]);
 int columns = sizeof(map[0]) / sizeof(map[0][0]);
 
 void print_title()
 {
-	wprintw(win,
-		"    Hello and welcome to Tania!\n\n"
-		"    The Duke has been gone for three years now,\n"
-		"fighting heathens abroad. Unrest grows across the\n"
-		"realm as local nobles grow to fill the void left\n"
-		"in his absence."
-	);
+	wprintw(win, "%s", titlescreen);
 	if (wgetch(win) == 'd') debug = 1;
 	werase(win);
 }
@@ -66,7 +46,7 @@ int print_map(char map[][28], int rows, int columns) {
 				wprintw(win, "%c", map[r][c]);
 		}
 	waddch(win, '\n'); }
-	if (debug) wprintw(win, "  %d, %d\n", p.x, p.y);
+	if (debug) wprintw(win, "  %d, %d\n  DEBUG", p.x, p.y);
 	
 	return currentlocation;
 }
@@ -80,15 +60,15 @@ void print_userinfo(int currentlocation)
 		locationtext= "Tanian River Shore";
 	else locationtext = "Plains of Castamere";
 
-    	if (p.intown) mvwprintw(win, 9, 17, "%s\n\n", p.location);
-	else { 
-		mvwprintw(win, 9, 17, locationtext);
-	}
+	if (p.intown) mvwprintw(win, 9, 17, "%s", p.location);
+	else mvwprintw(win, 9, 17, "%s", locationtext);
+	
 	mvwprintw(win, 10, 22, "%s", p.season);
 
 	mvwprintw(win, 12, 9, "Rank: %s", p.title);
 	mvwprintw(win, 12, 29, "Denars: %i", p.denars);
 	mvwprintw(win, 13, 8, "Party: %d/%d", party.total, p.armycap);
+	mvwprintw(win, 13, 29, "Upkeep: %d", party.totalupkeep);
 	mvwprintw(win, 13, 29, "Upkeep: %d", party.totalupkeep);
 }
 
@@ -99,6 +79,7 @@ void print_time()
 	mvwprintw(win, 15, 29, " Week:  %d", gtime.week);
 	mvwprintw(win, 16, 9, "Day:  %d", gtime.day);
 	mvwprintw(win, 16, 30, "Month: %d", gtime.month);
+	mvwprintw(win, 17, 30, "Year: %d", gtime.year);
 }
 
 void print_actions()
@@ -117,14 +98,16 @@ void print_actions()
 	mvwprintw(win, 25, 9, "p. View Party\n"); 
 	mvwprintw(win, 27, 9, "q. View Current Quests\n");
 	mvwprintw(win, 28, 9, "r. View Relevant Nobles\n"); 
+	
+	if (debug) mvwprintw(win, 32, 9, "d. View Debug Menu\n"); 
 }
 
-void print_event(char* text)
+void print_event(char* text, char* flavor)
 {
 	int eventloop = 1;
 	wclear(win);
-	wprintw(win, text);
-	wprintw(win, "\n\n\n\n(b) to go back");
+	wprintw(win, "%s", text);
+	wprintw(win, "\n\n\n\n(b) %s", flavor);
 	while (eventloop) {
 		int response = wgetch(win);
 		switch (response) {

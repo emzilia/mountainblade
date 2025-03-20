@@ -91,7 +91,7 @@ void print_actions()
     	mvwprintw(win, 17, 9, "Actions:\n");
 	if (p.intown) {
 		mvwprintw(win, 18, 9, "1. Enter city"); 
-		mvwprintw(win, 19, 9, "2. Contact noble estate");
+		mvwprintw(win, 19, 9, "2. Contact local noble");
     		mvwprintw(win, 20, 9, "3. Hire local mercenaries");
 	} else if (!p.intown) {
 		mvwprintw(win, 18, 9, "1. Setup fortified camp");

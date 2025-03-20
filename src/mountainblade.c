@@ -72,7 +72,7 @@ void input_mainloop()
 			action_view_quests();
 			break;
 		case 'd':
-			action_enter_debug(&p, &gtime);
+			action_view_debug(&p, &gtime);
 			break;
 		case '/':
 			endwin();

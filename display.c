@@ -99,7 +99,7 @@ void print_actions()
 	}
 	mvwprintw(win, 22, 9, "p. View Party\n"); 
 	mvwprintw(win, 23, 9, "i. View Inventory\n"); 
-	mvwprintw(win, 24, 9, "r. View Relations\n"); 
+	mvwprintw(win, 24, 9, "r. View Relevant Nobles\n"); 
 	mvwprintw(win, 25, 9, "q. View Current Quests\n");
 }
 

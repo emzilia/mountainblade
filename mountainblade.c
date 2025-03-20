@@ -79,10 +79,7 @@ void input_mainloop()
 
 int main(void)
 {
-	initscr();
-	noecho();	
-	curs_set(0);
-	keypad(stdscr, TRUE);
+	init_window();
 	
 	init_citylist();
 	print_title();
@@ -92,9 +89,11 @@ int main(void)
 		print_map(map, rows, columns);
 		print_userinfo();
 		print_actions();
+		wrefresh(win);
 		input_mainloop();
-		refresh();
-		clear();
+		wrefresh(win);
+		werase(win);
+		wrefresh(win);
 	};
 
 	endwin();

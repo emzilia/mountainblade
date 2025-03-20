@@ -7,12 +7,10 @@
 extern City currenttown;
 
 void action_enter_city(City* town);
-void action_enter_citytesting(City* town);
-void action_enter_city_guildmaster(City* town);
-void action_enter_city_guildmastertesting(City* town);
-void action_enter_city_tailor();
-void action_enter_city_blacksmith();
-void action_enter_city_stablekeeper();
+void action_enter_city_gm(City* town);
+void action_enter_city_ta();
+void action_enter_city_bs();
+void action_enter_city_sk();
 
 void action_contact_noble(City* town);
 void action_contact_noble_audience(City* town);
@@ -38,4 +36,6 @@ void action_view_debug_stats(User* p, Time* gtime);
 void action_view_debug_cities();
 void action_view_debug_nobles();
 void action_view_debug_quests();
+void action_view_debug_player();
+
 #endif

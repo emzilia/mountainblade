@@ -70,38 +70,39 @@ void print_userinfo()
 {
     	if (p.intown) mvwprintw(win, 9, 17, "%s\n\n", p.location);
     	if (!p.intown) mvwprintw(win, 9, 17, "Plains of Castamere\n\n");
+	mvwprintw(win, 10, 22, "%s", p.season);
 
-	mvwprintw(win, 11, 9, "Rank: %s", p.title);
-	mvwprintw(win, 11, 29, "Denars: %i", p.denars);
-	mvwprintw(win, 12, 8, "Party: %zu/%zu", party.total, p.armycap);
-	mvwprintw(win, 12, 29, "Upkeep: %zu", party.totalupkeep);
+	mvwprintw(win, 12, 9, "Rank: %s", p.title);
+	mvwprintw(win, 12, 29, "Denars: %i", p.denars);
+	mvwprintw(win, 13, 8, "Party: %zu/%zu", party.total, p.armycap);
+	mvwprintw(win, 13, 29, "Upkeep: %zu", party.totalupkeep);
 }
 
 void print_time()
 {
 
-	mvwprintw(win, 14, 9, "Hour: %zu", gtime.hour);
-	mvwprintw(win, 14, 29, " Week:  %zu", gtime.week);
-	mvwprintw(win, 15, 9, "Day:  %zu", gtime.day);
-	mvwprintw(win, 15, 30, "Month: %zu", gtime.month);
+	mvwprintw(win, 15, 9, "Hour: %zu", gtime.hour);
+	mvwprintw(win, 15, 29, " Week:  %zu", gtime.week);
+	mvwprintw(win, 16, 9, "Day:  %zu", gtime.day);
+	mvwprintw(win, 16, 30, "Month: %zu", gtime.month);
 }
 
 void print_actions()
 {
-    	mvwprintw(win, 17, 9, "Actions:\n");
+    	mvwprintw(win, 18, 9, "Actions:\n");
 	if (p.intown) {
-		mvwprintw(win, 18, 9, "1. Enter city"); 
-		mvwprintw(win, 19, 9, "2. Contact local noble");
-    		mvwprintw(win, 20, 9, "3. Hire local mercenaries");
+		mvwprintw(win, 19, 9, "1. Enter city"); 
+		mvwprintw(win, 20, 9, "2. Contact local noble");
+    		mvwprintw(win, 21, 9, "3. Hire local mercenaries");
 	} else if (!p.intown) {
-		mvwprintw(win, 18, 9, "1. Setup fortified camp");
-    		mvwprintw(win, 19, 9, "2. Draft correspondence");
+		mvwprintw(win, 19, 9, "1. Setup fortified camp");
+    		mvwprintw(win, 20, 9, "2. Draft correspondence");
 	}
-	mvwprintw(win, 22, 9, "c. View Character Info\n"); 
-	mvwprintw(win, 23, 9, "i. View Inventory\n"); 
-	mvwprintw(win, 24, 9, "p. View Party\n"); 
-	mvwprintw(win, 26, 9, "q. View Current Quests\n");
-	mvwprintw(win, 27, 9, "r. View Relevant Nobles\n"); 
+	mvwprintw(win, 23, 9, "c. View Character Info\n"); 
+	mvwprintw(win, 24, 9, "i. View Inventory\n"); 
+	mvwprintw(win, 25, 9, "p. View Party\n"); 
+	mvwprintw(win, 27, 9, "q. View Current Quests\n");
+	mvwprintw(win, 28, 9, "r. View Relevant Nobles\n"); 
 }
 
 void print_event(char* text)

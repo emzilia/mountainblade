@@ -19,29 +19,78 @@ void action_enter_city()
 		clear();
 		printw(
 			"%s\n\nWho would you like to see?\n\n"
-			"1. Guild Master\n2. Blacksmith\n3. Stablekeeper",
+			"1. Guild Master\n2. Tailor\n"
+            "3. Blacksmith\n4. Stablekeeper",
 			p.location
 		);	
 		refresh();
 		int response = getch();
 		switch (response) {
 			case '1':
-				clear();
-				printw(
-					"Guild Master:\n\n Hello %s, "
-					"how can we help you today?",
-					p.name
-				);
-				refresh();
+                action_enter_city_guildmaster();
 				break;
 			case '2':
-				action_contact_noble();
+                action_enter_city_tailor();
+				break;
+			case '3':
+                action_enter_city_blacksmith();
+				break;
+			case '4':
+                action_enter_city_stablekeeper();
 				break;
 			case 'q':
 				cityloop = 0;
 				break;
 		}
 	}
+}
+
+void action_enter_city_guildmaster()
+{
+    clear();
+	printw(
+	    "Guild Master:      ($%d in your inventory)\n\nHello %s, "
+        "how can we help you today?\n",
+	    p.denars, p.name
+    );
+    refresh();
+    getch();
+}
+
+void action_enter_city_tailor()
+{
+    clear();
+	printw(
+	    "Tailor:\n\nHello %s, "
+        "how can we help you today?",
+	    p.name
+    );
+    refresh();
+    getch();
+}
+
+void action_enter_city_blacksmith()
+{
+    clear();
+	printw(
+	    "Blacksmith:\n\nHello %s, "
+        "how can we help you today?",
+	    p.name
+    );
+    refresh();
+    getch();
+}
+
+void action_enter_city_stablekeeper()
+{
+    clear();
+	printw(
+	    "Stablekeeper:\n\nHello %s, "
+        "how can we help you today?",
+	    p.name
+    );
+    refresh();
+    getch();
 }
 
 void action_contact_noble()

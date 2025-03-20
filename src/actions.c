@@ -88,6 +88,7 @@ void action_enter_city_tailor()
 	);
 	wgetch(win);
 }
+
 void action_enter_city_blacksmith()
 {
 	wclear(win);
@@ -174,7 +175,8 @@ void action_contact_noble_audience(City* town)
 
 void action_hire_mercs(City* town)
 {
-	print_event("You send messengers to the local taverns,\nhoping to find some troops to hire.");
+	print_event("You send messengers to the local taverns,\nhoping to find some troops to hire.",
+			"to wait patiently");
 	if (town->iscity) action_hire_mercs_maa();
 	else action_hire_mercs_peasants();
 }
@@ -184,8 +186,9 @@ void action_hire_mercs_peasants()
 	int peasants = (rand() % 3) + 2;
 	int cost = peasants * 5;
 	int weeklycost = peasants * party.pspearupkeep;
+	wclear(win);
 	wprintw(win, 
-		"\n\n%i locals seem adventurous enough.\n\n"
+		"%i locals seem adventurous enough.\n\n"
 		"It'll cost %i denars to equip them,\nas well as an extra %d denars weekly.\n(Your total: %i)\n\n"
 		"How does that sound?\n\n1. Sure thing\n2. No thanks\n",
 		peasants, cost, weeklycost, p.denars
@@ -200,10 +203,10 @@ void action_hire_mercs_peasants()
 	}
 }
 
-void action_hire_mercs_peasants_yes(unsigned int peasants, unsigned int cost)
+void action_hire_mercs_peasants_yes(int peasants, int cost)
 {
 	if (cost > p.denars) {
-		print_event("You can't afford that price right now.");
+		print_event("You can't afford that price right now.", "to continue");
 		return;
 	}
 	int chance = rand() % 11;
@@ -211,13 +214,13 @@ void action_hire_mercs_peasants_yes(unsigned int peasants, unsigned int cost)
 		party.pspear += peasants;
 		wclear(win);
 		wprintw(win, " %i %s have joined your party.", peasants, party.pspearname);
-		if (debug) wprintw(win, "\n%i\n", chance);
+		if (debug) wprintw(win, "\n\n DEBUG: %i/10\n", chance);
 		wgetch(win);
 	} else { 
 		party.pbow += peasants;
 		wclear(win);
 		wprintw(win, " %i %s have joined your party.", peasants, party.pbowname);
-		if (debug) wprintw(win, "\n%i\n", chance);
+		if (debug) wprintw(win, "\n\n DEBUG: %i/10\n", chance);
 		wgetch(win);
 	}
 	p.denars -= cost;
@@ -228,8 +231,9 @@ void action_hire_mercs_maa()
 	int maa = (rand() % 3) + 2;
 	int cost = maa * 15;
 	int weeklycost = maa * party.maaupkeep;
+	wclear(win);
 	wprintw(win, 
-		"\n\n%i veteran soldiers are seeking work.\n\n"
+		"%i veteran soldiers are seeking work.\n\n"
 		"It'll cost %i denars to equip them,\nas well as an extra %d denars weekly.\n(Your total: %i)\n\n"
 		"How does that sound?\n\n1. Sure thing\n2. No thanks\n",
 		maa, cost, weeklycost, p.denars
@@ -245,10 +249,10 @@ void action_hire_mercs_maa()
 
 }
 
-void action_hire_mercs_maa_yes(unsigned int maa, unsigned int cost)
+void action_hire_mercs_maa_yes(int maa, int cost)
 {
 	if (cost > p.denars) {
-		print_event("You can't afford that price right now.");
+		print_event("You can't afford that price right now.", "to continue");
 		return;
 	}
 	party.maa += maa;
@@ -260,7 +264,7 @@ void action_hire_mercs_maa_yes(unsigned int maa, unsigned int cost)
 
 void action_setup_camp()
 {
-	print_event("You order your troops to construct some\nhasty fortifications");
+	print_event("You order your troops to construct some\nhasty fortifications", "to continue");
 	wclear(win);
 	int camploop = 1;
 	while (camploop) {
@@ -298,49 +302,49 @@ void action_draft_letter()
 				letterloop = 0;
 				logic_draft_letter(allnobles.nobles[0]);
 				print_event("You carefully write out the letter and\n"
-						"stow it in your bag"
+						"stow it in your bag", "to continue..."
 				);
 				break;
 			case '2':
 				letterloop = 0;
 				logic_draft_letter(allnobles.nobles[1]);
 				print_event("You carefully write out the letter and\n"
-						"stow it in your bag"
+						"stow it in your bag", "to continue..."
 				);
 				break;
 			case '3':
 				letterloop = 0;
 				logic_draft_letter(allnobles.nobles[2]);
 				print_event("You carefully write out the letter and\n"
-						"stow it in your bag"
+						"stow it in your bag", "to continue..." 
 				);
 				break;
 			case '4':
 				letterloop = 0;
 				logic_draft_letter(allnobles.nobles[3]);
 				print_event("You carefully write out the letter and\n"
-						"stow it in your bag"
+						"stow it in your bag", "to continue..." 
 				);
 				break;
 			case '5':
 				letterloop = 0;
 				logic_draft_letter(allnobles.nobles[4]);
 				print_event("You carefully write out the letter and\n"
-						"stow it in your bag"
+						"stow it in your bag", "to continue..." 
 				);
 				break;
 			case '6':
 				letterloop = 0;
 				logic_draft_letter(allnobles.nobles[5]);
 				print_event("You carefully write out the letter and\n"
-						"stow it in your bag"
+						"stow it in your bag", "to continue..."  
 				);
 				break;
 			case '7':
 				letterloop = 0;
 				logic_draft_letter(allnobles.nobles[6]);
 				print_event("You carefully write out the letter and\n"
-						"stow it in your bag"
+						"stow it in your bag", "to continue..."  
 				);
 				break;
 			case 'b':
@@ -354,7 +358,7 @@ void action_draft_letter()
 void action_view_party()
 {
 	wclear(win);
-	wprintw(win, "Your party:\nYourself, of course\n\nCompanions:\n");
+	wprintw(win, "Party:\n\nYourself, of course\n\nCompanions:\n");
 	for (int i = 0; i < buddies.size; ++i) wprintw(win, "%s\n", buddies.buddies[i].name);
 	wprintw(win, "\nTroops:\n");
 	if (!(party.maa == 0)) for (int i = 0; i < buddies.size; ++i) wprintw(win, "%dx Men-at-arms\n", party.maa);
@@ -380,11 +384,12 @@ void action_view_character()
 	mvwprintw(win, 2, 0, "Name:\t %s", p.name);
 	mvwprintw(win, 4, 0, "Rank:\t %s", p.title);
 	mvwprintw(win, 6, 0, "Level:\t %d", p.level);
-	mvwprintw(win, 16, 0, "Prowess: %d", p.prowess);
-	mvwprintw(win, 18, 0, "Kills:\t %d", p.kills);
-	mvwprintw(win, 10, 0, "Renown:\t %d", p.renown);
-	mvwprintw(win, 12, 0, "Honor:\t %d", p.honor);
-	mvwprintw(win, 22, 0, "(b) to go back");
+	mvwprintw(win, 8, 0, "XP:\t %d", p.xp);
+	mvwprintw(win, 12, 0, "Renown:\t %d", p.renown);
+	mvwprintw(win, 14, 0, "Honor:\t %d", p.honor);
+	mvwprintw(win, 18, 0, "Prowess: %d", p.prowess);
+	mvwprintw(win, 20, 0, "Kills:\t %d", p.kills);
+	mvwprintw(win, 24, 0, "(b) to go back");
 	while (characterloop) {
 		int response = wgetch(win);
 		switch (response) {
@@ -400,7 +405,7 @@ void action_view_inventory()
 	int inventoryloop = 1;
 	int row;
 	wclear(win);
-	mvwprintw(win, 0, 0, "Notable trinkets:");
+	mvwprintw(win, 0, 0, "Inventory:");
 	if (bag.size == 0) { 
 		row = 4;
 		mvwprintw(win, 2, 0, "Your bag is currently empty.");
@@ -454,7 +459,7 @@ void action_view_quests()
 {
 	int questloop = 1;
 	wclear(win);
-	wprintw(win, "Quests:\n\n");
+	wprintw(win, "Current Quests:\n\n");
 	if (allquests.totaldel == 0 && allquests.totalsla == 0) 
 		wprintw(win, "You don't currently have any quests.\n\n");
 	if (allquests.totaldel > 0) {
@@ -463,6 +468,7 @@ void action_view_quests()
 				win, "Deliver a letter to %s\n\t- From %s\n\n", 
 				allquests.deliveries[i].target->name, allquests.deliveries[i].giver->name
 			);
+			if (debug) wprintw(win, "\tQuestID: %d\n\n", allquests.deliveries[i].questid);
 		}
 	}
 	if (allquests.totalsla > 0) {
@@ -489,24 +495,45 @@ void action_enter_debug(User* p, Time* gtime)
 {
 	wclear(win);
 	int debugloop = 1;
+	wprintw(win,
+		"debug menu\n\n"
+		"1. give 125 denars\n2. advance time 1 month\n3. teleport randomly\n"
+		"4. get stronger\n5. kill a peasant with your bare hands\n"
+		"6. payout weekly wages\n\n(b) to go back\n\n"
+	);
 	while (debugloop) {
-		wclear(win);
-		wprintw(win,
-			"debug menu\n\n"
-			"1. give 125 denars\n2. advance time 1 month\n3. teleport to map\n\n(b) to go back"
-		);
+		//wclear(win);
 		int response = wgetch(win);
 		switch (response) {
 			case '1':
+				wprintw(win, "money money money\t\t--> + $125 = $%d\n",
+					p->denars + 125);
 				p->denars += 125;
 				break;
 			case '2':
-				++gtime->month;
+				advance_month(gtime, 1);
+				wprintw(win, "time flies...\t\t\t--> + 1 = %d\n",
+					gtime->month);
 				break;
 			case '3':
-				p->x = 3;
-				p->y = 3;
+				p->x = (rand() % 25) + 1;
+				p->y = (rand() % 5) + 1;
+				wprintw(win, "wait what\t\t\t--> %d, %d\n",
+					p->x, p->y);
 				break;
+			case '4':
+				wprintw(win, "i can BREAK these cuffs\t\t--> %d + 1 = %d\n",
+					p->prowess, p->prowess + 1);
+				p->prowess += 1;
+				break;
+			case '5':
+				wprintw(win, "nasty business, had to be done\t--> + 1 = %d\n",
+					p->kills + 1);
+				p->kills += 1;
+				break;
+			case '6':
+				weekly_partyupkeep(p);
+				//break; simpler without
 			case 'b':
 				debugloop = 0;
 				break;

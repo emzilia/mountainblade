@@ -48,7 +48,7 @@ void print_title()
 		"fighting heathens abroad. Unrest grows across the\n"
 		"realm as local nobles grow to fill the void.\n"
 	);
-	if (wgetch(win) == 'p') debug = 1;
+	if (wgetch(win) == 'd') debug = 1;
 	werase(win);
 }
 

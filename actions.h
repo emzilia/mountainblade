@@ -19,6 +19,7 @@ void action_setup_camp();
 
 void action_draft_letter();
 
+void action_view_party();
 void action_view_inventory();
 void action_view_relations();
 void action_view_quests();

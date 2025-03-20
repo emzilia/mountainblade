@@ -70,6 +70,7 @@ typedef struct City {
 	char location[30];
 	char gm[10];
 	char wealthnote[100];
+	char desc[256];
 	struct Noble* owner;
 } City;
 
@@ -79,6 +80,10 @@ typedef struct {
 } CityList;
 
 typedef struct Noble{
+	int level;
+	int prowess;
+	int renown;
+	int honor;
 	int totalfiefs;
 	int relations;
 	City* fiefs[3];

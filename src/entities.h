@@ -9,7 +9,6 @@ struct Noble;
 struct City;
 
 typedef struct User {
-	char name[13]; 
 	size_t level;
 	size_t prowess;
 	size_t army;
@@ -19,104 +18,106 @@ typedef struct User {
 	int renown;
 	int honor;
 	int kills;
-	char title[20];
-	char location[30];
 	int intown;
 	int x;
 	int y;
+	char name[13]; 
+	char title[20];
+	char location[30];
 } User;
 
 typedef struct Buddy {
-	char name[13];
 	size_t level;
 	size_t prowess;
-	char location[20];
 	int inparty;
 	int x;
 	int y;
+	char name[13];
+	char location[20];
 } Buddy;
 
 typedef struct {
-	Buddy buddies[6];
 	size_t size;
+	Buddy buddies[6];
 } BuddyList;
 
 typedef struct{
 	size_t maa;
-	char maaname[20];
 	size_t maaupkeep;
 	size_t pspear;
-	char pspearname[20];
 	size_t pspearupkeep;
 	size_t pbow;
-	char pbowname[20];
 	size_t pbowupkeep;
 	size_t total;
 	size_t totalupkeep;
+	char maaname[20];
+	char pspearname[20];
+	char pbowname[20];
 } PartyList;
 
 typedef struct City {
-	char name[10];
-	char location[30];
-	struct Noble* owner;
-	int iscity;
 	size_t pop;
 	size_t danger;
 	size_t wealth;
-	char wealthnote[100];
+	int iscity;
 	int x;
 	int y;
-	int xy;
+	char name[10];
+	char location[30];
+	char gm[10];
+	char wealthnote[100];
+	struct Noble* owner;
 } City;
 
 typedef struct {
-	City* cities[12];
 	size_t size;
+	City* cities[12];
 } CityList;
 
 typedef struct Noble{
-	char name[20];
-	City* fiefs[3];
 	size_t totalfiefs;
+	City* fiefs[3];
+	char name[20];
 } Noble;
 
 typedef struct {
-	Noble* nobles[7];
 	size_t size;
+	Noble* nobles[7];
 } NobleList;
 
 typedef struct {
-	char name[50];
-	char info[50];
 	size_t quantity;
 	size_t quality;
-	Noble* recipient;
+	Noble* recipient1;
+	City* recipient2;
+	char info[50];
+	char name[50];
 } Item;
 
 typedef struct {
-	Item items[10];	
 	size_t size;
+	Item items[10];	
 } Inventory;
 
 typedef struct {
-	Noble* giver;
-	Noble* target;
 	int relation_buff;
 	int renown_gain;
+	Noble* giver;
+	Noble* target;
 } Quest1;
 
 typedef struct {
-	Noble* giver;
 	int to_kill;
 	int relation_buff;
 	int renown_gain;
+	City* giver;
 } Quest2;
 
 typedef struct {
-	Quest1 deliveries[5];
-	Quest2 slayings[5];
 	size_t totaldel;
 	size_t totalsla;
+	Quest1 deliveries[5];
+	Quest2 slayings[5];
 } QuestList;
 
 

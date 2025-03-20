@@ -22,6 +22,13 @@ interact with troops, check stats
 upgrade path for troops  
 morale effects for troops  
 
+**quests:**
+~~able to accept two types of quests:~~
+  ~~delivery letters to other npcs~~
+  ~~kill number of bandits on road~~
+~~view quest list~~
+complete quests for xp + renown
+
 **map:**   
 ~~basic map, doubled in size~~  
 different terrain based on position  

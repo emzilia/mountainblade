@@ -58,7 +58,7 @@ typedef struct{
 typedef struct City {
 	char name[10];
 	char location[30];
-	Noble* owner;
+	struct Noble* owner;
 	int iscity;
 	size_t pop;
 	size_t danger;

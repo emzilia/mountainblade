@@ -59,9 +59,9 @@ City zander = {
 	.y = 3,
 	.hasdel = 0,
 	.hassla = 0,
-	.desc = "A small, densely built town sitting upon the\n"
+	.desc = "A small, densely built town sitting on the\n"
 			"shores of the Tanian river. Cramped roads "
-			"snake\nbetween tall white stone buildings.",
+			"snake\nbetween tall white-brick buildings.",
 	.name = "Zander",
 	.location = "Town of Zander",
 	.gm = "Berguson",
@@ -76,8 +76,8 @@ City adriin = {
 	.y = 3,
 	.hasdel = 0,
 	.hassla = 0,
-	.desc = "A large fortified castle lumbering atop a\n"
-			"steep rampart that circled the center of\n"
+	.desc = "A large stone castle lumbering atop a\n"
+			"small hill. It's girth dominates the center of\n"
 			"the valley.",
 	.name = "Adriin",
 	.location = "Castle of Adriin",

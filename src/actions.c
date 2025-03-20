@@ -8,7 +8,7 @@
 
 void action_enter_city(City* town)
 {
-	werase(win);
+	wclear(win);
 	mvwprintw(win, 0, 0,
 		"You approach the gates to the %s\nThe guard ushers"
 		" your party through without\ncomplaint.",
@@ -17,7 +17,7 @@ void action_enter_city(City* town)
 
 	int cityloop = 1;
 	while (cityloop) {
-		werase(win);
+		wclear(win);
 		mvwprintw(win, 0, 0, "%s", p.location);
 		mvwprintw(win, 1, 0, "%s", town->wealthnote);
 		mvwprintw(win, 4, 0, "Who would you like to see?");
@@ -52,6 +52,7 @@ void action_enter_city_guildmaster(City* town)
 	wclear(win);
 	int guildloop = 1;
 	while (guildloop) {
+		wclear(win);
 		wprintw(win,
 			"Guild Master:\n\nIt's good to see you %s, "
 			"how can we help you\non this fine day?\n\nThere is work to do"
@@ -114,22 +115,55 @@ void action_contact_noble(City* town)
 	int contactloop = 1;
 
 	while (contactloop) {
+		if (town->hasdel == 1) {
 		wclear(win);
 		wprintw(win, "You approach the estate of the local\nnoble, %s\n\n", town->owner->name);
 		wprintw(win, "1. Request an audience\n2. Deliver a letter\n\n(b) to go back");
 		int response = wgetch(win);
-		switch (response) {
-			case '1':
-				generate_quest1(town);
-				wprintw(win, "\n\nGreat! I'll send the details over to your aid."); 
-				wgetch(win);
-				contactloop = 0;
-				break;
-			case '2':
-				break;
-			case 'b':
-				contactloop = 0;
-				break;
+			switch (response) {
+				case '1':
+					wprintw(win, "\n\n'Your request has been... DENIED.'"); 
+					wgetch(win);
+					contactloop = 0;
+					break;
+				case '2':
+					wprintw(win, "\n\n'It's about time, and I hope you aren't\n"
+							"expecting any sort of payment'"); 
+					wgetch(win);
+					complete_quest(town, &bag, 1);
+					contactloop = 0;
+					town->hasdel = 0;
+					break;
+				case 'b':
+					contactloop = 0;
+					break;
+			}
+		} else {
+		wclear(win);
+		wprintw(win, "You approach the estate of the local\nnoble, %s\n\n", town->owner->name);
+		wprintw(win, "1. Request an audience\n2. Offer to deliver a letter\n\n(b) to go back");
+		int response = wgetch(win);
+		char* recipient;
+			switch (response) {
+				case '1':
+					wprintw(win, "\n\n'Your request has been... DENIED.'"); 
+					wgetch(win);
+					contactloop = 0;
+					break;
+				case '2':
+					recipient = generate_quest1(town);
+					wprintw(win, "\n\n'Oh, how convenient. Thank you.'\n\n"
+							"'Please deliver this to %s'",
+							recipient
+					); 
+					wgetch(win);
+					contactloop = 0;
+					break;
+				case 'b':
+					contactloop = 0;
+					break;
+
+			}
 		}
 	}
 }
@@ -227,6 +261,25 @@ void action_hire_mercs_maa_yes(int maa, int cost)
 void action_setup_camp()
 {
 	print_event("You order your troops to construct some\nhasty fortifications");
+	wclear(win);
+	int camploop = 1;
+	while (camploop) {
+		wclear(win);
+		wprintw(win, 
+			"Fortified Camp\n\n"
+			"Your troops are waiting in defensive positions.\n\n1. Wait some time\n2. Break camp\n"
+		);
+		print_time();
+		int response = wgetch(win);
+		switch (response) {
+			case '1':
+				advance_hour(&gtime, 1);
+				break;
+			case '2':
+				camploop = 0;
+				break;
+		}
+	}
 }
 
 void action_draft_letter()
@@ -327,14 +380,13 @@ void action_view_relations()
 	wprintw(win, "Relevant Nobles:\n\n");
 	for (size_t i = 0; i < allnobles.size; ++i) {
 		Noble* noble = allnobles.nobles[i];
-		wprintw(win, "%s\n", noble->name);	
+		wprintw(win, "%s\t\t      Relations: %d\n", noble->name, noble->relations);	
 		for (size_t f = 0; f < noble->totalfiefs; ++f) {
 			wprintw(win, "\t - %s\n", (*allnobles.nobles[i]).fiefs[f]->location);
 		}; 
 		wprintw(win, "\n");
 	};
 	wgetch(win);
-	add_to_inventory(&bag, &sword1);
 }
 
 void action_view_quests()

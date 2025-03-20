@@ -44,7 +44,7 @@ void input_mainloop()
 	if (p.intown) {
 		switch (response) {
 			case '1':
-				action_enter_city();
+				action_enter_city(currenttown);
 				break;
 			case '2': 
 				action_contact_noble();
@@ -75,6 +75,7 @@ void input_mainloop()
 			action_view_quests();
 			break;
 		case 'p':
+			endwin();
 			exit(0);
 	}
 }
@@ -89,6 +90,7 @@ int main(void)
 	int running = 1;
 	while (running) {
 		print_map(map, rows, columns);
+		set_location();
 		print_userinfo();
 		print_actions();
 		wrefresh(win);

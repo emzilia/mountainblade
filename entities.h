@@ -29,7 +29,7 @@ typedef struct {
 } City;
 
 typedef struct {
-	City cities[6];
+	City cities[12];
 	size_t size;
 } CityList;
 
@@ -40,6 +40,12 @@ extern City adriin;
 extern City doxoun;
 extern City calia;
 extern City grelin;
+extern City amelo;
+extern City yefhold;
+extern City grii;
+extern City todt;
+extern City joeton;
+extern City salls;
 extern CityList allcities;
 
 #endif

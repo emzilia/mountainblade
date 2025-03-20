@@ -82,4 +82,76 @@ City grelin = {
 	.xy = 11 + 3,
 };
 
+City amelo = {
+	.name = "Amelo",
+	.location = "Town of Amelo",
+	.noble = "Marquise Alinna",
+	.pop = 1780,
+	.danger = 4,
+	.wealth = 1,
+	.x = 19,
+	.y = 5,
+	.xy = 11 + 3,
+};
+
+City yefhold = {
+	.name = "Yefhold",
+	.location = "City of Yefhold",
+	.noble = "Marquise Alinna",
+	.pop = 11430,
+	.danger = 4,
+	.wealth = 1,
+	.x = 16,
+	.y = 2,
+	.xy = 11 + 3,
+};
+
+City grii = {
+	.name = "Grii",
+	.location = "City of Grii",
+	.noble = "Marquise Alinna",
+	.pop = 9340,
+	.danger = 4,
+	.wealth = 1,
+	.x = 15,
+	.y = 4,
+	.xy = 11 + 3,
+};
+
+City todt = {
+	.name = "Todt",
+	.location = "Town of Todt",
+	.noble = "Marquise Alinna",
+	.pop = 2380,
+	.danger = 4,
+	.wealth = 1,
+	.x = 24,
+	.y = 1,
+	.xy = 11 + 3,
+};
+
+City joeton = {
+	.name = "Joeton",
+	.location = "City of Joeton",
+	.noble = "Marquise Alinna",
+	.pop = 11430,
+	.danger = 4,
+	.wealth = 1,
+	.x = 25,
+	.y = 3,
+	.xy = 11 + 3,
+};
+
+City salls = {
+	.name = "Salls",
+	.location = "City of Salls",
+	.noble = "Marquise Alinna",
+	.pop = 9340,
+	.danger = 4,
+	.wealth = 1,
+	.x = 24,
+	.y = 6,
+	.xy = 11 + 3,
+};
+
 CityList allcities;

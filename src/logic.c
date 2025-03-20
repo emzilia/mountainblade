@@ -156,7 +156,7 @@ void update_partyupkeep(PartyList* party)
 {
 	party->total = party->maa + party->pspear + party->pbow + buddies.size + 1;
 	if (party->total > p.armycap) {
-		unsigned int diff = party->total - p.armycap;
+		int diff = party->total - p.armycap;
 		party->pspear -= diff;
 
 		wclear(win);
@@ -179,9 +179,9 @@ void weekly_partyupkeep(User* p)
 	char change[6];
 	sprintf(change, "%d", party.totalupkeep);
 	int wagesloop = 1;
+	wclear(win);
+	print_event_args("Weekly wages have been paid out: %s denars\n\n(b) to accept begrudgingly", change);
 	while (wagesloop) {
-		wclear(win);
-		print_event_args("Weekly wages have been paid out: %s denars\n\n(b) to accept begrudgingly", change);
 		int response = wgetch(win);
 		switch (response) {
 			case 'b':
@@ -193,7 +193,7 @@ void weekly_partyupkeep(User* p)
 }
 
 // check if user is in a town or not. if so, copy over the location string
-unsigned int check_location(City* town, User* p)
+int check_location(City* town, User* p)
 {
 	if (p->x == town->x && p->y == town->y) {
 		p->intown = 1;
@@ -259,8 +259,24 @@ void add_to_inventory(Inventory* inventory, Item* thing)
 		bag.items[bag.size] = *thing;
 		++bag.size;
 	} else {
-		print_event("The inventory is full.");
+		print_event("The inventory is full.", "to continue");
 	}
+}
+
+// self explanatory
+int generate_unique_questid()
+{
+	// generates a random number to id the quest
+	// if it generates a number that's already being used,
+	// the function is run recursively until a unique value is chosen
+	int questid = (rand() % 100);
+	for (int i = 0; i < allquests.totaldel; ++i) {
+		if (allquests.deliveries[i].questid == questid) {
+			questid = generate_unique_questid();
+		}
+	}
+
+	return questid;
 }
 
 // generate delivery quest
@@ -275,7 +291,7 @@ char* generate_quest1(City* city)
 		--questtarget;
 
 	// generate a random number as a simple identifier
-	int questid = (rand() % 500);
+	int questid = generate_unique_questid();
 
 	// delivery quest is generated
 	Quest1 latestdel = {
@@ -308,7 +324,7 @@ char* generate_quest1(City* city)
 }
 
 // turn in either a delivery or slaying quest
-void complete_quest(City* city, Inventory* bag, unsigned int num)
+void complete_quest(City* city, Inventory* bag, int num)
 {
 	// if turning in a delivery quest
 	if (num == 1)
@@ -336,8 +352,13 @@ void complete_quest(City* city, Inventory* bag, unsigned int num)
 		}
 	// else if turning in a slaying quest
 	else if (num == 2)
-		for (int i = 0; i < allquests.totaldel; ++i) {
-			if (allquests.deliveries[i].target == bag->items[i].recipient1) {
+		// first we loop through the current slaying quest list
+		for (int i = 0; i < allquests.totalsla; ++i) {
+			// we add the target number of kills specified in the quest
+			// to the number of kills the player had at the start of the quest
+			// if the player currently has more kills, complete the quest
+			if (allquests.slayings[i].starting_kills + allquests.slayings[i].to_kill
+					>= p.kills) {
 			}
 		}
 }
@@ -352,24 +373,28 @@ void generate_quest2(City* city)
 
 	// bandit slaying quests are given by city guildmasters
 	Quest2 latestsla = {
+		.starting_kills = p.kills,
+		.to_kill = questtarget,
 		.renown_gain = 3,
 		.relation_buff = 1,
 		.giver = city,	
-		.to_kill = questtarget,
 	};
 
+	// city given a flag to denote the active quest
 	city->hassla = 2;
 
+	// quest is added to quest list
 	allquests.slayings[allquests.totalsla] = latestsla;
 	++allquests.totalsla;
 
+	// item to turn in for quest completion
 	Item writ_justice = {
 		.name = "Writ for Justice",
 		.info = "By local authority",
 		.recipient2 = city,
 	};
 
-
+	// item is added to the players bag
 	add_to_inventory(&bag, &writ_justice);
 }
 

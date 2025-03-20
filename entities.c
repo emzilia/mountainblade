@@ -1,7 +1,7 @@
 #include "entities.h"
 
 User p = {
-	.name = "Elena",
+	.name = "Tony",
 	.army = 40,
 	.charisma = 5,
 	.denars = 120,

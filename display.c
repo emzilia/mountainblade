@@ -42,8 +42,8 @@ int columns = sizeof(map[0]) / sizeof(map[0][0]);
 void print_title()
 {
 	wprintw(win,
-		"Hello and welcome to Tania!\n\n"
-		"The Duke has been gone for three years now,\n"
+		"    Hello and welcome to Tania!\n\n"
+		"    The Duke has been gone for three years now,\n"
 		"fighting heathens abroad. Unrest grows across the\n"
 		"realm as local nobles centralize their power.\n"
 	);
@@ -65,15 +65,14 @@ void print_map(char arr[][28], int rows, int columns) {
 		}
 	waddch(win, '\n'); }
 	if (debug) wprintw(win, " %d, %d\n", p.x, p.y);
-	set_location();
 }
 
 void print_userinfo()
 {
     	if (p.intown) wprintw(win, "  %s\n\n", p.location);
     	if (!p.intown) wprintw(win, "  Plains of Castamere\n\n");
-	wprintw(win, "  Your title is %s, you have $%i in silver\n", p.title, p.denars);
-	wprintw(win, "  You have %zu warriors in your employ\n\n", p.army);	
+	wprintw(win, "  Rank: %s        Denars: %i\n", p.title, p.denars);
+	wprintw(win, "  Party: %zu/%zu troops\n\n", p.army, p.armycap);	
 }
 
 void print_actions()

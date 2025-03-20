@@ -200,7 +200,7 @@ void action_hire_mercs_peasants()
 	}
 }
 
-void action_hire_mercs_peasants_yes(int peasants, int cost)
+void action_hire_mercs_peasants_yes(unsigned int peasants, unsigned int cost)
 {
 	if (cost > p.denars) {
 		print_event("You can't afford that price right now.");
@@ -245,7 +245,7 @@ void action_hire_mercs_maa()
 
 }
 
-void action_hire_mercs_maa_yes(int maa, int cost)
+void action_hire_mercs_maa_yes(unsigned int maa, unsigned int cost)
 {
 	if (cost > p.denars) {
 		print_event("You can't afford that price right now.");

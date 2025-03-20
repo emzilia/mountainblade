@@ -43,4 +43,15 @@ void set_location()
 
 }
 
+void update_pxy()
+{
+	char px[2];
+	char py[2];
+	char pxy[5];
 
+	sprintf(px, "%d", p.x);
+	sprintf(px, "%d", p.x);
+	
+//	pxy = strcat(px, py);
+	p.xy = atoi(pxy);
+}

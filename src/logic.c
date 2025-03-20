@@ -160,8 +160,8 @@ void update_partyupkeep(PartyList* party)
 		party->pspear -= diff;
 
 		wclear(win);
-		if (diff == 1) wprintw(win, "Disatisfied, %i man has deserted the party", diff); 
-		else wprintw(win, "Disatisfied, %i men have deserted the party", diff); 
+		if (diff == 1) wprintw(win, "Dissatisfied, %i man has deserted the party", diff); 
+		else wprintw(win, "Dissatisfied, %i men have deserted the party", diff); 
 		wgetch(win);
 		wclear(win);
 
@@ -345,6 +345,9 @@ void complete_quest(City* city, Inventory* bag, int num)
 					}
 					--bag->size;
 
+					// remove quest target's flag
+					allquests.deliveries[i].target->fiefs[0]->hasdel = 0;
+
 					// after quest is complete, increase relations with quest giver
 					allquests.deliveries[i].giver->relations += allquests.deliveries[i].relation_buff;
 				}
@@ -357,8 +360,15 @@ void complete_quest(City* city, Inventory* bag, int num)
 			// we add the target number of kills specified in the quest
 			// to the number of kills the player had at the start of the quest
 			// if the player currently has more kills, complete the quest
+			// pretty dumb placeholder logic
 			if (allquests.slayings[i].starting_kills + allquests.slayings[i].to_kill
 					>= p.kills) {
+				for(int j = 0; j < allquests.totalsla - 1; ++j) {
+					allquests.slayings[i] = allquests.slayings[i + 1];
+				}
+				--allquests.totalsla;
+				// after quest is complete, increase relations with quest giver
+				allquests.slayings[i].giver->owner->relations += allquests.slayings[i].relation_buff;
 			}
 		}
 }
@@ -381,21 +391,11 @@ void generate_quest2(City* city)
 	};
 
 	// city given a flag to denote the active quest
-	city->hassla = 2;
+	city->hassla = 1;
 
 	// quest is added to quest list
 	allquests.slayings[allquests.totalsla] = latestsla;
 	++allquests.totalsla;
-
-	// item to turn in for quest completion
-	Item writ_justice = {
-		.name = "Writ for Justice",
-		.info = "By local authority",
-		.recipient2 = city,
-	};
-
-	// item is added to the players bag
-	add_to_inventory(&bag, &writ_justice);
 }
 
 void logic_draft_letter(Noble* noble)

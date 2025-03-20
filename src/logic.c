@@ -7,6 +7,7 @@
 #include "display.h"
 #include "actions.h"
 #include "gtime.h"
+#include "text.h"
 
 void init_citylist()
 {
@@ -226,38 +227,42 @@ void calc_city_wealth(City* city)
 	char wealth2[100] = "The streets are quiet and well-kept, the\nlocals seem content.";
 	char wealth1[100] = "The streets are dirty and the locals squint at\nyou with suspicious eyes.";
 
-	if (city->wealth > 0) strcpy(city->wealthnote, wealth1); 
-		if (city->wealth > 4) strcpy(city->wealthnote, wealth2); 
-			if (city->wealth > 8) strcpy(city->wealthnote, wealth3); 
+	if (city->wealth > 0 || city->wealth < 4) strncpy(city->wealthnote, wealth1, 100); 
+	if (city->wealth > 4 || city->wealth < 8) strncpy(city->wealthnote, wealth2, 100); 
+	if (city->wealth > 8) strncpy(city->wealthnote, wealth3, 100); 
+	//strncpy(event_city2.arg2, city->wealthnote, 100);
 }
 
 // set users rank daily based on their renown
 // TODO maybe only check rank when renown changes?
-void set_user_rank(User* list)
+void set_user_rank(User* player)
 {
 	char rank1[20] = "Esquire";
 	char rank2[20] = "Knight";
 	char rank3[20] = "Baron";
 	char rank4[20] = "Viscount";
+	char rank5[20] = "Duke";
 
-	if (list->renown > 0) strncpy( list->title, rank1, (sizeof(list->title) - 1));	
-	if (list->renown > 75) strncpy( list->title, rank2, (sizeof(list->title) - 1));	
-	if (list->renown > 200) strncpy( list->title, rank3, (sizeof(list->title) - 1));	
-	if (list->renown > 400) strncpy( list->title, rank4, (sizeof(list->title) - 1));	
+	if (player->renown >= 0 || player->renown < 75) strncpy( player->title, rank1, (sizeof(player->title) - 1));	
+	if (player->renown > 75 || player->renown < 200) strncpy( player->title, rank2, (sizeof(player->title) - 1));	
+	if (player->renown > 200 || player->renown < 400) strncpy( player->title, rank3, (sizeof(player->title) - 1));	
+	if (player->renown > 400 || player->renown < 600) strncpy( player->title, rank4, (sizeof(player->title) - 1));	
+	if (player->renown > 600) strncpy( player->title, rank5, (sizeof(player->title) - 1));	
 
-	if (!strcmp(list->title, rank2)) p.armycap = 75;
-	if (!strcmp(list->title, rank3)) p.armycap = 150;
-	if (!strcmp(list->title, rank4)) p.armycap = 350;
+	if (!strcmp(player->title, rank2)) p.armycap = 75;
+	if (!strcmp(player->title, rank3)) p.armycap = 150;
+	if (!strcmp(player->title, rank4)) p.armycap = 350;
+	if (!strcmp(player->title, rank5)) p.armycap = 500;
 
-	list->title[sizeof(list->title) - 1] = '\0';
+	player->title[sizeof(player->title) - 1] = '\0';
 }
 
 // add any item object to any inventory object with a cap
 void add_to_inventory(Inventory* inventory, Item* thing)
 {
-	if (bag.size < 10) {
-		bag.items[bag.size] = *thing;
-		++bag.size;
+	if (inventory->size < 10) {
+		inventory->items[inventory->size] = *thing;
+		++inventory->size;
 	} else {
 		print_event("The inventory is full.", "to continue");
 	}
@@ -320,7 +325,32 @@ char* generate_quest1(City* city)
 
 	// returns the name of the quest targer
 	return allnobles.nobles[questtarget]->name;
+}
 
+// generate bandit slaying quest
+void generate_quest2(City* city)
+{
+	// max of 4 bandit slaying quests at a time
+	if (allquests.totalsla > 4) return;
+	
+	// random amount of bandits to kill
+	int questtarget = (rand() % 5) + 3;
+
+	// bandit slaying quests are given by city guildmasters
+	Quest2 latestsla = {
+		.starting_kills = p.kills,
+		.to_kill = questtarget,
+		.renown_gain = 3,
+		.relation_buff = 1,
+		.giver = city,	
+	};
+
+	// city given a flag to denote the active quest
+	city->hassla = 1;
+
+	// quest is added to quest list
+	allquests.slayings[allquests.totalsla] = latestsla;
+	++allquests.totalsla;
 }
 
 // turn in either a delivery or slaying quest
@@ -371,31 +401,6 @@ void complete_quest(City* city, Inventory* bag, int num)
 				allquests.slayings[i].giver->owner->relations += allquests.slayings[i].relation_buff;
 			}
 		}
-}
-
-void generate_quest2(City* city)
-{
-	// max of 4 bandit slaying quests at a time
-	if (allquests.totalsla > 4) return;
-	
-	// random amount of bandits to kill
-	int questtarget = (rand() % 5) + 3;
-
-	// bandit slaying quests are given by city guildmasters
-	Quest2 latestsla = {
-		.starting_kills = p.kills,
-		.to_kill = questtarget,
-		.renown_gain = 3,
-		.relation_buff = 1,
-		.giver = city,	
-	};
-
-	// city given a flag to denote the active quest
-	city->hassla = 1;
-
-	// quest is added to quest list
-	allquests.slayings[allquests.totalsla] = latestsla;
-	++allquests.totalsla;
 }
 
 void logic_draft_letter(Noble* noble)

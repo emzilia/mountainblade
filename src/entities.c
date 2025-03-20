@@ -1,7 +1,7 @@
 #include "entities.h"
 
 User p = {
-	.name = "Tony",
+	.name = "Louie",
 	.level = 1,
 	.prowess = 1,
 	.army = 13,
@@ -16,12 +16,18 @@ User p = {
 	.y = 1,
 };
 
+QuestList allquests = {
+	.totaldel = 0,
+	.totalsla = 0,
+};
+
 Inventory bag = {
 	.size = 0,
 };
 
 Item sword1 = {
 	.name = "Heirloom blade",
+	.info = "+3 Prowess",
 	.quantity = 1,
 	.quality = 1,
 };

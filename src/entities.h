@@ -87,6 +87,7 @@ typedef struct {
 
 typedef struct {
 	char name[20];
+	char info[20];
 	size_t quantity;
 	size_t quality;
 	Noble* owner;
@@ -96,6 +97,27 @@ typedef struct {
 	Item items[10];	
 	size_t size;
 } Inventory;
+
+typedef struct {
+	Noble* giver;
+	Noble* target;
+	int relation_buff;
+	int renown_gain;
+} Quest1;
+
+typedef struct {
+	Noble* giver;
+	int to_kill;
+	int relation_buff;
+	int renown_gain;
+} Quest2;
+
+typedef struct {
+	Quest1 deliveries[5];
+	Quest2 slayings[5];
+	size_t totaldel;
+	size_t totalsla;
+} QuestList;
 
 
 extern User p;
@@ -130,5 +152,6 @@ extern PartyList party;
 extern CityList allcities;
 extern NobleList allnobles;
 extern BuddyList buddies;
+extern QuestList allquests;
 
 #endif

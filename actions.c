@@ -151,7 +151,7 @@ void action_hire_mercs_maa()
 	int cost = maa * 15;
 	size_t weeklycost = maa * party.maaupkeep;
 	wprintw(win, 
-		"\n\n%i veteral soldiers are seeking work.\n\n"
+		"\n\n%i veteran soldiers are seeking work.\n\n"
 		"It'll cost %i denars to equip them,\nas well as an extra %zu denars weekly.\n(Your total: %i)\n\n"
 		"How does that sound?\n\n1. Sure thing\n2. No thanks\n",
 		maa, cost, weeklycost, p.denars

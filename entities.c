@@ -2,6 +2,8 @@
 
 User p = {
 	.name = "Tony",
+	.level = 1,
+	.prowess = 2,
 	.army = 13,
 	.armycap = 35,
 	.charisma = 5,
@@ -11,6 +13,20 @@ User p = {
 	.intown = 0,
 	.x = 1,
 	.y = 1,
+};
+
+Buddy gren = {
+	.name = "Gren of Halix",
+	.level = 1,
+	.prowess = 2,
+	.inparty = 1,
+};
+
+
+PartyList party = {
+	.maa = 4,
+	.pspear = 2,
+	.pbow = 4,
 };
 
 City zander = {
@@ -146,3 +162,5 @@ City salls = {
 };
 
 CityList allcities;
+BuddyList buddies;
+PartyList party;

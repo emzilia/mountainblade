@@ -14,9 +14,10 @@ void move_south(User* p);
 void move_west(User* p);
 void move_east(User* p);
 
-void update_partyupkeep();
+void update_partyupkeep(PartyList* party);
+void weekly_partyupkeep(User* p);
 
-int check_location(City* town);
+int check_location(City* town, User* p);
 void set_location(User* p);
 void calc_city_wealth(City* city);
 void set_user_rank(User* list);

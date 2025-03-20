@@ -10,38 +10,38 @@
 
 void init_citylist()
 {
-	zander.owner = &balder;
 	allcities.cities[0] = &zander;
+	zander.owner = &balder;
 
-	adriin.owner = &viscountess;
 	allcities.cities[1] = &adriin;
+	adriin.owner = &viscountess;
 
-	doxoun.owner = &raegai;
 	allcities.cities[2] = &doxoun;
+	doxoun.owner = &raegai;
 
-	calia.owner = &kieran;
 	allcities.cities[3] = &calia;
+	calia.owner = &kieran;
 
-	grelin.owner = &usoro;
 	allcities.cities[4] = &grelin;
+	grelin.owner = &usoro;
 
-	amelo.owner = &torace;
 	allcities.cities[5] = &amelo;
+	amelo.owner = &torace;
 		
-	yefhold.owner = &viscountess;
 	allcities.cities[6] = &yefhold;
+	yefhold.owner = &viscountess;
 
-	grii.owner = &viscountess;
 	allcities.cities[7] = &grii;
+	grii.owner = &viscountess;
 
-	todt.owner = &alinna;
 	allcities.cities[8] = &todt;
+	todt.owner = &alinna;
 
-	joeton.owner = &alinna;
 	allcities.cities[9] = &joeton;
+	joeton.owner = &alinna;
 
-	salls.owner = &torace;
 	allcities.cities[10] = &salls;
+	salls.owner = &torace;
 
 	allcities.size = 11;
 }
@@ -78,8 +78,8 @@ void init_noblelist()
 
 void init_buddylist()
 {
-	buddies.buddies[0] = gren;
 	buddies.size = 1;
+	buddies.buddies[0] = gren;
 }
 
 void init_partylist()
@@ -139,12 +139,12 @@ void move_east(User* p)
 	}
 }
 
-void update_partyupkeep()
+void update_partyupkeep(PartyList* party)
 {
-	party.total = party.maa + party.pspear + party.pbow + buddies.size + 1;
-	if (party.total > p.armycap) {
-		int diff = party.total - p.armycap;
-		party.pspear -= diff;
+	party->total = party->maa + party->pspear + party->pbow + buddies.size + 1;
+	if (party->total > p.armycap) {
+		int diff = party->total - p.armycap;
+		party->pspear -= diff;
 
 		wclear(win);
 		if (diff == 1) wprintw(win, "Disatisfied, %i man has deserted the party", diff); 
@@ -152,20 +152,38 @@ void update_partyupkeep()
 		wgetch(win);
 		wclear(win);
 
-		party.total = party.maa + party.pspear + party.pbow + buddies.size + 1;
+		party->total = party->maa + party->pspear + party->pbow + buddies.size + 1;
 	}
-	party.totalupkeep = (
-		(party.maa * party.maaupkeep) +
-		(party.pspear * party.pspearupkeep) +
-		(party.pbow * party.pbowupkeep)
+	party->totalupkeep = (
+		(party->maa * party->maaupkeep) +
+		(party->pspear * party->pspearupkeep) +
+		(party->pbow * party->pbowupkeep)
 	);
 }
 
-int check_location(City* town)
+void weekly_partyupkeep(User* p)
 {
-	if (p.x == town->x && p.y == town->y) {
-		p.intown = 1;
-		strcpy(p.location, town->location);
+	char change[6];
+	sprintf(change, "%zu", party.totalupkeep);
+	int wagesloop = 1;
+	while (wagesloop) {
+		wclear(win);
+		print_event_args("Weekly wages have been paid out: %s denars\n\n(b) to go back", change);
+		int response = wgetch(win);
+		switch (response) {
+			case 'b':
+				wagesloop = 0;
+				break;
+		}
+	}
+	p->denars -= party.totalupkeep;
+}
+
+int check_location(City* town, User* p)
+{
+	if (p->x == town->x && p->y == town->y) {
+		p->intown = 1;
+		strcpy(p->location, town->location);
 		return 1;
 	}
 
@@ -175,7 +193,7 @@ int check_location(City* town)
 void set_location(User* p)
 {
 	for (size_t i = 0; i < allcities.size; ++i) {
-		p->intown = check_location(allcities.cities[i]);
+		p->intown = check_location(allcities.cities[i], p);
 		if (p->intown) {
 			currenttown = *allcities.cities[i];
 			calc_city_wealth(&currenttown);
@@ -233,14 +251,23 @@ void generate_quest1(City* city)
 	int questtarget = (rand() % 7);
 
 	Quest1 latestdel = {
-		.giver = city->owner,	
-		.target = allnobles.nobles[questtarget],
 		.renown_gain = 3,
 		.relation_buff = 1,
+		.giver = city->owner,	
+		.target = allnobles.nobles[questtarget],
 	};
 
 	allquests.deliveries[allquests.totaldel] = latestdel;
 	++allquests.totaldel;
+
+	Item quest_letter = {
+		.name = "Elegant Letter",
+		.info = "Bearing noble insignia",
+		.recipient1 = city->owner,
+	};
+
+	add_to_inventory(&bag, &quest_letter);
+
 }
 
 void generate_quest2(City* city)
@@ -250,10 +277,10 @@ void generate_quest2(City* city)
 	int questtarget = (rand() % 5) + 3;
 
 	Quest2 latestsla = {
-		.giver = city->owner,	
-		.to_kill = questtarget,
 		.renown_gain = 3,
 		.relation_buff = 1,
+		.giver = city,	
+		.to_kill = questtarget,
 	};
 
 	allquests.slayings[allquests.totalsla] = latestsla;
@@ -262,7 +289,7 @@ void generate_quest2(City* city)
 	Item writ_justice = {
 		.name = "Writ for Justice",
 		.info = "By local authority",
-		.recipient = city->owner,
+		.recipient2 = city,
 	};
 
 	add_to_inventory(&bag, &writ_justice);
@@ -273,7 +300,7 @@ void logic_draft_letter(Noble* noble)
 	Item letter = {
 		.name = "Formal Letter",
 		.info = "Written in fine hand",
-		.recipient = noble,
+		.recipient1 = noble,
 	};
 
 	add_to_inventory(&bag, &letter);

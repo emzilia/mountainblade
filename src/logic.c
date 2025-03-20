@@ -166,14 +166,14 @@ void calc_city_wealth(City* city)
 
 void set_user_rank(User* list)
 {
-	if (list->renown > 0) strcpy( p.title, "Esquire");	
-			if (list->renown > 75) strcpy( p.title, "Knight");	
-				if (list->renown > 200) strcpy( p.title, "Baron");	
-					if (list->renown > 400) strcpy( p.title, "Viscount");	
+	if (list->renown > 0) strcpy( list->title, "Esquire");	
+			if (list->renown > 75) strcpy( list->title, "Knight");	
+				if (list->renown > 200) strcpy( list->title, "Baron");	
+					if (list->renown > 400) strcpy( list->title, "Viscount");	
 
-	if (!strcmp(p.title, "Knight")) p.armycap = 75;
-	if (!strcmp(p.title, "Baron")) p.armycap = 150;
-	if (!strcmp(p.title, "Viscount")) p.armycap = 350;
+	if (!strcmp(list->title, "Knight")) p.armycap = 75;
+	if (!strcmp(list->title, "Baron")) p.armycap = 150;
+	if (!strcmp(list->title, "Viscount")) p.armycap = 350;
 }
 
 void add_to_inventory(Item* thing)

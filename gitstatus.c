@@ -10,16 +10,16 @@ typedef struct {
 	char** strings;
 	size_t size;
 	size_t capacity;
-} RepoList;
+} VarList;
 
 char *get_user(void);
 char *get_home(char const *user);
-RepoList get_repos(char const *home, RepoList list);
-void run_gits(RepoList commandlist, RepoList list);
-RepoList get_gitcommands(RepoList list, RepoList commandlist);
-void send_notif(char* gitfinalResult, RepoList list, size_t i);
-void init_repolist(RepoList* list);
-void append_repolist(RepoList* list, const char* repo);
+VarList get_repos(char const *home, VarList listRepo);
+void run_gits(VarList listCommand, VarList listRepo);
+VarList get_gitcommands(VarList listRepo, VarList listCommand);
+void send_notif(char* gitFinalResult, VarList listRepo, size_t i);
+void init_safearray(VarList* listRepo);
+void append_safearray(VarList* listRepo, const char* repo);
 
 // Gets username by opening a pipe and returning the output of 'whoami'.
 char *get_user(void)
@@ -72,7 +72,7 @@ char *get_home(char const *user)
 }
 
 // Initializes a list of indeterminate size, for repo list and command list.
-void init_repolist(RepoList* list)
+void init_safearray(VarList* list)
 {
 	list->strings = (char**)malloc(INITIAL_CAPACITY * sizeof(char*));
 	list->size = 0;
@@ -80,7 +80,7 @@ void init_repolist(RepoList* list)
 }
 
 // Appends an item to a list of indeterminate size.
-void append_repolist(RepoList* list, const char* repo)
+void append_safearray(VarList* list, const char* repo)
 {
 	if (list->size >= list->capacity) {
 		list->capacity *= 3;
@@ -92,7 +92,7 @@ void append_repolist(RepoList* list, const char* repo)
 
 // Using the full repo path returned by get_home(), each dir path within is
 // added to the list of repos and the list is returned.
-RepoList get_repos(char const *home, RepoList list)
+VarList get_repos(char const *home, VarList list)
 {
 	DIR *d;
 	struct dirent *dir;
@@ -106,7 +106,7 @@ RepoList get_repos(char const *home, RepoList list)
 			char* result = (char*)malloc(resultSize);
 			sprintf(result, "%s%s", home, p);
 
-			append_repolist(&list, result);
+			append_safearray(&list, result);
 		}
 	closedir(d);
 	}
@@ -115,75 +115,74 @@ RepoList get_repos(char const *home, RepoList list)
 
 // Using the list completed by get_repos(), each path is placed between two
 // strings to form the full git command, each full git command is then
-// appended to the commandlist which is returned.
-RepoList get_gitcommands(RepoList list, RepoList commandlist)
+// appended to the listCommand which is returned.
+VarList get_gitcommands(VarList listRepo, VarList listCommand)
 {
 	const char* git1 = "git -C ";
 	const char* git2 = " status";
-	char* command_result;
+	char* commandResult;
 
-	for (size_t i = 0; i < list.size; i++) {
+	for (size_t i = 0; i < listRepo.size; i++) {
 		size_t resultSize = (
-			strlen(git1) + strlen(list.strings[i]) + strlen(git2) + 1
+			strlen(git1) + strlen(listRepo.strings[i]) + strlen(git2) + 1
 			);
-		command_result = (char*)malloc(resultSize);
-		sprintf(command_result, "%s%s%s", git1, list.strings[i], git2);
-		append_repolist(&commandlist, command_result);
-		printf("%s", command_result);
+		commandResult = (char*)malloc(resultSize);
+		sprintf(commandResult, "%s%s%s", git1, listRepo.strings[i], git2);
+		append_safearray(&listCommand, commandResult);
 	}
-	return commandlist;
+	return listCommand;
 
 }
 
-// Using the commandlist returned by get_gitcommands(), a loop is run and each
+// Using the listCommand returned by get_gitcommands(), a loop is run and each
 // command opens a pipe and saves the output of git status to the variable
-// gitfinalResult. This variable, along with the original path list and
+// gitFinalResult. This variable, along with the original path list and
 // the list index is passed to the send_notif() function.
-void run_gits(RepoList commandlist, RepoList list)
+void run_gits(VarList listCommand, VarList listRepo)
 {
 	const int bufferSize = 128;
 	char buffer[bufferSize];
-	char *gitresult = NULL;
-	size_t gitresultSize = 0;
+	char *gitResult = NULL;
+	size_t gitResultSize = 0;
 
-	for (size_t i = 0; i < commandlist.size; i++) {
-		char *gitfinalResult = NULL;
+	for (size_t i = 0; i < listCommand.size; i++) {
+		char *gitFinalResult = NULL;
 
-		FILE *p = popen( commandlist.strings[i], "r");
+		FILE *p = popen( listCommand.strings[i], "r");
 		if (p == NULL) exit(1);
 
 		while (fgets(buffer, bufferSize, p) != NULL) {
 			size_t fragmentSize = strlen(buffer);
 			char *newResult = realloc(
-				gitresult, gitresultSize + fragmentSize + 1
+				gitResult, gitResultSize + fragmentSize + 1
 			);
-			gitresult = newResult;
-			memcpy(gitresult + gitresultSize, buffer, fragmentSize);
-			gitresultSize += fragmentSize;
+			gitResult = newResult;
+			memcpy(gitResult + gitResultSize, buffer, fragmentSize);
+			gitResultSize += fragmentSize;
 		}	
 
 		int status = pclose(p);
-		if (status == -1) free(gitresult);
+		if (status == -1) free(gitResult);
 
-		gitfinalResult = malloc(gitresultSize + 1);
-		memcpy(gitfinalResult, gitresult, gitresultSize);
-		gitfinalResult[gitresultSize] = '\0';
+		gitFinalResult = malloc(gitResultSize + 1);
+		memcpy(gitFinalResult, gitResult, gitResultSize);
+		gitFinalResult[gitResultSize] = '\0';
 	
-		send_notif(gitfinalResult, list, i);
+		send_notif(gitFinalResult, listRepo, i);
 
-		free(gitfinalResult);
-		gitresultSize = 0;
+		free(gitFinalResult);
+		gitResultSize = 0;
 	}
-	free(gitresult);
+	free(gitResult);
 
 }
 
-// With the gitfinalResult from run_gits(), the string is compared and if the
+// With the gitFinalResult from run_gits(), the string is compared and if the
 // status contains specific strings, a notification is sent describing it.
 // The original path list and index are included to give context to the notif.
-void send_notif(char* gitfinalResult, RepoList list, size_t i)
+void send_notif(char* gitFinalResult, VarList listRepo, size_t i)
 {
-    	printf("%s \n\n\n\n\n", gitfinalResult);	
+    	printf("\n\n%s\n***************\n", gitFinalResult);	
 
 	const char *behind = "Your branch is behind";
 	const char *ahead = "Your branch is ahead";
@@ -195,49 +194,49 @@ void send_notif(char* gitfinalResult, RepoList list, size_t i)
 	const char *divergedNotif = "notify-send 'Branch diverged' '";
 	const char *unstagedNotif = "notify-send 'Branch unstaged' '";
 
-	const char *apostrophe = "'";
+	const char *apos = "'";
 	char *fullNotif;
 
-	char *checkBehind = strstr(gitfinalResult, behind);
-	char *checkAhead = strstr(gitfinalResult, ahead);
-	char *checkDiverged = strstr(gitfinalResult, diverged);
-	char *checkUnstaged = strstr(gitfinalResult, unstaged);
+	char *checkBehind = strstr(gitFinalResult, behind);
+	char *checkAhead = strstr(gitFinalResult, ahead);
+	char *checkDiverged = strstr(gitFinalResult, diverged);
+	char *checkUnstaged = strstr(gitFinalResult, unstaged);
 
 	if (checkBehind != NULL) {
 		size_t resultSize = (
-			strlen(behindNotif) + strlen(list.strings[i]) + strlen(apostrophe) + 1
+			strlen(behindNotif) + strlen(listRepo.strings[i]) + strlen(apos) + 1
 			);
 		fullNotif = (char*)malloc(resultSize);
-		sprintf(fullNotif, "%s%s%s", behindNotif, list.strings[i], apostrophe);
+		sprintf(fullNotif, "%s%s%s", behindNotif, listRepo.strings[i], apos);
 		
 		system(fullNotif);
 	}
 	if (checkAhead != NULL) {
 		size_t resultSize = (
-			strlen(aheadNotif) + strlen(list.strings[i]) + strlen(apostrophe) + 1
+			strlen(aheadNotif) + strlen(listRepo.strings[i]) + strlen(apos) + 1
 			);
 		fullNotif = (char*)malloc(resultSize);
-		sprintf(fullNotif, "%s%s%s", aheadNotif, list.strings[i], apostrophe);
+		sprintf(fullNotif, "%s%s%s", aheadNotif, listRepo.strings[i], apos);
 		
 		system(fullNotif);
 
 	}
 	if (checkDiverged != NULL) {
 		size_t resultSize = (
-			strlen(divergedNotif) + strlen(list.strings[i]) + strlen(apostrophe) + 1
+			strlen(divergedNotif) + strlen(listRepo.strings[i]) + strlen(apos) + 1
 			);
 		fullNotif = (char*)malloc(resultSize);
-		sprintf(fullNotif, "%s%s%s", divergedNotif, list.strings[i], apostrophe);
+		sprintf(fullNotif, "%s%s%s", divergedNotif, listRepo.strings[i], apos);
 		
 		system(fullNotif);
 
 	}
 	if (checkUnstaged != NULL) {
 		size_t resultSize = (
-			strlen(unstagedNotif) + strlen(list.strings[i]) + strlen(apostrophe) + 1
+			strlen(unstagedNotif) + strlen(listRepo.strings[i]) + strlen(apos) + 1
 			);
 		fullNotif = (char*)malloc(resultSize);
-		sprintf(fullNotif, "%s%s%s", unstagedNotif, list.strings[i], apostrophe);
+		sprintf(fullNotif, "%s%s%s", unstagedNotif, listRepo.strings[i], apos);
 		
 		system(fullNotif);
 
@@ -249,17 +248,17 @@ int main(void)
 {
 	char *home;
 	char *user;
-	RepoList list;
-	RepoList commandlist;
-	init_repolist(&list);
-	init_repolist(&commandlist);
+	VarList listRepo;
+	VarList listCommand;
+	init_safearray(&listRepo);
+	init_safearray(&listCommand);
 
 	user = get_user();
 	home = get_home(user);
 
-	list = get_repos(home, list);
-	commandlist = get_gitcommands(list, commandlist);
+	listRepo = get_repos(home, listRepo);
+	listCommand = get_gitcommands(listRepo, listCommand);
 
-	run_gits(commandlist, list);
+	run_gits(listCommand, listRepo);
 }
 

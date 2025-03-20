@@ -24,6 +24,9 @@ $(TARGET): $(OBJS)
 install:
 	cp $(TARGET) $(INSTALL_DIR)
 
+uninstall:
+	rm $(INSTALL_DIR)/$(TARGET)
+
 clean:
 	rm -rf $(BIN_DIR) $(BUILD_DIR)
 

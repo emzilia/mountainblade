@@ -21,6 +21,7 @@ typedef struct User {
 	int intown;
 	int x;
 	int y;
+	char season[10];
 	char name[13]; 
 	char title[20];
 	char location[30];

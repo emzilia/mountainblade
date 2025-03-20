@@ -13,6 +13,7 @@ User p = {
 	.intown = 0,
 	.x = 1,
 	.y = 1,
+	.season = "Summer",
 	.name = "Louie",
 	.title = "Esquire",
 };

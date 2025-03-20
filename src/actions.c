@@ -369,3 +369,28 @@ void action_view_quests()
 
 	wgetch(win);
 }
+
+void action_enter_debug(User* p, Time* gtime)
+{
+	wclear(win);
+	int debugloop = 1;
+	while (debugloop) {
+		wclear(win);
+		wprintw(win,
+			"debug menu\n\n"
+			"1. give 125 denars\n2. advance time 1 month\n\n(b) to go back"
+		);
+		int response = wgetch(win);
+		switch (response) {
+			case '1':
+				p->denars += 125;
+				break;
+			case '2':
+				++gtime->month;
+				break;
+			case 'b':
+				debugloop = 0;
+				break;
+		};
+	};
+}

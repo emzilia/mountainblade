@@ -2,6 +2,7 @@
 #define ACTIONS_H
 
 #include "entities.h"
+#include "gtime.h"
 
 extern City currenttown;
 
@@ -30,4 +31,5 @@ void action_view_inventory();
 void action_view_relations();
 void action_view_quests();
 
+void action_enter_debug(User* p, Time* gtime);
 #endif

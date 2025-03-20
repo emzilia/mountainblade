@@ -84,6 +84,7 @@ int main(void)
 	curs_set(0);
 	keypad(stdscr, TRUE);
 	
+	init_citylist();
 	print_title();
 
 	int running = 1;

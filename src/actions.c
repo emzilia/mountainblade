@@ -284,38 +284,70 @@ void action_setup_camp()
 
 void action_draft_letter()
 {
+	int letterloop = 1;
 	wclear(win);
 	wprintw(win, "You sit down to draft a letter, who will\nyou address it to?\n\n");
 	for (size_t i = 0; i < allnobles.size; ++i) {
 		wprintw(win, "%zu. %s\n", i + 1, allnobles.nobles[i]->name);	
 	}
-	int response = wgetch(win);
-	switch (response) {
-		case '1':
-			logic_draft_letter(allnobles.nobles[0]);
-			break;
-		case '2':
-			logic_draft_letter(allnobles.nobles[1]);
-			break;
-		case '3':
-			logic_draft_letter(allnobles.nobles[2]);
-			break;
-		case '4':
-			logic_draft_letter(allnobles.nobles[3]);
-			break;
-		case '5':
-			logic_draft_letter(allnobles.nobles[4]);
-			break;
-		case '6':
-			logic_draft_letter(allnobles.nobles[5]);
-			break;
-		case '7':
-			logic_draft_letter(allnobles.nobles[6]);
-			break;
-
+	mvwprintw(win, 14, 0, "(b) to go back");
+	while (letterloop) {
+		int response = wgetch(win);
+		switch (response) {
+			case '1':
+				letterloop = 0;
+				logic_draft_letter(allnobles.nobles[0]);
+				print_event("You carefully write out the letter and\n"
+						"stow it in your bag"
+				);
+				break;
+			case '2':
+				letterloop = 0;
+				logic_draft_letter(allnobles.nobles[1]);
+				print_event("You carefully write out the letter and\n"
+						"stow it in your bag"
+				);
+				break;
+			case '3':
+				letterloop = 0;
+				logic_draft_letter(allnobles.nobles[2]);
+				print_event("You carefully write out the letter and\n"
+						"stow it in your bag"
+				);
+				break;
+			case '4':
+				letterloop = 0;
+				logic_draft_letter(allnobles.nobles[3]);
+				print_event("You carefully write out the letter and\n"
+						"stow it in your bag"
+				);
+				break;
+			case '5':
+				letterloop = 0;
+				logic_draft_letter(allnobles.nobles[4]);
+				print_event("You carefully write out the letter and\n"
+						"stow it in your bag"
+				);
+				break;
+			case '6':
+				letterloop = 0;
+				logic_draft_letter(allnobles.nobles[5]);
+				print_event("You carefully write out the letter and\n"
+						"stow it in your bag"
+				);
+				break;
+			case '7':
+				letterloop = 0;
+				logic_draft_letter(allnobles.nobles[6]);
+				print_event("You carefully write out the letter and\n"
+						"stow it in your bag"
+				);
+				break;
+			case 'b':
+				letterloop = 0;
+				break;
+		}
 	}
-	wprintw(win, "\nYou finish drafting the letter and add it to your bag.");
-	wgetch(win);
 }
 
 
@@ -342,6 +374,7 @@ void action_view_party()
 
 void action_view_character()
 {
+	int characterloop = 1;
 	wclear(win);
 	mvwprintw(win, 0, 0, "Character Info:");
 	mvwprintw(win, 2, 0, "Name:\t %s", p.name);
@@ -351,17 +384,28 @@ void action_view_character()
 	mvwprintw(win, 18, 0, "Kills:\t %d", p.kills);
 	mvwprintw(win, 10, 0, "Renown:\t %d", p.renown);
 	mvwprintw(win, 12, 0, "Honor:\t %d", p.honor);
-	wgetch(win);
+	mvwprintw(win, 22, 0, "(b) to go back");
+	while (characterloop) {
+		int response = wgetch(win);
+		switch (response) {
+			case 'b':
+				characterloop = 0;
+				break;
+		}
+	}
 }
 
 void action_view_inventory()
 {
+	int inventoryloop = 1;
+	int row;
 	wclear(win);
 	mvwprintw(win, 0, 0, "Notable trinkets:");
 	if (bag.size == 0) { 
+		row = 4;
 		mvwprintw(win, 2, 0, "Your bag is currently empty.");
 	} else {
-		int row = 2;
+		row = 2;
 		for (size_t i = 0; i < bag.size; ++i) {
 			mvwprintw(
 				win, row, 0, "%zu. %s  \t- %s\n", i + 1, 
@@ -371,11 +415,20 @@ void action_view_inventory()
 		}
 
 	};
-	wgetch(win);
+	mvwprintw(win, (row + 2), 0, "(b) to go back");
+	while (inventoryloop) {
+		int response = wgetch(win);
+		switch (response) {
+			case 'b':
+				inventoryloop = 0;
+				break;
+		}
+	}
 }
 
 void action_view_relations()
 {
+	int relationloop = 1;
 	wclear(win);
 	wprintw(win, "Relevant Nobles:\n\n");
 	for (size_t i = 0; i < allnobles.size; ++i) {
@@ -386,11 +439,20 @@ void action_view_relations()
 		}; 
 		wprintw(win, "\n");
 	};
-	wgetch(win);
+	wprintw(win, "\n\n(b) to go back");		
+	while (relationloop) {
+		int response = wgetch(win);
+		switch (response) {
+			case 'b':
+				relationloop = 0;
+				break;
+		}
+	}
 }
 
 void action_view_quests()
 {
+	int questloop = 1;
 	wclear(win);
 	wprintw(win, "Quests:\n\n");
 	if (allquests.totaldel == 0 && allquests.totalsla == 0) 
@@ -411,8 +473,16 @@ void action_view_quests()
 			);
 		}
 	}
+	wprintw(win, "\n\n(b) to go back");
+	while (questloop) {
+		int response = wgetch(win);
+		switch (response) {
+			case 'b':
+				questloop = 0;
+				break;
+		}
+	}
 
-	wgetch(win);
 }
 
 void action_enter_debug(User* p, Time* gtime)

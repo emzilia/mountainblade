@@ -2,10 +2,12 @@
 
 User p = {
 	.name = "Tony",
-	.army = 40,
+	.army = 12,
+	.armycap = 65,
 	.charisma = 5,
 	.denars = 120,
 	.title = "Esquire",
+	.intown = 0,
 	.x = 1,
 	.y = 1,
 };
@@ -155,3 +157,4 @@ City salls = {
 };
 
 CityList allcities;
+RankList allranks;

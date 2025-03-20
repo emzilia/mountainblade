@@ -16,6 +16,10 @@ char *get_user(void);
 char *get_home(char const *user);
 RepoList get_repos(char const *home, RepoList list);
 void run_gits(RepoList commandlist, RepoList list);
+RepoList get_gitcommands(RepoList list, RepoList commandlist);
+void send_notif(char* gitfinalResult, RepoList list, size_t i);
+void init_repolist(RepoList* list);
+void append_repolist(RepoList* list, const char* repo);
 
 char *get_user(void)
 {

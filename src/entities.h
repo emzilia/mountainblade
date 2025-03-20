@@ -9,18 +9,19 @@ struct Noble;
 struct City;
 
 typedef struct User {
-	unsigned int level;
-	unsigned int prowess;
-	unsigned int army;
-	unsigned int armycap;
-	unsigned int charisma;
-	unsigned int denars;
-	unsigned int renown;
-	unsigned int honor;
-	unsigned int kills;
-	unsigned int intown;
-	unsigned int x;
-	unsigned int y;
+	int level;
+	int xp;
+	int prowess;
+	int army;
+	int armycap;
+	int charisma;
+	int denars;
+	int renown;
+	int honor;
+	int kills;
+	int intown;
+	int x;
+	int y;
 	char season[10];
 	char name[13]; 
 	char title[20];
@@ -28,43 +29,43 @@ typedef struct User {
 } User;
 
 typedef struct Buddy {
-	unsigned int level;
-	unsigned int prowess;
-	unsigned int inparty;
-	unsigned int x;
-	unsigned int y;
+	int level;
+	int prowess;
+	int inparty;
+	int x;
+	int y;
 	char name[13];
 	char location[20];
 } Buddy;
 
 typedef struct {
-	unsigned int size;
+	int size;
 	Buddy buddies[6];
 } BuddyList;
 
 typedef struct{
-	unsigned int maa;
-	unsigned int maaupkeep;
-	unsigned int pspear;
-	unsigned int pspearupkeep;
-	unsigned int pbow;
-	unsigned int pbowupkeep;
-	unsigned int total;
-	unsigned int totalupkeep;
+	int maa;
+	int maaupkeep;
+	int pspear;
+	int pspearupkeep;
+	int pbow;
+	int pbowupkeep;
+	int total;
+	int totalupkeep;
 	char maaname[20];
 	char pspearname[20];
 	char pbowname[20];
 } PartyList;
 
 typedef struct City {
-	unsigned int pop;
-	unsigned int danger;
-	unsigned int wealth;
-	unsigned int iscity;
-	unsigned int x;
-	unsigned int y;
-	unsigned int hasdel;
-	unsigned int hassla;
+	int pop;
+	int danger;
+	int wealth;
+	int iscity;
+	int x;
+	int y;
+	int hasdel;
+	int hassla;
 	char name[10];
 	char location[30];
 	char gm[10];
@@ -73,26 +74,26 @@ typedef struct City {
 } City;
 
 typedef struct {
-	unsigned int size;
+	int size;
 	City* cities[12];
 } CityList;
 
 typedef struct Noble{
-	unsigned int totalfiefs;
-	unsigned int relations;
+	int totalfiefs;
+	int relations;
 	City* fiefs[3];
 	char name[20];
 } Noble;
 
 typedef struct {
-	unsigned int size;
+	int size;
 	Noble* nobles[7];
 } NobleList;
 
 typedef struct {
-	unsigned int questid;
-	unsigned int quantity;
-	unsigned int quality;
+	int questid;
+	int quantity;
+	int quality;
 	Noble* recipient1;
 	City* recipient2;
 	char info[50];
@@ -100,29 +101,30 @@ typedef struct {
 } Item;
 
 typedef struct {
-	unsigned int size;
+	int size;
 	Item items[10];	
 } Inventory;
 
 typedef struct {
-	unsigned int relation_buff;
-	unsigned int renown_gain;
-	unsigned int questid;
+	int relation_buff;
+	int renown_gain;
+	int questid;
 	Noble* giver;
 	Noble* target;
 } Quest1;
 
 typedef struct {
-	unsigned int to_kill;
-	unsigned int relation_buff;
-	unsigned int renown_gain;
-	unsigned int questid;
+	int starting_kills;
+	int to_kill;
+	int relation_buff;
+	int renown_gain;
+	int questid;
 	City* giver;
 } Quest2;
 
 typedef struct {
-	unsigned int totaldel;
-	unsigned int totalsla;
+	int totaldel;
+	int totalsla;
 	Quest1 deliveries[5];
 	Quest2 slayings[5];
 } QuestList;

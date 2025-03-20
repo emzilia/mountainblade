@@ -26,7 +26,6 @@ int check_location(City town)
 	if (p.x == town.x && p.y == town.y) {
 		p.intown = 1;
 		strcpy(p.location, town.location);
-		printw("%s\nPopulation of %zu\n\n", town.location, town.pop);
 		return 1;
 	}
 
@@ -36,12 +35,9 @@ int check_location(City town)
 void set_location()
 {
 	for (size_t i = 0; i < allcities.size; ++i) {
-		check_location(allcities.cities[i]);
+		p.intown = check_location(allcities.cities[i]);
+		if (p.intown) break;
 	}	
-	
-	if (p.intown == 0) {
-		printw("Plains of Castamere\n\n\n");	
-	}
 }
 
 void update_pxy()

@@ -13,12 +13,12 @@ Time gtime = {
 void advance_hour(Time* gtime, int value)
 {
 	gtime->hour += value;
-	if (gtime->hour > 24) advance_day(gtime, 1);
+	if (gtime->hour > 23) advance_day(gtime, 1);
 }
 
 void advance_day(Time* gtime, int value)
 {
-	gtime->hour = 1;
+	gtime->hour = 0;
 	gtime->day += value;
 	if (gtime->day > 7) advance_week(gtime, 1, &p);
 }

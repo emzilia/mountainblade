@@ -197,7 +197,6 @@ void weekly_partyupkeep(User* p)
 int check_location(City* town, User* p)
 {
 	if (p->x == town->x && p->y == town->y) {
-		p->intown = 1;
 		strcpy(p->location, town->location);
 		return 1;
 	}
@@ -243,10 +242,10 @@ void set_user_rank(User* player)
 	char rank4[20] = "Viscount";
 	char rank5[20] = "Duke";
 
-	if (player->renown >= 0 || player->renown < 75) strncpy( player->title, rank1, (sizeof(player->title) - 1));	
-	if (player->renown > 75 || player->renown < 200) strncpy( player->title, rank2, (sizeof(player->title) - 1));	
-	if (player->renown > 200 || player->renown < 400) strncpy( player->title, rank3, (sizeof(player->title) - 1));	
-	if (player->renown > 400 || player->renown < 600) strncpy( player->title, rank4, (sizeof(player->title) - 1));	
+	if (player->renown >= 0 && player->renown < 75) strncpy( player->title, rank1, (sizeof(player->title) - 1));	
+	if (player->renown > 75 && player->renown < 200) strncpy( player->title, rank2, (sizeof(player->title) - 1));	
+	if (player->renown > 200 && player->renown < 400) strncpy( player->title, rank3, (sizeof(player->title) - 1));	
+	if (player->renown > 400 && player->renown < 600) strncpy( player->title, rank4, (sizeof(player->title) - 1));	
 	if (player->renown > 600) strncpy( player->title, rank5, (sizeof(player->title) - 1));	
 
 	if (!strcmp(player->title, rank2)) p.armycap = 75;
@@ -328,25 +327,37 @@ char* generate_quest1(City* city)
 }
 
 // generate bandit slaying quest
-void generate_quest2(City* city)
+void generate_quest2(City* town)
 {
+	int city;
+
+	for (int i = 0; i < allcities.size; ++i) {
+		if (!strcmp(allcities.cities[i]->name, town->name)) {
+			city = i;
+		}
+	};
+
 	// max of 4 bandit slaying quests at a time
 	if (allquests.totalsla > 4) return;
 	
 	// random amount of bandits to kill
 	int questtarget = (rand() % 5) + 3;
 
+	// random id to id the quest
+	int questid = generate_unique_questid();
+
 	// bandit slaying quests are given by city guildmasters
 	Quest2 latestsla = {
 		.starting_kills = p.kills,
 		.to_kill = questtarget,
+		.questid = questid,
 		.renown_gain = 3,
 		.relation_buff = 1,
-		.giver = city,	
+		.giver = allcities.cities[city],	
 	};
 
 	// city given a flag to denote the active quest
-	city->hassla = 1;
+	allcities.cities[city]->hassla = 1;
 
 	// quest is added to quest list
 	allquests.slayings[allquests.totalsla] = latestsla;

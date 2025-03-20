@@ -9,6 +9,7 @@
 #include "entities.h"
 #include "display.h"
 #include "logic.h"
+#include "gtime.h"
 
 int debug = 0;
 
@@ -20,25 +21,25 @@ void input_mainloop()
 		case KEY_UP:
 			if (p.y > 1)
 				p.y--;
-				//update_pxy();
+				advance_hour((rand() % 2) + 1);
 			break;
 		case 'j':
 		case KEY_DOWN:
 			if (p.y < rows - 2)
 				p.y++; 
-				//update_pxy();
+				advance_hour((rand() % 2) + 1);
 			break;
 		case 'h':
 		case KEY_LEFT:
 			if (p.x > 1)
 				p.x--;
-				//update_pxy();
+				advance_hour((rand() % 2) + 1);
 			break;
 		case 'l':
 		case KEY_RIGHT:
 			if (p.x < columns - 2)
 				p.x++;
-				//update_pxy();
+				advance_hour((rand() % 2) + 1);
 			break;
 	}
 	
@@ -101,6 +102,7 @@ int main(void)
 		print_map(map, rows, columns);
 		set_location();
 		print_userinfo();
+		print_time();
 		print_actions();
 		input_mainloop();
 		wrefresh(win);

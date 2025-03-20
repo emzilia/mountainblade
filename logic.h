@@ -6,6 +6,7 @@
 void init_citylist();
 void init_buddylist();
 void init_partylist();
+void update_partyupkeep();
 int check_location(City town);
 void set_location();
 void update_pxy();

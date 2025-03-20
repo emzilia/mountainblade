@@ -63,6 +63,8 @@ typedef struct City {
 	int iscity;
 	int x;
 	int y;
+	int hasdel;
+	int hassla;
 	char name[10];
 	char location[30];
 	char gm[10];
@@ -77,6 +79,7 @@ typedef struct {
 
 typedef struct Noble{
 	size_t totalfiefs;
+	int relations;
 	City* fiefs[3];
 	char name[20];
 } Noble;
@@ -87,6 +90,7 @@ typedef struct {
 } NobleList;
 
 typedef struct {
+	int questid;
 	size_t quantity;
 	size_t quality;
 	Noble* recipient1;
@@ -103,6 +107,7 @@ typedef struct {
 typedef struct {
 	int relation_buff;
 	int renown_gain;
+	int questid;
 	Noble* giver;
 	Noble* target;
 } Quest1;
@@ -111,6 +116,7 @@ typedef struct {
 	int to_kill;
 	int relation_buff;
 	int renown_gain;
+	int questid;
 	City* giver;
 } Quest2;
 

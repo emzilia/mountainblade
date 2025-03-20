@@ -21,7 +21,7 @@ void action_enter_city(City town)
 		mvwprintw(win, 0, 0, "%s", p.location);
 		mvwprintw(win, 1, 0, "%s", town.wealthnote);
 		mvwprintw(win, 4, 0, "Who would you like to see?");
-		mvwprintw(win, 6, 0, "n. %s", town.noble);
+		mvwprintw(win, 6, 0, "n. %s", town.owner->name);
 		mvwprintw(win, 8, 0, "1. Guild Master");
 		mvwprintw(win, 9, 0, "2. Tailor");
 		mvwprintw(win, 10, 0, "3. Blacksmith");
@@ -115,6 +115,7 @@ void action_hire_mercs(City town)
 	wgetch(win);
 	if (town.iscity) action_hire_mercs_maa();
 	else action_hire_mercs_peasants();
+	wgetch(win);
 }
 
 void action_hire_mercs_peasants()
@@ -252,6 +253,6 @@ void action_view_relations()
 void action_view_quests()
 {
 	wclear(win);
-	wprintw(win, "Quests:\n\nDeliver letter to %s\n- For %s", zander.noble, adriin.noble);
+	wprintw(win, "Quests:\n\nDeliver letter to %s\n- For %s", zander.owner->name, adriin.owner->name);
 	wgetch(win);
 }

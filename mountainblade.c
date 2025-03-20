@@ -93,7 +93,6 @@ int main(void)
 		input_mainloop();
 		wrefresh(win);
 		werase(win);
-		wrefresh(win);
 	};
 
 	endwin();

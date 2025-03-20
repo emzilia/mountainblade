@@ -13,8 +13,8 @@ void init_window()
 {
 	initscr();
 	refresh();
-	borderwin = newwin(35, 65, 1, 1);
-	win = newwin(30, 60, 2, 2);
+	borderwin = newwin(42, 55, 1, 1);
+	win = newwin(40, 50, 2, 2);
 	noecho();	
 	curs_set(0);
 	keypad(win, TRUE);
@@ -51,7 +51,6 @@ void print_title()
 
 	if (getch() == 'p') debug = 1;
 	werase(win);
-	wrefresh(win);
 }
 
 void print_map(char arr[][28], int rows, int columns) {
@@ -81,7 +80,7 @@ void print_actions()
 {
     	wprintw(win, "  Actions:\n");
 	if (p.intown) {
-	wprintw(win, "  1. Enter city\n  2. Contact nobleman\n  3. Hire local mercenaries\n\n"); 
+	wprintw(win, "  1. Enter city\n  2. Contact local noble\n  3. Hire local mercenaries\n\n"); 
 	} else if (!p.intown) {
 	wprintw(win, "  1. Setup fortified camp\n  2. Draft correspondence\n\n\n");
 	}

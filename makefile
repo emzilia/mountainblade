@@ -15,11 +15,11 @@ all: $(TARGET)
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(BUILD_DIR)
-	$(CC) $(CC_FLAGS) -c $< -o $@
+	$(CC) -c $< -o $@ $(CC_FLAGS)
 
 $(TARGET): $(OBJS)
 	@mkdir -p $(BIN_DIR)
-	$(CC) $(CC_FLAGS) $^ -o $@
+	$(CC) $^ -o $@ $(CC_FLAGS)
 
 install:
 	cp $(TARGET) $(INSTALL_DIR)

@@ -100,7 +100,7 @@ void print_event(char* text)
 	wgetch(win);
 }
 
-void print_event_args(char* text, void* args)
+void print_event_args(char* text, char* args)
 {
 	wclear(win);
 	wprintw(win, text, args);

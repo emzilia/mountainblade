@@ -10,7 +10,7 @@ void print_userinfo();
 void print_time();
 void print_actions();
 void print_event(char* text);
-void print_event_args(char* text, void* args);
+void print_event_args(char* text, char* args);
 
 extern WINDOW* win;
 extern int debug;

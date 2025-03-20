@@ -13,8 +13,7 @@ void action_enter_city(City town)
 		"You approach the gates to the %s\nThe guard ushers"
 		" your party through without\ncomplaint.",
 		p.location);
-	wrefresh(win);
-	getch();
+	wgetch(win);
 
 	int cityloop = 1;
 	while (cityloop) {
@@ -26,8 +25,7 @@ void action_enter_city(City town)
 			"\n(b) to go back",
 			p.location, town.wealthnote
 		);	
-		wrefresh(win);
-		int response = getch();
+		int response = wgetch(win);
 		switch (response) {
 			case '1':
 				action_enter_city_guildmaster();
@@ -56,8 +54,7 @@ void action_enter_city_guildmaster()
 		"how can we help you today?\n",
 		p.denars, p.name
 	);
-	wrefresh(win);
-	getch();
+	wgetch(win);
 }
 
 void action_enter_city_tailor()
@@ -68,10 +65,8 @@ void action_enter_city_tailor()
 		"how can we help you today?",
 		p.name
 	);
-	wrefresh(win);
-	getch();
+	wgetch(win);
 }
-
 void action_enter_city_blacksmith()
 {
 	wclear(win);
@@ -80,8 +75,7 @@ void action_enter_city_blacksmith()
 	"how can we help you today?",
 	p.name
 	);
-	wrefresh(win);
-	getch();
+	wgetch(win);
 }
 
 void action_enter_city_stablekeeper()
@@ -92,48 +86,49 @@ void action_enter_city_stablekeeper()
 	"how can we help you today?",
 	p.name
 	);
-	wrefresh(win);
-	getch();
+	wgetch(win);
 }
 
 void action_contact_noble()
 {
 	wclear(win);
 	wprintw(win, "You send your aid to the estate of the local\nnoble, hoping to arrange a meeting.");
-	wrefresh(win);
-	getch();
+	wgetch(win);
 }
 
 void action_hire_mercs()
 {
 	wclear(win);
 	wprintw(win, "You send messengers to the local taverns,\nhoping to find some troops to hire.");
-	wrefresh(win);
-	getch();
+	wgetch(win);
 }
 
 void action_setup_camp()
 {
 	wclear(win);
 	wprintw(win, "You send messengers to the local taverns,\nhoping to find some troops to hire.");
-	wrefresh(win);
-	getch();
+	wgetch(win);
 }
 
 void action_draft_letter()
 {
 	wclear(win);
 	wprintw(win, "You send messengers to the local taverns,\nhoping to find some troops to hire.");
-	wrefresh(win);
-	getch();
+	wgetch(win);
+}
+
+void action_view_party()
+{
+	wclear(win);
+	wprintw(win, "Your party:\n\nCompanions:\nGren of Halix\n\nTroops:\nx4 Men-at-arms\nx2 Peasant spearmen\nx4 Peasant bowmen\n\nTotal: 13");
+	wgetch(win);
 }
 
 void action_view_inventory()
 {
 	wclear(win);
 	wprintw(win, "Notable trinkets:\n\nYour father's sword\nGold engraved locket");
-	wrefresh(win);
-	getch();
+	wgetch(win);
 }
 
 void action_view_relations()
@@ -143,14 +138,12 @@ void action_view_relations()
 	for (size_t i = 0; i < allcities.size; ++i) {
 		wprintw(win, "%s\n%s\n\n", allcities.cities[i].noble, allcities.cities[i].location);	
 	}; 
-	wrefresh(win);
-	getch();
+	wgetch(win);
 }
 
 void action_view_quests()
 {
 	wclear(win);
 	wprintw(win, "Quests:\n\nDeliver letter to %s\n- For %s", zander.noble, adriin.noble);
-	wrefresh(win);
-	getch();
+	wgetch(win);
 }

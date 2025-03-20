@@ -86,8 +86,10 @@ void input_mainloop()
 int main(void)
 {
 	init_window();
-	
 	init_citylist();
+	init_buddylist();
+	init_partylist();
+
 	print_title();
 
 	int running = 1;

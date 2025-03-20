@@ -1,11 +1,15 @@
 #ifndef DISPLAY_H
 #define DISPLAY_H
 
+#include <ncurses.h>
+
+void init_window();
 void print_title();
 void print_map(char arr[][28], int rows, int columns);
 void print_userinfo();
 void print_actions();
 
+extern WINDOW* win;
 extern int debug;
 extern char map[8][28];
 extern int rows;

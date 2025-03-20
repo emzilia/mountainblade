@@ -15,6 +15,7 @@ typedef struct {
 char *get_user(void);
 char *get_home(char const *user);
 RepoList get_repos(char const *home, RepoList list);
+void run_gits(RepoList commandlist, RepoList list);
 
 char *get_user(void)
 {
@@ -105,20 +106,125 @@ RepoList get_repos(char const *home, RepoList list)
 	}
 }
 
-void run_gits(RepoList list)
+RepoList get_gitcommands(RepoList list, RepoList commandlist)
 {
 	const char* git1 = "git -C ";
 	const char* git2 = " status";
+	char* command_result;
 
 	for (size_t i = 0; i < list.size; i++) {
 		size_t resultSize = (
 			strlen(git1) + strlen(list.strings[i]) + strlen(git2) + 1
 			);
-		char* result = (char*)malloc(resultSize);
-		sprintf(result, "%s%s%s", git1, list.strings[i], git2);
-		printf("%s", result);
+		command_result = (char*)malloc(resultSize);
+		sprintf(command_result, "%s%s%s", git1, list.strings[i], git2);
+		append_repolist(&commandlist, command_result);
+		printf("%s", command_result);
 	}
+	return commandlist;
+
+}
+
+void send_notif(char* gitfinalResult, RepoList list, size_t i)
+{
+    	printf("%s \n\n\n", gitfinalResult);	
+
+	const char *behind = "Your branch is behind";
+	const char *ahead = "Your branch is ahead";
+	const char *diverged = "have diverged";
+	const char *unstaged = "Changes not staged";
+
+	const char *behindNotif = "notify-send 'Branch behind' '";
+	const char *aheadNotif = "notify-send 'Branch ahead' '";
+	const char *divergedNotif = "notify-send 'Branch diverged' '";
+	const char *unstagedNotif = "notify-send 'Branch unstaged' '";
+
+	const char *apostrophe = "'";
+	char *fullNotif;
+
+	char *checkBehind = strstr(gitfinalResult, behind);
+	char *checkAhead = strstr(gitfinalResult, ahead);
+	char *checkDiverged = strstr(gitfinalResult, diverged);
+	char *checkUnstaged = strstr(gitfinalResult, unstaged);
+
+	if (checkBehind != NULL) {
+		size_t resultSize = (
+			strlen(behindNotif) + strlen(list.strings[i]) + strlen(apostrophe) + 1
+			);
+		fullNotif = (char*)malloc(resultSize);
+		sprintf(fullNotif, "%s%s%s", behindNotif, list.strings[i], apostrophe);
+		
+		system(fullNotif);
+	}
+	if (checkAhead != NULL) {
+		size_t resultSize = (
+			strlen(aheadNotif) + strlen(list.strings[i]) + strlen(apostrophe) + 1
+			);
+		fullNotif = (char*)malloc(resultSize);
+		sprintf(fullNotif, "%s%s%s", aheadNotif, list.strings[i], apostrophe);
+		
+		system(fullNotif);
+
+	}
+	if (checkDiverged != NULL) {
+		size_t resultSize = (
+			strlen(divergedNotif) + strlen(list.strings[i]) + strlen(apostrophe) + 1
+			);
+		fullNotif = (char*)malloc(resultSize);
+		sprintf(fullNotif, "%s%s%s", divergedNotif, list.strings[i], apostrophe);
+		
+		system(fullNotif);
+
+	}
+	if (checkUnstaged != NULL) {
+		size_t resultSize = (
+			strlen(unstagedNotif) + strlen(list.strings[i]) + strlen(apostrophe) + 1
+			);
+		fullNotif = (char*)malloc(resultSize);
+		sprintf(fullNotif, "%s%s%s", unstagedNotif, list.strings[i], apostrophe);
+		
+		system(fullNotif);
+
+	}
+}
+
+void run_gits(RepoList commandlist, RepoList list)
+{
+	const int bufferSize = 128;
+	char buffer[bufferSize];
+	char *gitresult = NULL;
+	size_t gitresultSize = 0;
+
+	for (size_t i = 0; i < commandlist.size; i++) {
+		char *gitfinalResult = NULL;
+
+		FILE *p = popen( commandlist.strings[i], "r");
+		if (p == NULL) exit(1);
+
+		while (fgets(buffer, bufferSize, p) != NULL) {
+			size_t fragmentSize = strlen(buffer);
+			char *newResult = realloc(
+				gitresult, gitresultSize + fragmentSize + 1
+			);
+			gitresult = newResult;
+			memcpy(gitresult + gitresultSize, buffer, fragmentSize);
+			gitresultSize += fragmentSize;
+		}	
+
+		int status = pclose(p);
+		if (status == -1) free(gitresult);
+
+		gitfinalResult = malloc(gitresultSize + 1);
+		memcpy(gitfinalResult, gitresult, gitresultSize);
+		gitfinalResult[gitresultSize] = '\0';
 	
+		send_notif(gitfinalResult, list, i);
+
+		free(gitfinalResult);
+		gitresultSize = 0;
+	}
+	free(gitresult);
+
 }
 
 int main(void)
@@ -126,12 +232,16 @@ int main(void)
 	char *home;
 	char *user;
 	RepoList list;
+	RepoList commandlist;
 	init_repolist(&list);
+	init_repolist(&commandlist);
 
 	user = get_user();
 	home = get_home(user);
 
 	list = get_repos(home, list);
-	run_gits(list);
+	commandlist = get_gitcommands(list, commandlist);
+
+	run_gits(commandlist, list);
 }
 

@@ -57,18 +57,21 @@ void action_enter_city(City town)
 void action_enter_city_guildmaster(City* town)
 {
 	wclear(win);
-    int guildloop =1;
+    int guildloop = 1;
 
     while (guildloop) {
 	    wprintw(win,
 		    "Guild Master:\n\nIt's good to see you %s, "
-		    "how can we help you\non this fine day?\n\nThere is work to do, if you're interested...\n\n1. Accept quest\n2. Decline quest",
+		    "how can we help you\non this fine day?\n\nThere is work to do, if you're interested...\n\n1. Accept quest\n2. Decline quest\n\n",
 		    p.name
 	    );
 	    int response = wgetch(win);
         switch (response) {
             case '1':
                 generate_quest2(town);
+                wprintw(win, "Great! I'll send the details over to your aid."); 
+                wgetch(win);
+                guildloop = 0;
                 break;
             case '2':
                 guildloop = 0;

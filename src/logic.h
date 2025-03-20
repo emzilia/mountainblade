@@ -23,4 +23,7 @@ void set_user_rank(User* list);
 
 void add_to_inventory(Inventory* inventory, Item* thing);
 
+void generate_quest1(City* city);
+void generate_quest2(City* city);
+
 #endif

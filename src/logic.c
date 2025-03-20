@@ -233,6 +233,22 @@ void generate_quest1(City* city)
 	};
 
 	allquests.deliveries[allquests.totaldel] = latestdel;
-
+	++allquests.totaldel;
 }
 
+void generate_quest2(City* city)
+{
+	if (allquests.totalsla > 4) return;
+	
+	int questtarget = (rand() % 5) + 3;
+
+	Quest2 latestsla = {
+		.giver = city->owner,	
+		.to_kill = questtarget,
+		.renown_gain = 3,
+		.relation_buff = 1,
+	};
+
+	allquests.slayings[allquests.totalsla] = latestsla;
+	++allquests.totalsla;
+}

@@ -6,7 +6,7 @@
 #include "display.h"
 #include "logic.h"
 
-void action_enter_city(City town)
+void action_enter_city(City* town)
 {
 	werase(win);
 	mvwprintw(win, 0, 0,
@@ -19,7 +19,7 @@ void action_enter_city(City town)
 	while (cityloop) {
 		werase(win);
 		mvwprintw(win, 0, 0, "%s", p.location);
-		mvwprintw(win, 1, 0, "%s", town.wealthnote);
+		mvwprintw(win, 1, 0, "%s", town->wealthnote);
 		mvwprintw(win, 4, 0, "Who would you like to see?");
 		mvwprintw(win, 6, 0, "1. Guild Master");
 		mvwprintw(win, 7, 0, "2. Tailor");
@@ -29,7 +29,7 @@ void action_enter_city(City town)
 		int response = wgetch(win);
 		switch (response) {
 			case '1':
-				action_enter_city_guildmaster(&town);
+				action_enter_city_guildmaster(town);
 				break;
 			case '2':
 				action_enter_city_tailor();
@@ -57,27 +57,31 @@ void action_enter_city(City town)
 void action_enter_city_guildmaster(City* town)
 {
 	wclear(win);
-    int guildloop = 1;
-
-    while (guildloop) {
-	    wprintw(win,
-		    "Guild Master:\n\nIt's good to see you %s, "
-		    "how can we help you\non this fine day?\n\nThere is work to do, if you're interested...\n\n1. Accept quest\n2. Decline quest\n\n",
-		    p.name
-	    );
-	    int response = wgetch(win);
-        switch (response) {
-            case '1':
-                generate_quest2(town);
-                wprintw(win, "Great! I'll send the details over to your aid."); 
-                wgetch(win);
-                guildloop = 0;
-                break;
-            case '2':
-                guildloop = 0;
-                break;
-        };
-    };
+	int guildloop = 1;
+	while (guildloop) {
+		wprintw(win,
+			"Guild Master:\n\nIt's good to see you %s, "
+			"how can we help you\non this fine day?\n\nThere is work to do"
+			", if you're interested...\n\n"
+			"1. Accept some work\n2. Inquire about business\n\n(b) to go back",
+			p.name
+		);
+		int response = wgetch(win);
+		switch (response) {
+			case '1':
+				generate_quest2(town);
+				wprintw(win, "\n\nGreat! I'll send the details over to your aid."); 
+				wgetch(win);
+				guildloop = 0;
+				break;
+			case '2':
+				guildloop = 0;
+				break;
+			case 'b':
+				guildloop = 0;
+				break;
+		};
+	};
 }
 
 void action_enter_city_tailor()
@@ -85,7 +89,7 @@ void action_enter_city_tailor()
 	wclear(win);
 	wprintw(win,
 		"Tailor:\n\nGreetings %s, "
-		"you have an impeccable style, but\nif I may make some suggestions...",
+		"you have an impeccable style,\nbut if I may make some suggestions...",
 		p.name
 	);
 	wgetch(win);
@@ -112,19 +116,37 @@ void action_enter_city_stablekeeper()
 	wgetch(win);
 }
 
-void action_contact_noble()
+void action_contact_noble(City* town)
 {
-	wclear(win);
-	wprintw(win, "You send your aid to the estate of the local\nnoble, hoping to arrange a meeting.");
-	wgetch(win);
+	int contactloop = 1;
+
+	while (contactloop) {
+		wclear(win);
+		wprintw(win, "You approach the estate of the local\nnoble, %s\n\n", town->owner->name);
+		wprintw(win, "1. Request an audience\n2. Deliver a letter\n\n(b) to go back");
+		int response = wgetch(win);
+		switch (response) {
+			case 1:
+				break;
+			case 2:
+				break;
+			case 'b':
+				contactloop = 0;
+				break;
+		}
+	}
 }
 
-void action_hire_mercs(City town)
+void action_contact_noble_audience(City* town)
+{
+}
+
+void action_hire_mercs(City* town)
 {
 	wclear(win);
 	wprintw(win, "You send messengers to the local taverns,\nhoping to find some troops to hire.");
 	wgetch(win);
-	if (town.iscity) action_hire_mercs_maa();
+	if (town->iscity) action_hire_mercs_maa();
 	else action_hire_mercs_peasants();
 	wgetch(win);
 }
@@ -215,16 +237,46 @@ void action_hire_mercs_maa_yes(int maa, int cost)
 void action_setup_camp()
 {
 	wclear(win);
-	wprintw(win, "You send messengers to the local taverns,\nhoping to find some troops to hire.");
+	wprintw(win, "You order your troops to construct some\n hasty fortifications..");
 	wgetch(win);
 }
 
 void action_draft_letter()
 {
 	wclear(win);
-	wprintw(win, "You send messengers to the local taverns,\nhoping to find some troops to hire.");
+	wprintw(win, "You sit down to draft a letter, who will\nyou address it to?\n\n");
+	for (size_t i = 0; i < allnobles.size; ++i) {
+		wprintw(win, "%zu. %s\n", i + 1, allnobles.nobles[i]->name);	
+	}
+	int response = wgetch(win);
+	switch (response) {
+		case '1':
+			logic_draft_letter(allnobles.nobles[0]);
+			break;
+		case '2':
+			logic_draft_letter(allnobles.nobles[1]);
+			break;
+		case '3':
+			logic_draft_letter(allnobles.nobles[2]);
+			break;
+		case '4':
+			logic_draft_letter(allnobles.nobles[3]);
+			break;
+		case '5':
+			logic_draft_letter(allnobles.nobles[4]);
+			break;
+		case '6':
+			logic_draft_letter(allnobles.nobles[5]);
+			break;
+		case '7':
+			logic_draft_letter(allnobles.nobles[6]);
+			break;
+
+	}
+	wprintw(win, "\nYou finish drafting the letter and add it to your bag.");
 	wgetch(win);
 }
+
 
 void action_view_party()
 {
@@ -253,10 +305,11 @@ void action_view_character()
 	mvwprintw(win, 0, 0, "Character Info:");
 	mvwprintw(win, 2, 0, "Name:\t %s", p.name);
 	mvwprintw(win, 4, 0, "Rank:\t %s", p.title);
-	mvwprintw(win, 6, 0, "Renown:\t %d", p.renown);
-	mvwprintw(win, 8, 0, "Honor:\t %d", p.honor);
-	mvwprintw(win, 10, 0, "Level:\t %zu", p.level);
-	mvwprintw(win, 12, 0, "Prowess: %zu", p.prowess);
+	mvwprintw(win, 6, 0, "Level:\t %zu", p.level);
+	mvwprintw(win, 8, 0, "Prowess: %zu", p.prowess);
+	mvwprintw(win, 10, 0, "Kills:\t %d", p.kills);
+	mvwprintw(win, 12, 0, "Renown:\t %d", p.renown);
+	mvwprintw(win, 14, 0, "Honor:\t %d", p.honor);
 	wgetch(win);
 }
 
@@ -269,8 +322,11 @@ void action_view_inventory()
 	} else {
 		int row = 2;
 		for (size_t i = 0; i < bag.size; ++i) {
-			mvwprintw(win, row, 0, "%zu. %s\t%s", i + 1, bag.items[i].name, bag.items[i].info);
-			row += 2;
+			mvwprintw(
+				win, row, 0, "%zu. %s  \t- %s\n\t> Return to %s", i + 1, 
+				bag.items[i].name, bag.items[i].info, bag.items[i].recipient->name
+			);
+			row += 3;
 		}
 
 	};

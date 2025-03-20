@@ -125,7 +125,7 @@ char print_event_small(char* text, char* args)
 	return response;
 }
 
-char print_event_args(char* text, char* args)
+char print_event_args1(char* text, char* args)
 {
 	werase(win);
 	wprintw(win, text, args);
@@ -138,6 +138,31 @@ char print_event_args2(char* text, char* textargs1, char* textargs2)
 	char buffer[256];
 	werase(win);
 	sprintf(buffer, text, textargs1, textargs2);
+	wprintw(win, "%s", buffer);
+	int response = wgetch(win);
+	return response;
+}
+
+char print_event_args3(
+	char* text, char* textargs1, 
+	char* textargs2, char*textargs3)
+{
+	char buffer[512];
+	werase(win);
+	snprintf(buffer, 512, text, textargs1, textargs2, textargs3);
+	wprintw(win, "%s", buffer);
+	int response = wgetch(win);
+	return response;
+}
+
+char print_event_args4(
+	char* text, char* textargs1, 
+	char* textargs2, char* textargs3,
+	char* textargs4)
+{
+	char buffer[512];
+	werase(win);
+	snprintf(buffer, 512, text, textargs1, textargs2, textargs3, textargs4);
 	wprintw(win, "%s", buffer);
 	int response = wgetch(win);
 	return response;

@@ -14,7 +14,7 @@ void print_actions();
 typedef struct {
 	int response;
 	char* text;
-	char* arg;
+	char* arg1;
 } Event1;
 
 typedef struct {
@@ -24,10 +24,34 @@ typedef struct {
 	char* arg2;
 } Event2;
 
-void print_event(char* text, char* flavor);
+typedef struct {
+	int response;
+	char* text;
+	char* arg1;
+	char* arg2;
+	char* arg3;
+} Event3;
+
+typedef struct {
+	int response;
+	char* text;
+	char* arg1;
+	char* arg2;
+	char* arg3;
+	char* arg4;
+} Event4;
+
 char print_event_small(char* text, char* args);
-char print_event_args(char* text, char* args);
+char print_event_args1(char* text, char* args);
 char print_event_args2(char* text, char* textargs1, char* textargs2);
+char print_event_args3(
+	char* text, char* textargs1, 
+	char* textargs2, char*textargs3);
+char print_event_args4(
+	char* text, char* textargs1, char* textargs2,
+	char* textargs3, char* textargs4);
+
+void print_event(char* text, char* flavor);
 void print_eventnew(char* text, char* textargs, char* flavor);
 void print_event_long(
         char* title, char* titleargs, 

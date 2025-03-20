@@ -10,6 +10,7 @@ User p = {
 	.denars = 300,
 	.renown = 1,
 	.honor = 0,
+	.kills = 0,
 	.title = "Esquire",
 	.intown = 0,
 	.x = 1,
@@ -31,6 +32,7 @@ Item sword1 = {
 	.quantity = 1,
 	.quality = 1,
 };
+
 
 Buddy gren = {
 	.name = "Gren of Halix",

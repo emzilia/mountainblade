@@ -32,9 +32,24 @@ void init_buddylist()
 void init_partylist()
 {
 	party.maa = 4;
+	party.maaupkeep = 10;
+	strcpy(party.maaname, "Men-at-arms");
+
 	party.pspear = 4;
+	party.pspearupkeep = 2;
+	strcpy(party.pspearname, "Peasant spearmen");
+
 	party.pbow = 4;
+	party.pbowupkeep = 2;
+	strcpy(party.pbowname, "Peasant bowmen");
+
 	party.total = party.maa + party.pspear + party.pbow + buddies.size;
+}
+
+void update_partyupkeep()
+{
+	party.total = party.maa + party.pspear + party.pbow + buddies.size;
+	party.totalupkeep = (party.maa * party.maaupkeep) + (party.pspear * party.pspearupkeep) + (party.pbow * party.pbowupkeep);
 }
 
 int check_location(City town)

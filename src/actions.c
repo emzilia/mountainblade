@@ -30,6 +30,7 @@ void action_enter_city(City town)
 		switch (response) {
 			case '1':
 				action_enter_city_guildmaster();
+				generate_quest1(&town);
 				break;
 			case '2':
 				action_enter_city_tailor();
@@ -39,6 +40,7 @@ void action_enter_city(City town)
 				break;
 			case '4':
 				action_enter_city_stablekeeper();
+				generate_quest2(&town);
 				break;
 			case 'b':
 				cityloop = 0;
@@ -111,6 +113,7 @@ void action_hire_mercs(City town)
 	wgetch(win);
 	if (town.iscity) action_hire_mercs_maa();
 	else action_hire_mercs_peasants();
+	wgetch(win);
 }
 
 void action_hire_mercs_peasants()
@@ -280,6 +283,23 @@ void action_view_relations()
 void action_view_quests()
 {
 	wclear(win);
-	wprintw(win, "Quests:\n\nDeliver letter to %s\n- For %s", zander.owner->name, adriin.owner->name);
+	wprintw(win, "Quests:\n\n");
+	if (allquests.totaldel > 0) {
+		for (size_t i = 0; i < allquests.totaldel; ++i) {
+			wprintw(
+				win, "Deliver a letter to %s\n\t- From %s\n\n", 
+				allquests.deliveries[i].target->name, allquests.deliveries[i].giver->name
+			);
+		}
+	}
+	if (allquests.totalsla > 0) {
+		for (size_t i = 0; i < allquests.totalsla; ++i) {
+			wprintw(
+				win, "Slay %i bandits on the road\n\t- For %s\n\n", 
+				allquests.slayings[i].to_kill, allquests.slayings[i].giver->name
+			);
+		}
+	}
+
 	wgetch(win);
 }

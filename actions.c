@@ -110,6 +110,22 @@ void action_hire_mercs()
 	getch();
 }
 
+void action_setup_camp()
+{
+	clear();
+	printw("You send messengers to the local taverns,\nhoping to find some troops to hire.");
+	refresh();
+	getch();
+}
+
+void action_draft_letter()
+{
+	clear();
+	printw("You send messengers to the local taverns,\nhoping to find some troops to hire.");
+	refresh();
+	getch();
+}
+
 void action_view_inventory()
 {
 	clear();

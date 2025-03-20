@@ -53,9 +53,9 @@ void print_title()
 }
 
 void print_map(char arr[][28], int rows, int columns) {
-	mvwprintw(win, 0, 8, "Dutchy of Tania\n");
+	mvwprintw(win, 0, 17, "Dutchy of Tania\n");
 	for (int r = 0; r < rows; r++) {
-		wprintw(win, "  ");
+		wprintw(win, "           ");
 		for (int c = 0; c < columns; c++) {
 			if (r == p.y && c == p.x)
 				waddch(win, '@');
@@ -68,39 +68,39 @@ void print_map(char arr[][28], int rows, int columns) {
 
 void print_userinfo()
 {
-    	if (p.intown) mvwprintw(win, 9, 8, "%s\n\n", p.location);
-    	if (!p.intown) mvwprintw(win, 9, 8, "Plains of Castamere\n\n");
+    	if (p.intown) mvwprintw(win, 9, 17, "%s\n\n", p.location);
+    	if (!p.intown) mvwprintw(win, 9, 17, "Plains of Castamere\n\n");
 
-	mvwprintw(win, 11, 2, "Rank: %s", p.title);
-	mvwprintw(win, 11, 20, "Denars: %i", p.denars);
-	mvwprintw(win, 12, 2, "Party: %zu/%zu", party.total, p.armycap);
-	mvwprintw(win, 12, 20, "Upkeep: %zu", party.totalupkeep);
+	mvwprintw(win, 11, 9, "Rank: %s", p.title);
+	mvwprintw(win, 11, 29, "Denars: %i", p.denars);
+	mvwprintw(win, 12, 8, "Party: %zu/%zu", party.total, p.armycap);
+	mvwprintw(win, 12, 29, "Upkeep: %zu", party.totalupkeep);
 }
 
 void print_time()
 {
 
-	mvwprintw(win, 14, 2, "Hour:  %zu", gtime.hour);
-	mvwprintw(win, 14, 22, "Week: %zu", gtime.week);
-	mvwprintw(win, 15, 2, "Month: %zu", gtime.month);
-	mvwprintw(win, 15, 23, "Day: %zu", gtime.day);
+	mvwprintw(win, 14, 9, "Hour: %zu", gtime.hour);
+	mvwprintw(win, 14, 29, " Week:  %zu", gtime.week);
+	mvwprintw(win, 15, 9, "Day:  %zu", gtime.day);
+	mvwprintw(win, 15, 30, "Month: %zu", gtime.month);
 }
 
 void print_actions()
 {
-    	mvwprintw(win, 17, 2, "Actions:\n");
+    	mvwprintw(win, 17, 9, "Actions:\n");
 	if (p.intown) {
-		mvwprintw(win, 18, 2, "1. Enter city"); 
-		mvwprintw(win, 19, 2, "2. Contact local noble");
-    		mvwprintw(win, 20, 2, "3. Hire local mercenaries");
+		mvwprintw(win, 18, 9, "1. Enter city"); 
+		mvwprintw(win, 19, 9, "2. Contact constable");
+    		mvwprintw(win, 20, 9, "3. Hire local mercenaries");
 	} else if (!p.intown) {
-		mvwprintw(win, 18, 2, "1. Setup fortified camp");
-    		mvwprintw(win, 19, 2, "2. Draft correspondence");
+		mvwprintw(win, 18, 9, "1. Setup fortified camp");
+    		mvwprintw(win, 19, 9, "2. Draft correspondence");
 	}
-	mvwprintw(win, 22, 2, "p. View Party\n"); 
-	mvwprintw(win, 23, 2, "i. View Inventory\n"); 
-	mvwprintw(win, 24, 2, "r. View Relations\n"); 
-	mvwprintw(win, 25, 2, "q. View Current Quests\n");
+	mvwprintw(win, 22, 9, "p. View Party\n"); 
+	mvwprintw(win, 23, 9, "i. View Inventory\n"); 
+	mvwprintw(win, 24, 9, "r. View Relations\n"); 
+	mvwprintw(win, 25, 9, "q. View Current Quests\n");
 }
 
 void print_event(char* text)

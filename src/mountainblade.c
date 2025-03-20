@@ -67,6 +67,9 @@ void input_mainloop()
 	}
 	
 	switch (response) {
+		case 'c':
+			action_view_character();
+			break;
 		case 'p':
 			action_view_party();
 			break;

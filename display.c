@@ -27,11 +27,11 @@ void init_window()
 char map[8][28] = {
 	"o==========================o",
 	"|.....c./^^^^^^^^^^^^^^^t..|",
-	"|.t..../........c^^^^^^^...|",
-	"|..___/....t.............c.|",
-	"|./...c........c...........|",
+	"|....../........c^^^^^^^...|",
+	"|.t___/....C.............c.|",
+	"|./............c...........|",
 	"|/.....**t*******..t.......|",
-	"|..c..************......t..|",
+	"|..t..************......t..|",
 	"o==========================o"
 };
 	
@@ -45,11 +45,11 @@ void print_title()
 		"    Hello and welcome to Tania!\n\n"
 		"    The Duke has been gone for three years now,\n"
 		"fighting heathens abroad. Unrest grows across the\n"
-		"realm as local nobles centralize their power.\n"
+		"realm as local nobles grow to fill the void.\n"
 	);
 	wrefresh(win);
 
-	if (getch() == 'p') debug = 1;
+	if (wgetch(win) == 'p') debug = 1;
 	werase(win);
 }
 
@@ -71,7 +71,7 @@ void print_userinfo()
 {
     	if (p.intown) wprintw(win, "  %s\n\n", p.location);
     	if (!p.intown) wprintw(win, "  Plains of Castamere\n\n");
-	wprintw(win, "  Rank: %s        Denars: %i\n", p.title, p.denars);
+	wprintw(win, "  Rank: %s    Denars: %i\n", p.title, p.denars);
 	wprintw(win, "  Party: %zu/%zu troops\n\n", p.army, p.armycap);	
 }
 
@@ -83,6 +83,7 @@ void print_actions()
 	} else if (!p.intown) {
 	wprintw(win, "  1. Setup fortified camp\n  2. Draft correspondence\n\n\n");
 	}
+	wprintw(win, "  p. View Party\n"); 
 	wprintw(win, "  i. View Inventory\n"); 
 	wprintw(win, "  r. View Relations\n"); 
 	wprintw(win, "  q. View Current Quests\n");

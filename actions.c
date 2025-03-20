@@ -128,6 +128,12 @@ void action_hire_mercs_peasants()
 
 void action_hire_mercs_peasants_yes(int peasants, int cost)
 {
+	if (cost > p.denars) {
+		wclear(win);
+		wprintw(win, "You can't afford that price right now.");
+		wgetch(win);
+		return;
+	}
 	int chance = rand() % 11;
 	if (chance > 2) {
 		party.pspear += peasants;
@@ -169,6 +175,12 @@ void action_hire_mercs_maa()
 
 void action_hire_mercs_maa_yes(int maa, int cost)
 {
+	if (cost > p.denars) {
+		wclear(win);
+		wprintw(win, "You can't afford that price right now.");
+		wgetch(win);
+		return;
+	}
 	party.maa += maa;
 	wclear(win);
 	wprintw(win, " %i %s have joined your party.", maa, party.maaname);

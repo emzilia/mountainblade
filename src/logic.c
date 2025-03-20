@@ -411,8 +411,7 @@ void complete_quest(City* city, Inventory* bag, int num)
 			// to the number of kills the player had at the start of the quest
 			// if the player currently has more kills, complete the quest
 			// pretty dumb placeholder logic
-			if (allquests.slayings[i].starting_kills + allquests.slayings[i].to_kill
-					>= p.kills) {
+			if (p.kills >= allquests.slayings[i].starting_kills + allquests.slayings[i].to_kill) {
 				for(int j = 0; j < allquests.totalsla - 1; ++j) {
 					allquests.slayings[i] = allquests.slayings[i + 1];
 				}

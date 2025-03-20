@@ -76,66 +76,79 @@ void init_noblelist()
 	allnobles.size = 7;
 }
 
-void init_buddylist()
+void init_buddylist(BuddyList* buddies)
 {
-	buddies.size = 1;
-	buddies.buddies[0] = gren;
+	buddies->size = 1;
+	buddies->buddies[0] = gren;
 }
 
-void init_partylist()
+void init_partylist(PartyList* party)
 {
-	party.maa = 3;
-	party.maaupkeep = 10;
-	strcpy(party.maaname, "Men-at-arms");
+	party->maa = 3;
+	party->maaupkeep = 10;
 
-	party.pspear = 4;
-	party.pspearupkeep = 2;
-	strcpy(party.pspearname, "Peasant spearmen");
+	party->pspear = 4;
+	party->pspearupkeep = 2;
 
-	party.pbow = 4;
-	party.pbowupkeep = 2;
-	strcpy(party.pbowname, "Peasant bowmen");
+	party->pbow = 4;
+	party->pbowupkeep = 2;
 
-	party.total = party.maa + party.pspear + party.pbow + buddies.size + 1;
+	strcpy(party->maaname, "Men-at-arms");
+	strcpy(party->pspearname, "Peasant spearmen");
+	strcpy(party->pbowname, "Peasant bowmen");
+
+	party->total = party->maa + party->pspear + party->pbow + buddies.size + 1;
 }
 
 void init_gamelists()
 {
 	init_citylist();
 	init_noblelist();
-	init_buddylist();
-	init_partylist();
+	init_buddylist(&buddies);
+	init_partylist(&party);
 }
 
 void move_north(User* p)
 {
+	int timebonus = 0;
+	if (!strcmp(p->season, "Winter")) timebonus = 1;
+
 	if (p->y > 1) {
 		p->y--;
-		advance_hour((rand() % 2) + 2);
+		advance_hour(&gtime, (rand() % 2) + 2 + timebonus);
 	}
 }
 
 void move_south(User* p)
 {
+	int timebonus = 0;
+	if (!strcmp(p->season, "Winter")) timebonus = 1;
+
 	if (p->y < rows - 2) {
 		p->y++;
-		advance_hour((rand() % 2) + 2);
+		advance_hour(&gtime, (rand() % 2) + 2 + timebonus);
 	}
 }
 
 void move_west(User* p)
 {
+	int timebonus = 0;
+	if (!strcmp(p->season, "Winter")) timebonus = 1;
+
 	if (p->x > 1) {
 		p->x--;
-		advance_hour((rand() % 2) + 2);
+		advance_hour(&gtime, (rand() % 2) + 2 + timebonus);
 	}
 }
 
 void move_east(User* p)
 {
+	int timebonus = 0;
+	if (!strcmp(p->season, "Winter")) timebonus = 1;
+
 	if (p->x < columns - 2) {
 		p->x++;
-		advance_hour((rand() % 2) + 2);
+		advance_hour(&gtime, (rand() % 2) + 2 + timebonus);
 	}
 }
 

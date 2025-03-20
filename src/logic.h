@@ -5,8 +5,8 @@
 
 void init_citylist();
 void init_noblelist();
-void init_buddylist();
-void init_partylist();
+void init_buddylist(BuddyList* buddies);
+void init_partylist(PartyList* party);
 void init_gamelists();
 
 void move_north(User* p);

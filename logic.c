@@ -1,8 +1,11 @@
+#include <stdio.h>
 #include <ncurses.h>
 #include <string.h>
 
 #include "entities.h"
 #include "logic.h"
+#include "display.h"
+#include "actions.h"
 
 void init_citylist()
 {
@@ -36,8 +39,12 @@ void set_location()
 {
 	for (size_t i = 0; i < allcities.size; ++i) {
 		p.intown = check_location(allcities.cities[i]);
-		if (p.intown) break;
-	}	
+		if (p.intown) {
+			currenttown = allcities.cities[i];
+			calc_city_wealth(&currenttown);
+			break;
+		}	
+	}
 }
 
 void update_pxy()
@@ -51,4 +58,22 @@ void update_pxy()
 	
 //	pxy = strcat(px, py);
 	p.xy = atoi(pxy);
+}
+
+City currenttown;
+
+void calc_city_wealth(City* city)
+{
+	char wealth1[35] = "The local economy is booming";
+	char wealth2[35] = "The local economy is alright";
+	char wealth3[35] = "The local economy sucks dick";
+
+	if (city->wealth > 8) strcpy(city->wealthnote, wealth1); 
+	if (city->wealth > 4 && city->wealth < 8) strcpy(city->wealthnote, wealth2); 
+	if (city->wealth < 4) strcpy(city->wealthnote, wealth3); 
+}
+
+void set_user_rank()
+{
+	if (allranks.rank == 1) strcpy( p.title, "Esquire");	
 }

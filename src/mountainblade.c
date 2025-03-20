@@ -35,7 +35,7 @@ void input_mainloop()
 	if (p.intown) {
 		switch (response) {
 			case '1':
-				action_enter_citytesting(&currenttown);
+				action_enter_city(&currenttown);
 				break;
 			case '2': 
 				action_contact_noble(&currenttown);

@@ -181,7 +181,7 @@ void weekly_partyupkeep(User* p)
 	int wagesloop = 1;
 	while (wagesloop) {
 		wclear(win);
-		print_event_args("Weekly wages have been paid out: %s denars\n\n(b) to go back", change);
+		print_event_args("Weekly wages have been paid out: %s denars\n\n(b) to accept begrudgingly", change);
 		int response = wgetch(win);
 		switch (response) {
 			case 'b':

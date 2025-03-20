@@ -192,6 +192,7 @@ void weekly_partyupkeep(User* p)
 	p->denars -= party.totalupkeep;
 }
 
+// check if user is in a town or not. if so, copy over the location string
 unsigned int check_location(City* town, User* p)
 {
 	if (p->x == town->x && p->y == town->y) {
@@ -203,6 +204,7 @@ unsigned int check_location(City* town, User* p)
 	return 0;
 }
 
+// if user is in a town, set it as the currenttown and calc some city flavor text
 void set_location(User* p)
 {
 	for (int i = 0; i < allcities.size; ++i) {
@@ -217,6 +219,7 @@ void set_location(User* p)
 
 City currenttown;
 
+// based on city wealth attribute, print some flavor text
 void calc_city_wealth(City* city)
 {
 	char wealth3[100] = "The streets are bustling with laborers and\ntraders going about their daily business.";
@@ -228,6 +231,8 @@ void calc_city_wealth(City* city)
 			if (city->wealth > 8) strcpy(city->wealthnote, wealth3); 
 }
 
+// set users rank daily based on their renown
+// TODO maybe only check rank when renown changes?
 void set_user_rank(User* list)
 {
 	char rank1[20] = "Esquire";
@@ -247,6 +252,7 @@ void set_user_rank(User* list)
 	list->title[sizeof(list->title) - 1] = '\0';
 }
 
+// add any item object to any inventory object with a cap
 void add_to_inventory(Inventory* inventory, Item* thing)
 {
 	if (bag.size < 10) {
@@ -257,16 +263,21 @@ void add_to_inventory(Inventory* inventory, Item* thing)
 	}
 }
 
+// generate delivery quest
 char* generate_quest1(City* city)
 {
+	// max of 4 delivery quests at a time
 	if (allquests.totaldel > 4) return city->owner->name;
 	
+	// target is random, if its the questgiver then its someone else
 	int questtarget = (rand() % 7);
 	if (allnobles.nobles[questtarget] == city->owner)
 		--questtarget;
 
-	int questid = (rand() % 200);
+	// generate a random number as a simple identifier
+	int questid = (rand() % 500);
 
+	// delivery quest is generated
 	Quest1 latestdel = {
 		.renown_gain = 3,
 		.relation_buff = 1,
@@ -275,11 +286,13 @@ char* generate_quest1(City* city)
 		.target = allnobles.nobles[questtarget],
 	};
 
+	// quest target is given a flag to accept delivery
 	allnobles.nobles[questtarget]->fiefs[0]->hasdel = 1;
 
 	allquests.deliveries[allquests.totaldel] = latestdel;
 	++allquests.totaldel;
 
+	// quest item is generated
 	Item quest_letter = {
 		.questid = questid,
 		.name = "Elegant Letter",
@@ -289,15 +302,22 @@ char* generate_quest1(City* city)
 
 	add_to_inventory(&bag, &quest_letter);
 
+	// returns the name of the quest targer
 	return allnobles.nobles[questtarget]->name;
 
 }
 
+// turn in either a delivery or slaying quest
 void complete_quest(City* city, Inventory* bag, unsigned int num)
 {
+	// if turning in a delivery quest
 	if (num == 1)
+		// first we loop through the current delivery quest list
 		for (int i = 0; i < allquests.totaldel; ++i) {
+			// then we loop through the user's inventory
 			for (int j = 0; j < bag->size; ++j) {
+				// we're looking for an inventory item with a questid that matches the
+				// questid of a current quest, if nothing found, don't do anything
 				if (allquests.deliveries[i].questid == bag->items[i].questid) {
 					for(int k = j; k < allquests.totaldel - 1; ++k) {
 						allquests.deliveries[k] = allquests.deliveries[k + 1];
@@ -308,10 +328,11 @@ void complete_quest(City* city, Inventory* bag, unsigned int num)
 					}
 					--bag->size;
 
-					city->owner->relations += allquests.deliveries[i].relation_buff;
+					allquests.deliveries[i].giver->relations += allquests.deliveries[i].relation_buff;
 				}
 			}
 		}
+	// else if turning in a slaying quest
 	else if (num == 2)
 		for (int i = 0; i < allquests.totaldel; ++i) {
 			if (allquests.deliveries[i].target == bag->items[i].recipient1) {

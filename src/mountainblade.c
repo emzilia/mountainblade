@@ -17,20 +17,16 @@ void input_mainloop()
 {
 	int response = wgetch(win);
 	switch (response) {
-		case 'k':
-		case KEY_UP:
+		case 'k': case KEY_UP:
 			move_north(&p);
 			break;
-		case 'j':
-		case KEY_DOWN:
+		case 'j': case KEY_DOWN:
 			move_south(&p);
 			break;
-		case 'h':
-		case KEY_LEFT:
+		case 'h': case KEY_LEFT:
 			move_west(&p);
 			break;
-		case 'l':
-		case KEY_RIGHT:
+		case 'l': case KEY_RIGHT:
 			move_east(&p);
 			break;
 	}
@@ -74,6 +70,9 @@ void input_mainloop()
 		case 'q':
 			action_view_quests();
 			break;
+		case 'd':
+			action_enter_debug(&p, &gtime);
+			break;
 		case '/':
 			endwin();
 			exit(0);
@@ -91,6 +90,7 @@ int main(void)
 
 	int running = 1;
 	while (running) {
+		season_check(&p);
 		update_partyupkeep(&party);
 		set_user_rank(&p);
 		print_map(map, rows, columns);

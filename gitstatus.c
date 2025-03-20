@@ -117,7 +117,7 @@ VarList get_repos(char const *home, VarList list)
 VarList get_gitfetchcommands(VarList listRepo, VarList listFetchCommand)
 {
 	const char* git1 = "git -C ";
-	const char* git2 = " fetch";
+	const char* git2 = " fetch &";
 	char* commandResult;
 
 	for (size_t i = 0; i < listRepo.size; i++) {
@@ -137,7 +137,7 @@ VarList get_gitfetchcommands(VarList listRepo, VarList listFetchCommand)
 VarList get_gitstatuscommands(VarList listRepo, VarList listStatusCommand)
 {
 	const char* git1 = "git -C ";
-	const char* git2 = " status";
+	const char* git2 = " status &";
 	char* commandResult;
 
 	for (size_t i = 0; i < listRepo.size; i++) {

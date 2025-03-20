@@ -10,6 +10,7 @@
 #include "display.h"
 #include "logic.h"
 #include "gtime.h"
+#include "text.h"
 
 int debug = 0;
 

@@ -46,11 +46,12 @@ void print_map(char arr[][28], int rows, int columns) {
 	addch('\n'); }
 	if (debug) printw(" %d, %d\n", p.x, p.y);
 	set_location();
-	refresh();
 }
 
 void print_userinfo()
 {
+    	if (p.intown) printw("%s\n\n", p.location);
+    	if (!p.intown) printw("Plains of Castamere\n\n");
 	printw("Your title is %s\n", p.title);
 	printw("You have $%i in silver coins\n", p.denars);
 	printw("You have %zu warriors in your employ\n\n", p.army);	

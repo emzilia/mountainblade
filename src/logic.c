@@ -98,6 +98,14 @@ void init_partylist()
 	party.total = party.maa + party.pspear + party.pbow + buddies.size + 1;
 }
 
+void init_gamelists()
+{
+	init_citylist();
+	init_noblelist();
+	init_buddylist();
+	init_partylist();
+}
+
 void update_partyupkeep()
 {
 	party.total = party.maa + party.pspear + party.pbow + buddies.size + 1;
@@ -113,7 +121,11 @@ void update_partyupkeep()
 
 		party.total = party.maa + party.pspear + party.pbow + buddies.size + 1;
 	}
-	party.totalupkeep = (party.maa * party.maaupkeep) + (party.pspear * party.pspearupkeep) + (party.pbow * party.pbowupkeep);
+	party.totalupkeep = (
+		(party.maa * party.maaupkeep) +
+		(party.pspear * party.pspearupkeep) +
+		(party.pbow * party.pbowupkeep)
+	);
 }
 
 int check_location(City* town)
@@ -147,9 +159,9 @@ void calc_city_wealth(City* city)
 	char wealth2[100] = "The streets are quiet but well-kept and the\nlocals seem content.";
 	char wealth1[100] = "The streets are dirty and the locals squint at\nyou with suspicious eyes.";
 
-	if (city->wealth > 8) strcpy(city->wealthnote, wealth3); 
-	if (city->wealth > 4 && city->wealth < 8) strcpy(city->wealthnote, wealth2); 
-	if (city->wealth < 4) strcpy(city->wealthnote, wealth1); 
+	if (city->wealth > 0) strcpy(city->wealthnote, wealth1); 
+		if (city->wealth > 4) strcpy(city->wealthnote, wealth2); 
+			if (city->wealth > 8) strcpy(city->wealthnote, wealth3); 
 }
 
 void set_user_rank(User* list)
@@ -164,14 +176,13 @@ void set_user_rank(User* list)
 	if (!strcmp(p.title, "Viscount")) p.armycap = 350;
 }
 
-void add_to_inventory(Item thing)
+void add_to_inventory(Item* thing)
 {
 	if (bag.size < 10) {
-		bag.items[bag.size] = thing;
+		bag.items[bag.size] = *thing;
 		++bag.size;
 	} else {
 		print_event("The inventory is full.");
 	}
-
 }
 

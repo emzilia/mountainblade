@@ -5,6 +5,7 @@
 #include "entities.h"
 #include "display.h"
 #include "logic.h"
+#include "gtime.h"
 
 WINDOW *win;
 WINDOW *borderwin;
@@ -70,7 +71,12 @@ void print_userinfo()
     	if (p.intown) wprintw(win, "  %s\n\n", p.location);
     	if (!p.intown) wprintw(win, "  Plains of Castamere\n\n");
 	wprintw(win, "  Rank: %s            Denars: %i\n", p.title, p.denars);
-	wprintw(win, "  Party: %zu/%zu troops      Weekly Upkeep: %zu\n\n", party.total, p.armycap, party.totalupkeep);	
+	wprintw(win, "  Party: %zu/%zu troops      Weekly Upkeep: %zu\n", party.total, p.armycap, party.totalupkeep);	
+}
+
+void print_time()
+{
+	wprintw(win, "  Hour: %zu\tDays: %zu\t   Weeks: %zu\n\n", gtime.hour, gtime.day, gtime.week);
 }
 
 void print_actions()
@@ -85,4 +91,18 @@ void print_actions()
 	wprintw(win, "  i. View Inventory\n"); 
 	wprintw(win, "  r. View Relations\n"); 
 	wprintw(win, "  q. View Current Quests\n");
+}
+
+void print_event(char* text)
+{
+	wclear(win);
+	wprintw(win, text);
+	wgetch(win);
+}
+
+void print_event_args(char* text, void* args)
+{
+	wclear(win);
+	wprintw(win, text, args);
+	wgetch(win);
 }

@@ -7,7 +7,10 @@ void init_window();
 void print_title();
 void print_map(char arr[][28], int rows, int columns);
 void print_userinfo();
+void print_time();
 void print_actions();
+void print_event(char* text);
+void print_event_args(char* text, void* args);
 
 extern WINDOW* win;
 extern int debug;

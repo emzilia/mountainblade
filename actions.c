@@ -20,7 +20,8 @@ void action_enter_city()
 		printw(
 			"%s\n\nWho would you like to see?\n\n"
 			"1. Guild Master\n2. Tailor\n"
-            "3. Blacksmith\n4. Stablekeeper",
+            "3. Blacksmith\n4. Stablekeeper\n"
+            "\n(b) to go back",
 			p.location
 		);	
 		refresh();
@@ -38,7 +39,7 @@ void action_enter_city()
 			case '4':
                 action_enter_city_stablekeeper();
 				break;
-			case 'q':
+			case 'b':
 				cityloop = 0;
 				break;
 		}

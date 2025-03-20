@@ -10,18 +10,17 @@
 void init_citylist()
 {
 	allcities.cities[0] = zander;
-	allcities.cities[1] = talis;
-	allcities.cities[2] = adriin;
-	allcities.cities[3] = doxoun;
-	allcities.cities[4] = calia;
-	allcities.cities[5] = grelin;
-	allcities.cities[6] = amelo;
-	allcities.cities[7] = yefhold;
-	allcities.cities[8] = grii;
-	allcities.cities[9] = todt;
-	allcities.cities[10] = joeton;
-	allcities.cities[11] = salls;
-	allcities.size = 12;
+	allcities.cities[1] = adriin;
+	allcities.cities[2] = doxoun;
+	allcities.cities[3] = calia;
+	allcities.cities[4] = grelin;
+	allcities.cities[5] = amelo;
+	allcities.cities[6] = yefhold;
+	allcities.cities[7] = grii;
+	allcities.cities[8] = todt;
+	allcities.cities[9] = joeton;
+	allcities.cities[10] = salls;
+	allcities.size = 11;
 }
 
 int check_location(City town)
@@ -73,7 +72,14 @@ void calc_city_wealth(City* city)
 	if (city->wealth < 4) strcpy(city->wealthnote, wealth3); 
 }
 
-void set_user_rank()
+void set_user_rank(User* list)
 {
-	if (allranks.rank == 1) strcpy( p.title, "Esquire");	
+	if (list->rank == 1) strcpy( p.title, "Esquire");	
+	if (list->rank == 2) strcpy( p.title, "Knight");	
+	if (list->rank == 3) strcpy( p.title, "Baron");	
+	if (list->rank == 4) strcpy( p.title, "Viscount");	
+
+	if (!strcmp(p.title, "Knight")) p.armycap = 75;
+	if (!strcmp(p.title, "Baron")) p.armycap = 150;
+	if (!strcmp(p.title, "Viscount")) p.armycap = 350;
 }

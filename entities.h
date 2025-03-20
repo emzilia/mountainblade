@@ -4,7 +4,9 @@
 #include <stdlib.h>
 
 typedef struct {
-	char name[6]; 
+	char name[13]; 
+	size_t level;
+	size_t prowess;
 	size_t army;
 	size_t armycap;
 	size_t charisma;
@@ -17,6 +19,28 @@ typedef struct {
 	int y;
 	int xy;
 } User;
+
+typedef struct {
+	char name[13];
+	size_t level;
+	size_t prowess;
+	char location[20];
+	int inparty;
+	int x;
+	int y;
+} Buddy;
+
+typedef struct {
+	Buddy buddies[6];
+	size_t size;
+} BuddyList;
+
+typedef struct{
+	size_t maa;
+	size_t pspear;
+	size_t pbow;
+	size_t total;
+} PartyList;
 
 typedef struct {
 	char name[7];
@@ -37,6 +61,8 @@ typedef struct {
 } CityList;
 
 extern User p;
+extern Buddy gren;
+
 extern City zander;
 extern City talis;
 extern City adriin;
@@ -50,6 +76,8 @@ extern City todt;
 extern City joeton;
 extern City salls;
 
+extern PartyList party;
 extern CityList allcities;
+extern BuddyList buddies;
 
 #endif

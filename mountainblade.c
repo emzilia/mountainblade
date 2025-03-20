@@ -11,6 +11,7 @@ void look();
 void city_all();
 void print_userinfo();
 
+int debug = 0;
 
 void update_pxy()
 {
@@ -49,7 +50,7 @@ void title_screen()
 		"realm as local nobles centralize their power."
 	);
 
-	getch();
+	if (getch() == 'p') debug = 1;
 	clear();
 }
 
@@ -63,7 +64,7 @@ void print_map(char arr[][14], int rows, int columns) {
 				printw("%c", arr[r][c]);
 		}
 	addch('\n'); }
-	//printw(" %d, %d\n%d\n", p.x, p.y, p.xy);
+	if (debug) printw(" %d, %d\n", p.x, p.y);
 	city_all();
 }
 

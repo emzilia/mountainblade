@@ -2,7 +2,7 @@
 
 ![mountainblade](https://i.ibb.co/rtrbRBS/mountainblade-0-1-5.png)
 
-based on the hit game of the same name. very early access
+based on the hit game of the same name. very early access. requires ncurses.
 
 current priority:
 implement cash shop
@@ -57,5 +57,3 @@ lose condition via player wealth?
 relations system where nobles have opinion level of you  
 take quests from nobles to increase their opinion  
 turn game into dating sim (tentative)
-
-most of the currently completed work has been on the backend building the framework for these mechanics   

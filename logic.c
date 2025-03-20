@@ -49,6 +49,18 @@ void init_partylist()
 void update_partyupkeep()
 {
 	party.total = party.maa + party.pspear + party.pbow + buddies.size;
+	if (party.total > p.armycap) {
+		int diff = party.total - p.armycap;
+		party.pspear -= diff;
+
+		wclear(win);
+		if (diff == 1) wprintw(win, "Disatisfied, %i man has deserted the party", diff); 
+		else wprintw(win, "Disatisfied, %i men have deserted the party", diff); 
+		wgetch(win);
+		wclear(win);
+
+		party.total = party.maa + party.pspear + party.pbow + buddies.size;
+	}
 	party.totalupkeep = (party.maa * party.maaupkeep) + (party.pspear * party.pspearupkeep) + (party.pbow * party.pbowupkeep);
 }
 

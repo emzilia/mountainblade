@@ -231,7 +231,17 @@ void action_view_party()
 void action_view_inventory()
 {
 	wclear(win);
-	wprintw(win, "Notable trinkets:\n\nYour father's sword\nGold engraved locket");
+	mvwprintw(win, 0, 0, "Notable trinkets:");
+	if (bag.size == 0) { 
+		mvwprintw(win, 2, 0, "Your bag is currently empty.");
+	} else {
+		int row = 2;
+		for (size_t i = 0; i < bag.size; ++i) {
+			mvwprintw(win, row, 0, "%zu. %s", i + 1, bag.items[i].name);
+			row++;
+		}
+
+	};
 	wgetch(win);
 }
 

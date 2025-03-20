@@ -63,7 +63,7 @@ void print_map(char arr[][28], int rows, int columns) {
 				wprintw(win, "%c", arr[r][c]);
 		}
 	waddch(win, '\n'); }
-	if (debug) wprintw(win, " %d, %d\n", p.x, p.y);
+	if (debug) wprintw(win, "  %d, %d\n", p.x, p.y);
 }
 
 void print_userinfo()
@@ -71,12 +71,18 @@ void print_userinfo()
     	if (p.intown) wprintw(win, "  %s\n\n", p.location);
     	if (!p.intown) wprintw(win, "  Plains of Castamere\n\n");
 	wprintw(win, "  Rank: %s            Denars: %i\n", p.title, p.denars);
-	wprintw(win, "  Party: %zu/%zu troops      Weekly Upkeep: %zu\n", party.total, p.armycap, party.totalupkeep);	
+	wprintw(win,
+		"  Party: %zu/%zu troops      Weekly Upkeep: %zu\n\n",
+		party.total, p.armycap, party.totalupkeep
+	);	
 }
 
 void print_time()
 {
-	wprintw(win, "  Hour: %zu\tDays: %zu\t   Weeks: %zu\n\n", gtime.hour, gtime.day, gtime.week);
+	wprintw(win,
+		"  Hour:  %zu\t\t   Day:    %zu\n  Weeks: %zu\t\t   Months: %zu\n\n", 
+		gtime.hour, gtime.day, gtime.week, gtime.month
+	);
 }
 
 void print_actions()

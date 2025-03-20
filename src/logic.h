@@ -9,6 +9,8 @@ void init_buddylist(BuddyList* buddies);
 void init_partylist(PartyList* party);
 void init_gamelists();
 
+char* convert_string(int number);
+
 void move_north(User* p);
 void move_south(User* p);
 void move_west(User* p);

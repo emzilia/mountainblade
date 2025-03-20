@@ -109,6 +109,14 @@ void init_gamelists()
 	init_partylist(&party);
 }
 
+char* convert_string(int number)
+{
+	int length = snprintf(NULL, 0, "%d", number);
+	char* string = malloc(length + 1);
+	sprintf(string, "%d", number);
+	return string;
+}
+
 void move_north(User* p)
 {
 	int timebonus = 0;
@@ -181,7 +189,7 @@ void weekly_partyupkeep(User* p)
 	sprintf(change, "%d", party.totalupkeep);
 	int wagesloop = 1;
 	wclear(win);
-	print_event_args("Weekly wages have been paid out: %s denars\n\n(b) to accept begrudgingly", change);
+	print_event_args1("Weekly wages have been paid out: %s denars\n\n(b) to accept begrudgingly", change);
 	while (wagesloop) {
 		int response = wgetch(win);
 		switch (response) {

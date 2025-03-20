@@ -47,8 +47,6 @@ void print_title()
 		"fighting heathens abroad. Unrest grows across the\n"
 		"realm as local nobles grow to fill the void.\n"
 	);
-	wrefresh(win);
-
 	if (wgetch(win) == 'p') debug = 1;
 	werase(win);
 }
@@ -72,7 +70,7 @@ void print_userinfo()
     	if (p.intown) wprintw(win, "  %s\n\n", p.location);
     	if (!p.intown) wprintw(win, "  Plains of Castamere\n\n");
 	wprintw(win, "  Rank: %s    Denars: %i\n", p.title, p.denars);
-	wprintw(win, "  Party: %zu/%zu troops\n\n", p.army, p.armycap);	
+	wprintw(win, "  Party: %zu/%zu troops\n\n", party.total, p.armycap);	
 }
 
 void print_actions()

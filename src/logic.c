@@ -329,8 +329,9 @@ char* generate_quest1(City* city)
 // generate bandit slaying quest
 void generate_quest2(City* town)
 {
+	// loops through the whole city list to ensure we're operating
+	// on the global city struct
 	int city;
-
 	for (int i = 0; i < allcities.size; ++i) {
 		if (!strcmp(allcities.cities[i]->name, town->name)) {
 			city = i;

@@ -21,25 +21,25 @@ void input_mainloop()
 		case KEY_UP:
 			if (p.y > 1)
 				p.y--;
-				advance_hour((rand() % 2) + 1);
+				advance_hour((rand() % 2) + 2);
 			break;
 		case 'j':
 		case KEY_DOWN:
 			if (p.y < rows - 2)
 				p.y++; 
-				advance_hour((rand() % 2) + 1);
+				advance_hour((rand() % 2) + 2);
 			break;
 		case 'h':
 		case KEY_LEFT:
 			if (p.x > 1)
 				p.x--;
-				advance_hour((rand() % 2) + 1);
+				advance_hour((rand() % 2) + 2);
 			break;
 		case 'l':
 		case KEY_RIGHT:
 			if (p.x < columns - 2)
 				p.x++;
-				advance_hour((rand() % 2) + 1);
+				advance_hour((rand() % 2) + 2);
 			break;
 	}
 	

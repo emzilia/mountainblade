@@ -53,24 +53,37 @@ void print_title()
 	werase(win);
 }
 
-void print_map(char arr[][28], int rows, int columns) {
+int print_map(char arr[][28], int rows, int columns) {
+	int currentlocation = 1;
 	mvwprintw(win, 0, 17, "Dutchy of Tania\n");
 	for (int r = 0; r < rows; r++) {
 		wprintw(win, "           ");
 		for (int c = 0; c < columns; c++) {
-			if (r == p.y && c == p.x)
+			if (r == p.y && c == p.x) {
+				currentlocation = arr[r][c];
 				waddch(win, '@');
-			else
+			} else
 				wprintw(win, "%c", arr[r][c]);
 		}
 	waddch(win, '\n'); }
 	if (debug) wprintw(win, "  %d, %d\n", p.x, p.y);
+	
+	return currentlocation;
 }
 
-void print_userinfo()
+void print_userinfo(int currentlocation)
 {
+	char* locationtext;
+	if (currentlocation == 42) locationtext = "The Old Red Forest";
+	else if (currentlocation == 94) locationtext = "Cliffs of Bill";
+	else if (currentlocation == 95 || currentlocation == 47)
+		locationtext= "Tanian River Shore";
+	else locationtext = "Plains of Castamere";
+
     	if (p.intown) mvwprintw(win, 9, 17, "%s\n\n", p.location);
-    	if (!p.intown) mvwprintw(win, 9, 17, "Plains of Castamere\n\n");
+	else { 
+		mvwprintw(win, 9, 17, locationtext);
+	}
 	mvwprintw(win, 10, 22, "%s", p.season);
 
 	mvwprintw(win, 12, 9, "Rank: %s", p.title);

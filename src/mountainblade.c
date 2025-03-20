@@ -93,9 +93,9 @@ int main(void)
 		season_check(&p);
 		update_partyupkeep(&party);
 		set_user_rank(&p);
-		print_map(map, rows, columns);
+		int currentlocation = print_map(map, rows, columns);
 		set_location(&p);
-		print_userinfo();
+		print_userinfo(currentlocation);
 		print_time();
 		print_actions();
 		input_mainloop();

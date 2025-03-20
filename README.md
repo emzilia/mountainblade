@@ -7,7 +7,7 @@ based on the hit game of the same name. very early access
 current priority:
 implement cash shop
 
-## feature horizon:
+## feature horizon
 
 **movement:**  
 ~~move around on map~~  

@@ -1,35 +1,33 @@
 #include <stdlib.h>
 #include <ncurses.h>
+#include <string.h>
 
 #include "entities.h"
 #include "actions.h"
 #include "display.h"
 #include "logic.h"
+#include "text.h"
 
 void action_enter_city(City* town)
 {
-	werase(win);
-	mvwprintw(win, 0, 0,
-		"You approach the gates to the %s\nThe guard ushers"
-		" your party through without\ncomplaint.",
-		p.location);
-	wgetch(win);
-
+	print_event_args(
+		"You approach the gates to the %s\n\n"
+		"The guard ushers your party through without\n"
+		"complaint.", 
+		p.location
+	);
 	int cityloop = 1;
 	while (cityloop) {
-		werase(win);
-		mvwprintw(win, 0, 0, "%s", p.location);
-		mvwprintw(win, 1, 0, "%s", town->wealthnote);
-		mvwprintw(win, 4, 0, "Who would you like to see?");
-		mvwprintw(win, 6, 0, "1. Guild Master");
-		mvwprintw(win, 7, 0, "2. Tailor");
-		mvwprintw(win, 8, 0, "3. Blacksmith");
-		mvwprintw(win, 9, 0, "4. Stablekeeper");
-		mvwprintw(win, 12, 0, "(b) to go back");
-		int response = wgetch(win);
+		int response = print_event_args2(
+			"%s\n\n%s\n\n"
+			"Who would you like to see?\n\n"
+			"1. Guild Master\n2. Tailor\n3. Blacksmith\n4. Stablekeeper"
+			"\n\n\n(b) to go back", 
+			p.location, town->wealthnote
+		);
 		switch (response) {
 			case '1':
-				action_enter_city_guildmaster(town);
+				action_enter_city_guildmastertesting(town);
 				break;
 			case '2':
 				action_enter_city_tailor();
@@ -47,6 +45,81 @@ void action_enter_city(City* town)
 	}
 }
 
+
+void action_enter_citytesting(City* town)
+{
+	print_event_args(event_city1.text, event_city1.arg);
+	int cityloop = 1;
+	while (cityloop) {
+		int response = print_event_args2(event_city2.text, event_city2.arg1, event_city2.arg2);
+		switch (response) {
+			case '1':
+				action_enter_city_guildmastertesting(town);
+				break;
+			case '2':
+				action_enter_city_tailor();
+				break;
+			case '3':
+				action_enter_city_blacksmith();
+				break;
+			case '4':
+				action_enter_city_stablekeeper();
+				break;
+			case 'b':
+				cityloop = 0;
+				break;
+		}
+	}
+}
+
+void action_enter_city_guildmastertesting(City* town)
+{
+	int guildloop = 1;
+	while (guildloop) {
+		int response;
+		if (town->hassla == 0) {
+			response = print_event_args2(
+				"Guild Master %s:\n\n"
+				"It's good to see you %s, how can we help you\n"
+				"on this fine day?\n\n"
+				"There is work to do, if you're interested...\n\n"
+				"1. Accept some work\n2. Inquire about business"
+				"\n\n(b) to go back", 
+				town->gm, p.name
+			);
+		} else {
+			response = print_event_args2(
+				"Guild Master %s:\n\nIt's good to see you %s,"
+				" how can we help you\non this fine day?\n\n"
+				"There is work to do, if you're interested...\n\n"
+				"1. Accept some work\n2. Inquire about business\n"
+				"3. Turn in some work"
+				"\n\n(b) to go back", 
+				town->gm, p.name
+				);
+		}
+		switch (response) {
+			case '1':
+				generate_quest2(town);
+				print_event_small("\n\nGreat! I'll send the details over to your aid.", " ");
+				guildloop = 0;
+				break;
+			case '2':
+				print_event_small("\n\nYeah wouldn't you like to know, dickhead...", " ");
+				guildloop = 0;
+				break;
+			case '3':
+				complete_quest(town, &bag, 2);
+				print_event_small("\n\nYo sick, thanks!", " ");
+				guildloop = 0;
+				break;
+			case 'b':
+				guildloop = 0;
+				break;
+		}
+	}
+		
+}
 void action_enter_city_guildmaster(City* town)
 {
 	werase(win);
@@ -58,7 +131,7 @@ void action_enter_city_guildmaster(City* town)
 			"how can we help you\non this fine day?\n\nThere is work to do"
 			", if you're interested...\n\n"
 			"1. Accept some work\n2. Inquire about business\n\n(b) to go back",
-			town->name, p.name
+			town->gm, p.name
 		);
 		if (town->hassla == 1) {
 			wprintw(win, "\n\n3. Turn in some work\n\n");
@@ -137,8 +210,7 @@ void action_contact_noble(City* town)
 					contactloop = 0;
 					break;
 				case '2':
-					wprintw(win, "\n\n'It's about time, and I hope you aren't\n"
-							"expecting any sort of payment'"); 
+					//print_event("\"How quaint, what a good little delivery boy you are")
 					wgetch(win);
 					complete_quest(town, &bag, 1);
 					contactloop = 0;
@@ -500,7 +572,7 @@ void action_view_quests()
 
 }
 
-void action_view_debug(User* p, Time* gtime)
+void action_view_debug(User* player, Time* gametime)
 {
 	werase(win);
 	int debugloop = 1;
@@ -517,36 +589,36 @@ void action_view_debug(User* p, Time* gtime)
 		int response = wgetch(win);
 		switch (response) {
 			case 'd':
-				action_view_debug_stats(p, gtime);
+				action_view_debug_stats(player, gametime);
 				break;
 			case '1':
 				wprintw(win, "money money money\t\t--> + $125 = $%d\n",
-					p->denars + 125);
-				p->denars += 125;
+					player->denars + 125);
+				player->denars += 125;
 				break;
 			case '2':
-				advance_month(gtime, 1);
+				advance_month(gametime, 1);
 				wprintw(win, "time flies...\t\t\t--> + 1 = %d\n",
-					gtime->month);
+					gametime->month);
 				break;
 			case '3':
-				p->x = (rand() % 25) + 1;
-				p->y = (rand() % 5) + 1;
+				player->x = (rand() % 25) + 1;
+				player->y = (rand() % 5) + 1;
 				wprintw(win, "wait what\t\t\t--> %d, %d\n",
-					p->x, p->y);
+					player->x, player->y);
 				break;
 			case '4':
 				wprintw(win, "i can BREAK these cuffs\t\t--> %d + 1 = %d\n",
-					p->prowess, p->prowess + 1);
-				p->prowess += 1;
+					player->prowess, player->prowess + 1);
+				player->prowess += 1;
 				break;
 			case '5':
 				wprintw(win, "nasty business, had to be done\t--> + 1 = %d\n",
-					p->kills + 1);
-				p->kills += 1;
+					player->kills + 1);
+				player->kills += 1;
 				break;
 			case '6':
-				weekly_partyupkeep(p);
+				weekly_partyupkeep(player);
 				//break; simpler without
 			case 'b':
 				debugloop = 0;
@@ -558,7 +630,7 @@ void action_view_debug(User* p, Time* gtime)
 	};
 }
 
-void action_view_debug_stats(User* p, Time* gtime)
+void action_view_debug_stats(User* player, Time* gametime)
 {
 	werase(win);
 	int debugloop = 1;
@@ -662,8 +734,11 @@ void action_view_debug_quests()
 	werase(win);
 	int debugloop = 1;
 	while (debugloop) {
+		werase(win);
 		if (counter == allquests.totaldel) counter = 0;
 		if (counter == allquests.totalsla) counter = 0;
+		wprintw(win, "TotalDel: %d\n\n", allquests.totaldel);
+		wprintw(win, "TotalSla: %d\n\n", allquests.totalsla);
 		if (allquests.totaldel >= 1) {
 			wprintw(win, "Deliveries: \t%d\n\n", counter);
 			wprintw(win, "QuestID: \t%d\n", allquests.deliveries[counter].questid);

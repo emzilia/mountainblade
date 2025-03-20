@@ -23,6 +23,20 @@ void init_citylist()
 	allcities.size = 11;
 }
 
+void init_buddylist()
+{
+	buddies.buddies[0] = gren;
+	buddies.size = 1;
+}
+
+void init_partylist()
+{
+	party.maa = 4;
+	party.pspear = 4;
+	party.pbow = 4;
+	party.total = party.maa + party.pspear + party.pbow + buddies.size;
+}
+
 int check_location(City town)
 {
 	if (p.x == town.x && p.y == town.y) {

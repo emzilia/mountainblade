@@ -4,6 +4,8 @@
 #include "entities.h"
 
 void init_citylist();
+void init_buddylist();
+void init_partylist();
 int check_location(City town);
 void set_location();
 void update_pxy();

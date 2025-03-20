@@ -12,7 +12,13 @@ void init_citylist()
 	allcities.cities[3] = doxoun;
 	allcities.cities[4] = calia;
 	allcities.cities[5] = grelin;
-	allcities.size = 6;
+	allcities.cities[6] = amelo;
+	allcities.cities[7] = yefhold;
+	allcities.cities[8] = grii;
+	allcities.cities[9] = todt;
+	allcities.cities[10] = joeton;
+	allcities.cities[11] = salls;
+	allcities.size = 12;
 }
 
 int check_location(City town)
@@ -23,6 +29,7 @@ int check_location(City town)
 		printw("%s\nPopulation of %zu\n\n", town.location, town.pop);
 		return 1;
 	}
+
 	return 0;
 }
 
@@ -31,16 +38,9 @@ void set_location()
 	for (size_t i = 0; i < allcities.size; ++i) {
 		check_location(allcities.cities[i]);
 	}	
-
-	if ((p.x > 6 && p.y > 4) || (p.x == 6 && p.y == 6)) {
-		p.intown = 0;
-		printw("Forest of Grensdale\n\n\n");
-	} else if (p.x == 1 && p.y == 5) {
-		p.intown = 0;
-		printw("The King's River\n\n\n");
-	} else {
-		p.intown = 0;
-		printw("Plains of Castamere\n\n\n");
+	
+	if (p.intown == 0) {
+		printw("Plains of Castamere\n\n\n");	
 	}
 }
 

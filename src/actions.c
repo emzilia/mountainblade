@@ -43,13 +43,6 @@ void action_enter_city(City* town)
 			case 'b':
 				cityloop = 0;
 				break;
-			case 'm':
-				if (debug) {
-					p.denars += 125;
-					wprintw(win, "\nshow me the money\n");
-					wgetch(win);
-				}
-				break;
 		}
 	}
 }

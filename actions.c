@@ -9,7 +9,7 @@
 void action_enter_city(City town)
 {
 	werase(win);
-	wprintw(win,
+	mvwprintw(win, 0, 0,
 		"You approach the gates to the %s\nThe guard ushers"
 		" your party through without\ncomplaint.",
 		p.location);
@@ -18,15 +18,20 @@ void action_enter_city(City town)
 	int cityloop = 1;
 	while (cityloop) {
 		werase(win);
-		wprintw(win,
-			"%s\n%s\n\nWho would you like to see?\n\n"
-			"1. Guild Master\n2. Tailor\n"
-			"3. Blacksmith\n4. Stablekeeper\n"
-			"\n(b) to go back\n",
-			p.location, town.wealthnote
-		);	
+		mvwprintw(win, 0, 0, "%s", p.location);
+		mvwprintw(win, 1, 0, "%s", town.wealthnote);
+		mvwprintw(win, 4, 0, "Who would you like to see?");
+		mvwprintw(win, 6, 0, "n. %s", town.noble);
+		mvwprintw(win, 8, 0, "1. Guild Master");
+		mvwprintw(win, 9, 0, "2. Tailor");
+		mvwprintw(win, 10, 0, "3. Blacksmith");
+		mvwprintw(win, 11, 0, "4. Stablekeeper");
+		mvwprintw(win, 13, 0, "(b) to go back");
 		int response = wgetch(win);
 		switch (response) {
+			case 'n':
+				action_enter_city_guildmaster();
+				break;
 			case '1':
 				action_enter_city_guildmaster();
 				break;
@@ -46,6 +51,7 @@ void action_enter_city(City town)
 				if (debug) {
 					p.denars += 125;
 					wprintw(win, "\nshow me the money\n");
+					wgetch(win);
 				}
 				break;
 		}
@@ -56,9 +62,9 @@ void action_enter_city_guildmaster()
 {
 	wclear(win);
 	wprintw(win,
-		"Guild Master:      ($%d in your inventory)\n\nHello %s, "
+		"Guild Master:\n\nGreetings %s, "
 		"how can we help you today?\n",
-		p.denars, p.name
+		p.name
 	);
 	wgetch(win);
 }
@@ -231,10 +237,15 @@ void action_view_inventory()
 void action_view_relations()
 {
 	wclear(win);
-	wprintw(win, "Relations:\n\n");
-	for (size_t i = 0; i < allcities.size; ++i) {
-		wprintw(win, "%s\n%s\n\n", allcities.cities[i].noble, allcities.cities[i].location);	
-	}; 
+	wprintw(win, "Relevant Nobles:\n\n");
+	for (size_t i = 0; i < allnobles.size; ++i) {
+		Noble* noble = allnobles.nobles[i];
+		wprintw(win, "%s\n", noble->name);	
+		for (size_t f = 0; f < noble->totalfiefs; ++f) {
+			wprintw(win, "\t - %s\n", (*allnobles.nobles[i]).fiefs[f]->location);
+		}; 
+		wprintw(win, "\n");
+	};
 	wgetch(win);
 }
 

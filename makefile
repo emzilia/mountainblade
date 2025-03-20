@@ -1,6 +1,7 @@
 # mountain blade
 CC = gcc
-CC_FLAGS = -lncurses -Wall
+CC_FLAGS = -g -Wall
+LD_FLAGS = -lncurses
 
 SRC_DIR = src
 BIN_DIR = bin
@@ -15,11 +16,11 @@ all: $(TARGET)
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(BUILD_DIR)
-	$(CC) -c $< -o $@ $(CC_FLAGS)
+	$(CC) -c $< -o $@ $(CC_FLAGS) $(LD_FLAGS)
 
 $(TARGET): $(OBJS)
 	@mkdir -p $(BIN_DIR)
-	$(CC) $^ -o $@ $(CC_FLAGS)
+	$(CC) $^ -o $@ $(CC_FLAGS) $(LD_FLAGS)
 
 install:
 	cp $(TARGET) $(INSTALL_DIR)

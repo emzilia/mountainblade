@@ -1,6 +1,5 @@
 #include <string.h>
 #include "gtime.h"
-#include "display.h"
 #include "entities.h"
 
 Time gtime = {
@@ -8,6 +7,7 @@ Time gtime = {
 	.day = 1,
 	.week = 1,
 	.month = 1,
+	.year = 874,
 };
 
 void advance_hour(Time* gtime, int value)
@@ -35,6 +35,13 @@ void advance_month(Time* gtime, int value)
 {
 	gtime->week = 1;
 	gtime->month += value;
+	if (gtime->month > 12) advance_year(gtime, 1);
+}
+
+void advance_year(Time* gtime, int value)
+{
+	gtime->month = 1;
+	gtime->year += value;
 	if (gtime->month > 12) gtime->month = 1;
 }
 

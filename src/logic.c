@@ -107,34 +107,34 @@ void init_gamelists()
 	init_partylist();
 }
 
-void move_north()
+void move_north(User* p)
 {
-	if (p.y > 1) {
-		p.y--;
+	if (p->y > 1) {
+		p->y--;
 		advance_hour((rand() % 2) + 2);
 	}
 }
 
-void move_south()
+void move_south(User* p)
 {
-	if (p.y < rows - 2) {
-		p.y++;
+	if (p->y < rows - 2) {
+		p->y++;
 		advance_hour((rand() % 2) + 2);
 	}
 }
 
-void move_west()
+void move_west(User* p)
 {
-	if (p.x > 1) {
-		p.x--;
+	if (p->x > 1) {
+		p->x--;
 		advance_hour((rand() % 2) + 2);
 	}
 }
 
-void move_east()
+void move_east(User* p)
 {
-	if (p.x < columns - 2) {
-		p.x++;
+	if (p->x < columns - 2) {
+		p->x++;
 		advance_hour((rand() % 2) + 2);
 	}
 }
@@ -172,11 +172,11 @@ int check_location(City* town)
 	return 0;
 }
 
-void set_location()
+void set_location(User* p)
 {
 	for (size_t i = 0; i < allcities.size; ++i) {
-		p.intown = check_location(allcities.cities[i]);
-		if (p.intown) {
+		p->intown = check_location(allcities.cities[i]);
+		if (p->intown) {
 			currenttown = *allcities.cities[i];
 			calc_city_wealth(&currenttown);
 			break;
@@ -199,14 +199,21 @@ void calc_city_wealth(City* city)
 
 void set_user_rank(User* list)
 {
-	if (list->renown > 0) strcpy( list->title, "Esquire");	
-			if (list->renown > 75) strcpy( list->title, "Knight");	
-				if (list->renown > 200) strcpy( list->title, "Baron");	
-					if (list->renown > 400) strcpy( list->title, "Viscount");	
+	char rank1[20] = "Esquire";
+	char rank2[20] = "Knight";
+	char rank3[20] = "Baron";
+	char rank4[20] = "Viscount";
 
-	if (!strcmp(list->title, "Knight")) p.armycap = 75;
-	if (!strcmp(list->title, "Baron")) p.armycap = 150;
-	if (!strcmp(list->title, "Viscount")) p.armycap = 350;
+	if (list->renown > 0) strncpy( list->title, rank1, (sizeof(list->title) - 1));	
+	if (list->renown > 75) strncpy( list->title, rank2, (sizeof(list->title) - 1));	
+	if (list->renown > 200) strncpy( list->title, rank3, (sizeof(list->title) - 1));	
+	if (list->renown > 400) strncpy( list->title, rank4, (sizeof(list->title) - 1));	
+
+	if (!strcmp(list->title, rank2)) p.armycap = 75;
+	if (!strcmp(list->title, rank3)) p.armycap = 150;
+	if (!strcmp(list->title, rank4)) p.armycap = 350;
+
+	list->title[sizeof(list->title) - 1] = '\0';
 }
 
 void add_to_inventory(Inventory* inventory, Item* thing)
@@ -251,4 +258,23 @@ void generate_quest2(City* city)
 
 	allquests.slayings[allquests.totalsla] = latestsla;
 	++allquests.totalsla;
+
+	Item writ_justice = {
+		.name = "Writ for Justice",
+		.info = "By local authority",
+		.recipient = city->owner,
+	};
+
+	add_to_inventory(&bag, &writ_justice);
+}
+
+void logic_draft_letter(Noble* noble)
+{
+	Item letter = {
+		.name = "Formal Letter",
+		.info = "Written in fine hand",
+		.recipient = noble,
+	};
+
+	add_to_inventory(&bag, &letter);
 }

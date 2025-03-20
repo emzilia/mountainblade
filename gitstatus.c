@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <pwd.h>
 #include <string.h>
 #include <dirent.h>
 
@@ -22,7 +21,7 @@ void get_git_status(VarList listRepo);
 void run_git_status(char *command, VarList listRepo, size_t i);
 void send_notif(char *gitFinalResult, VarList listRepo, size_t i);
 
-// Creates a memory safe list of indeterminate size
+// Creates a memory safe list of variable size
 void init_safe_array(VarList *list)
 {
 	list->strings = (char**)malloc(INITIAL_CAPACITY * sizeof(char*));
@@ -30,11 +29,12 @@ void init_safe_array(VarList *list)
 	list->capacity = INITIAL_CAPACITY;
 }
 
-// Adds an item to the safe list
+// Adds an item to the safe list, increasing the list's size.
+// If the size exceeds the capacity, the capacity is increased
 void append_safe_array(VarList *list, const char *repo)
 {
 	if (list->size >= list->capacity) {
-		list->capacity *= 3;
+		list->capacity *= 2;
 		list->strings = (char**)realloc(list->strings, list->capacity * sizeof(char*));
 	}
 	list->strings[list->size] = strdup(repo);
@@ -194,7 +194,6 @@ void run_git_status(char *command, VarList listRepo, size_t i)
 // The original path list and index are included to give context to the notif.
 void send_notif(char* gitFinalResult, VarList listRepo, size_t i)
 {
-    	printf("\n\n%s\n***************\n", gitFinalResult);	
 
 	const char *behind = "Your branch is behind";
 	const char *ahead = "Your branch is ahead";

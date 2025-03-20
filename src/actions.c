@@ -29,8 +29,7 @@ void action_enter_city(City town)
 		int response = wgetch(win);
 		switch (response) {
 			case '1':
-				action_enter_city_guildmaster();
-				generate_quest1(&town);
+				action_enter_city_guildmaster(&town);
 				break;
 			case '2':
 				action_enter_city_tailor();
@@ -40,7 +39,6 @@ void action_enter_city(City town)
 				break;
 			case '4':
 				action_enter_city_stablekeeper();
-				generate_quest2(&town);
 				break;
 			case 'b':
 				cityloop = 0;
@@ -56,15 +54,27 @@ void action_enter_city(City town)
 	}
 }
 
-void action_enter_city_guildmaster()
+void action_enter_city_guildmaster(City* town)
 {
 	wclear(win);
-	wprintw(win,
-		"Guild Master:\n\nIt's good to see you %s, "
-		"how can we help you\non this fine day?\n",
-		p.name
-	);
-	wgetch(win);
+    int guildloop =1;
+
+    while (guildloop) {
+	    wprintw(win,
+		    "Guild Master:\n\nIt's good to see you %s, "
+		    "how can we help you\non this fine day?\n\nThere is work to do, if you're interested...\n\n1. Accept quest\n2. Decline quest",
+		    p.name
+	    );
+	    int response = wgetch(win);
+        switch (response) {
+            case '1':
+                generate_quest2(town);
+                break;
+            case '2':
+                guildloop = 0;
+                break;
+        };
+    };
 }
 
 void action_enter_city_tailor()

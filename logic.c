@@ -4,6 +4,17 @@
 #include "entities.h"
 #include "logic.h"
 
+void init_citylist()
+{
+	allcities.cities[0] = zander;
+	allcities.cities[1] = talis;
+	allcities.cities[2] = adriin;
+	allcities.cities[3] = doxoun;
+	allcities.cities[4] = calia;
+	allcities.cities[5] = grelin;
+	allcities.size = 6;
+}
+
 int check_location(City town)
 {
 	if (p.x == town.x && p.y == town.y) {
@@ -17,20 +28,11 @@ int check_location(City town)
 
 void set_location()
 {
-	if (check_location(zander)) {
-		return;
-	} else if (check_location(talis)) {
-		return;
-	} else if (check_location(adriin)) {
-		return;
-	} else if (check_location(doxoun)) {
-		return;
-	} else if (check_location(calia)) {
-		return;
-	} else if (check_location(grelin)) {
-		return;
+	for (size_t i = 0; i < allcities.size; ++i) {
+		check_location(allcities.cities[i]);
+	}	
 
-	} else if ((p.x > 6 && p.y > 4) || (p.x == 6 && p.y == 6)) {
+	if ((p.x > 6 && p.y > 4) || (p.x == 6 && p.y == 6)) {
 		p.intown = 0;
 		printw("Forest of Grensdale\n\n\n");
 	} else if (p.x == 1 && p.y == 5) {
@@ -40,7 +42,6 @@ void set_location()
 		p.intown = 0;
 		printw("Plains of Castamere\n\n\n");
 	}
-
 }
 
 void update_pxy()

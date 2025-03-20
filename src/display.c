@@ -46,7 +46,8 @@ void print_title()
 		"    Hello and welcome to Tania!\n\n"
 		"    The Duke has been gone for three years now,\n"
 		"fighting heathens abroad. Unrest grows across the\n"
-		"realm as local nobles grow to fill the void.\n"
+		"realm as local nobles grow to fill the void left\n"
+		"in his absence."
 	);
 	if (wgetch(win) == 'd') debug = 1;
 	werase(win);
@@ -107,9 +108,18 @@ void print_actions()
 
 void print_event(char* text)
 {
+	int eventloop = 1;
 	wclear(win);
 	wprintw(win, text);
-	wgetch(win);
+	wprintw(win, "\n\n\n\n(b) to go back");
+	while (eventloop) {
+		int response = wgetch(win);
+		switch (response) {
+			case 'b':
+				eventloop = 0;
+				break;
+		}
+	}
 }
 
 void print_event_args(char* text, char* args)

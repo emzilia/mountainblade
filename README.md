@@ -1,5 +1,7 @@
 # mountain blade
 
+![mountainblade](https://i.ibb.co/4S54nsK/mountainblade-0-1-4.png)
+
 based on the hit game of the same name. very early access
 
 current priority:
@@ -49,5 +51,3 @@ take quests from nobles to increase their opinion
 turn game into dating sim (tentative)
 
 most of the currently completed work has been on the backend building the framework for these mechanics   
-
-![mountainblade](https://i.ibb.co/4S54nsK/mountainblade-0-1-4.png)

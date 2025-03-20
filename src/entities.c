@@ -9,6 +9,7 @@ User p = {
 	.charisma = 5,
 	.denars = 300,
 	.renown = 1,
+	.honor = 0,
 	.title = "Esquire",
 	.intown = 0,
 	.x = 1,
@@ -20,7 +21,7 @@ Inventory bag = {
 };
 
 Item sword1 = {
-	.name = "Father's sword",
+	.name = "Heirloom blade",
 	.quantity = 1,
 	.quality = 1,
 };

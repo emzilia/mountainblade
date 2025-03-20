@@ -17,6 +17,7 @@ typedef struct User {
 	size_t charisma;
 	int denars;
 	int renown;
+	int honor;
 	char title[10];
 	char location[20];
 	int intown;

@@ -51,7 +51,6 @@ void input_mainloop()
 		switch (response) {
 			case '1':
 				action_setup_camp();
-				if (debug) p.x = 5;
 				break;
 			case '2':
 				action_draft_letter();
@@ -80,7 +79,7 @@ void input_mainloop()
 			exit(0);
 	}
 }
-// test
+
 int main(void)
 {
 	srand(time(NULL));
@@ -92,7 +91,7 @@ int main(void)
 
 	int running = 1;
 	while (running) {
-		update_partyupkeep();
+		update_partyupkeep(&party);
 		set_user_rank(&p);
 		print_map(map, rows, columns);
 		set_location(&p);

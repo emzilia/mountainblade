@@ -68,7 +68,7 @@ const City adriin = {
 const City doxoun = {
 	.name = "Doxoun",
 	.location = "City of Doxoun",
-	.noble = "Lord Raegan",
+	.noble = "Lady Raegai",
 	.pop = 11600,
 	.danger = 7,
 	.wealth = 9,
@@ -220,10 +220,32 @@ void action_enter_city()
 	getch();
 }
 
+void action_contact_noble()
+{
+	clear();
+	printw("You send your aid to the estate of the local\nnoble, hoping to arrange a meeting.");
+	refresh();
+	getch();
+}
+
 void action_hire_mercs()
 {
 	clear();
 	printw("You send messengers to the local taverns,\nhoping to find some troops to hire.");
+	refresh();
+	getch();
+}
+
+void action_view_relations()
+{
+	clear();
+	printw("%s\n%s\n\n%s\n%s, %s\n\n%s\n%s\n\n%s\n%s\n\n%s\n%s\n",
+		zander.noble, zander.location,
+		talis.noble, talis.location, grelin.location,
+		adriin.noble, adriin.location,
+		doxoun.noble, doxoun.location,
+		calia.noble, calia.location
+	);
 	refresh();
 	getch();
 }
@@ -259,8 +281,8 @@ void movement()
 			case '1':
 				action_enter_city();
 				break;
-			case 2: 
-				//action_contact_noble();
+			case '2': 
+				action_contact_noble();
 				break;
 			case '3':
 				action_hire_mercs();
@@ -268,13 +290,25 @@ void movement()
 		}
 	} else if (!p.intown) {
 		switch (response) {
-			case 1:
+			case '1':
 				//action_setup_camp();
 				break;
-			case 2:
+			case '2':
 				//action_draft_letter();
 				break;
 		}
+	}
+	
+	switch (response) {
+		case 'i':
+			//action_view_inventory();
+			break;
+		case 'r':
+			action_view_relations();
+			break;
+		case 'q':
+			//action_view_quests();
+			break;
 	}
 }
 

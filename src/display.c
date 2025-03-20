@@ -139,5 +139,4 @@ void print_event_args(char* text, char* args)
 {
 	wclear(win);
 	wprintw(win, text, args);
-	wgetch(win);
 }

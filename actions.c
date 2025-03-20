@@ -22,7 +22,7 @@ void action_enter_city(City town)
 			"%s\n%s\n\nWho would you like to see?\n\n"
 			"1. Guild Master\n2. Tailor\n"
 			"3. Blacksmith\n4. Stablekeeper\n"
-			"\n(b) to go back",
+			"\n(b) to go back\n",
 			p.location, town.wealthnote
 		);	
 		int response = wgetch(win);
@@ -41,6 +41,12 @@ void action_enter_city(City town)
 				break;
 			case 'b':
 				cityloop = 0;
+				break;
+			case 'm':
+				if (debug) {
+					p.denars += 125;
+					wprintw(win, "\nshow me the money\n");
+				}
 				break;
 		}
 	}

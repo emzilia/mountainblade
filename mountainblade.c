@@ -7,6 +7,7 @@
 int display(char *text);
 void look();
 void city_all();
+void print_userinfo();
 
 typedef struct {
 	char name[6]; 
@@ -21,9 +22,9 @@ typedef struct {
 } User;
 
 typedef struct {
-	char name[6];
-	char location[14];
-	char noble[14];
+	char name[7];
+	char location[15];
+	char noble[15];
 	size_t pop;
 	size_t danger;
 	size_t wealth;
@@ -113,12 +114,12 @@ int posY = 1;
 
 char map[8][14] = {
 	"o============o",
-	"|.....c......|",
-	"|.t..........|",
-	"|..........t.|",
-	"|.....c......|",
-	"|........t...|",
-	"|..c.........|",
+	"|.....c./....|",
+	"|.t..../.....|",
+	"|..___/....t.|",
+	"|./...c......|",
+	"|/.....\"\"t\"\"\"|",
+	"|..c..\"\"\"\"\"\"\"|",
 	"o============o"
 };
 	
@@ -151,7 +152,15 @@ void print_map(char arr[][14], int rows, int columns) {
 	addch('\n'); }
 	//printw(" %zu, %zu\n", p.x, p.y);
 	city_all();
+	print_userinfo();
 	printw("Actions:\n");
+}
+
+void print_userinfo()
+{
+	printw("Your title is %s\n", p.title);
+	printw("You have $%i in silver coins\n", p.denars);
+	printw("You have %zu warriors in your employ\n\n", p.army);	
 }
 
 int city_look(City town)
@@ -159,9 +168,6 @@ int city_look(City town)
 	if (p.x == town.x && p.y == town.y) {
 		p.intown = 1;
 		printw("%s\nPopulation of %zu\n\n", town.location, town.pop);
-		printw("Your title is %s\n", p.title);
-		printw("You have $%i in silver coins\n", p.denars);
-		printw("You have %zu warriors in your employ\n\n", p.army);	
 		return 1;
 	}
 	return 0;
@@ -181,12 +187,15 @@ void city_all()
 		return;
 	} else if (city_look(grelin)) {
 		return;
+	} else if ((p.x > 6 && p.y > 4) || (p.x == 6 && p.y == 6)) {
+		p.intown = 0;
+		printw("Forest of Grensdale\n\n\n");
+	} else if (p.x == 1 && p.y == 5) {
+		p.intown = 0;
+		printw("The King's River\n\n\n");
 	} else {
 		p.intown = 0;
 		printw("Plains of Castamere\n\n\n");
-		printw("Your title is %s\n", p.title);
-		printw("You have $%i in silver coins\n", p.denars);
-		printw("You have %zu warriors in your employ\n\n", p.army);
 	}
 
 }
@@ -200,6 +209,7 @@ void actions()
 	}
 	printw("i. View Inventory\n"); 
 	printw("r. View Relations\n"); 
+	printw("q. View Current Quests\n");
 }
 
 void movement()

@@ -3,7 +3,7 @@
 
 #include "entities.h"
 
-extern int check_location(City town);
-extern void set_location();
+int check_location(City town);
+void set_location();
 
 #endif

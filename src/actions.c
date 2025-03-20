@@ -284,6 +284,8 @@ void action_view_quests()
 {
 	wclear(win);
 	wprintw(win, "Quests:\n\n");
+	if (allquests.totaldel == 0 && allquests.totalsla == 0) 
+		wprintw(win, "You don't currently have any quests.\n\n");
 	if (allquests.totaldel > 0) {
 		for (size_t i = 0; i < allquests.totaldel; ++i) {
 			wprintw(

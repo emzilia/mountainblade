@@ -6,15 +6,15 @@
 #include "display.h"
 #include "logic.h"
 
-char map[8][14] = {
-	"o============o",
-	"|.....c./^^^^|",
-	"|.t..../.....|",
-	"|..___/....t.|",
-	"|./...c......|",
-	"|/.....**t***|",
-	"|..c..*******|",
-	"o============o"
+char map[8][28] = {
+	"o============o=============o",
+	"|.....c./^^^^^^^^^^^^^^^t..|",
+	"|.t..../........c^^^^^^^...|",
+	"|..___/....t.............c.|",
+	"|./...c........c...........|",
+	"|/.....**t*******..t.......|",
+	"|..c..************......t..|",
+	"o============o=============o"
 };
 	
 
@@ -34,7 +34,7 @@ void print_title()
 	clear();
 }
 
-void print_map(char arr[][14], int rows, int columns) {
+void print_map(char arr[][28], int rows, int columns) {
 	printw("Dutchy of Tania\n");
 	for (int r = 0; r < rows; r++) {
 		for (int c = 0; c < columns; c++) {
@@ -46,6 +46,7 @@ void print_map(char arr[][14], int rows, int columns) {
 	addch('\n'); }
 	if (debug) printw(" %d, %d\n", p.x, p.y);
 	set_location();
+	refresh();
 }
 
 void print_userinfo()

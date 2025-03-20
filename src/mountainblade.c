@@ -19,38 +19,39 @@ void input_mainloop()
 	switch (response) {
 		case 'k':
 		case KEY_UP:
-			move_north();
+			move_north(&p);
 			break;
 		case 'j':
 		case KEY_DOWN:
-			move_south();
+			move_south(&p);
 			break;
 		case 'h':
 		case KEY_LEFT:
-			move_west();
+			move_west(&p);
 			break;
 		case 'l':
 		case KEY_RIGHT:
-			move_east();
+			move_east(&p);
 			break;
 	}
 	
 	if (p.intown) {
 		switch (response) {
 			case '1':
-				action_enter_city(currenttown);
+				action_enter_city(&currenttown);
 				break;
 			case '2': 
-				action_contact_noble();
+				action_contact_noble(&currenttown);
 				break;
 			case '3':
-				action_hire_mercs(currenttown);
+				action_hire_mercs(&currenttown);
 				break;
 		}
 	} else if (!p.intown) {
 		switch (response) {
 			case '1':
 				action_setup_camp();
+				if (debug) p.x = 5;
 				break;
 			case '2':
 				action_draft_letter();
@@ -79,7 +80,7 @@ void input_mainloop()
 			exit(0);
 	}
 }
-
+// test
 int main(void)
 {
 	srand(time(NULL));
@@ -94,7 +95,7 @@ int main(void)
 		update_partyupkeep();
 		set_user_rank(&p);
 		print_map(map, rows, columns);
-		set_location();
+		set_location(&p);
 		print_userinfo();
 		print_time();
 		print_actions();

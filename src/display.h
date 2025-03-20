@@ -9,7 +9,7 @@ int print_map(char map[][28], int rows, int columns);
 void print_userinfo(int currentlocation);
 void print_time();
 void print_actions();
-void print_event(char* text);
+void print_event(char* text, char* flavor);
 void print_event_args(char* text, char* args);
 
 extern WINDOW* win;

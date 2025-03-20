@@ -22,6 +22,8 @@ typedef struct {
 
 typedef struct {
 	char name[6];
+	char location[14];
+	char noble[14];
 	size_t pop;
 	size_t danger;
 	size_t wealth;
@@ -31,6 +33,8 @@ typedef struct {
 
 City zander = {
 	.name = "Zander",
+	.location = "Town of Zander",
+	.noble = "Lord Balder",
 	.pop = 22300,
 	.danger = 5,
 	.wealth = 3,
@@ -40,6 +44,8 @@ City zander = {
 
 City talis = {
 	.name = "Talis",
+	.location = "City of Talis",
+	.noble = "Lady Alinna",
 	.pop = 27400,
 	.danger = 3,
 	.wealth = 7,
@@ -49,6 +55,8 @@ City talis = {
 
 City adriin = {
 	.name = "Adriin",
+	.location = "City of Adriin",
+	.noble = "Lady Merisa",
 	.pop = 38500,
 	.danger = 1,
 	.wealth = 5,
@@ -58,6 +66,8 @@ City adriin = {
 
 City doxoun = {
 	.name = "Doxoun",
+	.location = "City of Doxoun",
+	.noble = "Lord Raegan",
 	.pop = 11600,
 	.danger = 7,
 	.wealth = 9,
@@ -67,6 +77,8 @@ City doxoun = {
 
 City calia = {
 	.name = "Calia",
+	.location = "Town of Calia",
+	.noble = "Lord Kieran",
 	.pop = 2350,
 	.danger = 2,
 	.wealth = 2,
@@ -76,6 +88,8 @@ City calia = {
 
 City grelin = {
 	.name = "Grelin",
+	.location = "Town of Grelin",
+	.noble = "Lady Alinna",
 	.pop = 870,
 	.danger = 4,
 	.wealth = 1,
@@ -86,7 +100,7 @@ City grelin = {
 
 User p = {
 	.name = '@',
-	.army = 235,
+	.army = 40,
 	.charisma = 5,
 	.denars = 450,
 	.title = "Knight",
@@ -144,10 +158,10 @@ int city_look(City town)
 {
 	if (p.x == town.x && p.y == town.y) {
 		p.intown = 1;
-		printw("City of %s\nPopulation of %zu\n\n", town.name, town.pop);
+		printw("%s\nPopulation of %zu\n\n", town.location, town.pop);
 		printw("Your title is %s\n", p.title);
 		printw("You have $%i in silver coins\n", p.denars);
-		printw("You have %zu warriors in your band\n\n", p.army);	
+		printw("You have %zu warriors in your employ\n\n", p.army);	
 		return 1;
 	}
 	return 0;
@@ -172,7 +186,7 @@ void city_all()
 		printw("Plains of Castamere\n\n\n");
 		printw("Your title is %s\n", p.title);
 		printw("You have $%i in silver coins\n", p.denars);
-		printw("You have %zu warriors in your band\n\n", p.army);
+		printw("You have %zu warriors in your employ\n\n", p.army);
 	}
 
 }
@@ -180,10 +194,12 @@ void city_all()
 void actions()
 {
 	if (p.intown) {
-	printw("1. Enter city\n2. Contact nobleman"); 
+	printw("1. Enter city\n2. Contact nobleman\n3. Hire local mercenaries\n\n"); 
 	} else if (!p.intown) {
-	printw("1. Setup fortified camp\n2. Draft correspondence");
+	printw("1. Setup fortified camp\n2. Draft correspondence\n\n");
 	}
+	printw("i. View Inventory\n"); 
+	printw("r. View Relations\n"); 
 }
 
 void movement()
@@ -195,7 +211,7 @@ void movement()
 				p.y--;
 			break;
 		case KEY_DOWN:
-			if (p.y < columns - 2)
+			if (p.y < rows - 2)
 				p.y++; 
 			break;
 		case KEY_LEFT:
@@ -211,19 +227,22 @@ void movement()
 	if (p.intown) {
 		switch (response) {
 			case 1:
-				//enter_city();
+				//action_enter_city();
 				break;
 			case 2: 
-				//contact_noble;
+				//action_contact_noble();
+				break;
+			case 3:
+				//action_hire_mercs();
 				break;
 		}
 	} else if (!p.intown) {
 		switch (response) {
 			case 1:
-				//setup_camp();
+				//action_setup_camp();
 				break;
 			case 2:
-				//draft_letter();
+				//action_draft_letter();
 				break;
 		}
 	}

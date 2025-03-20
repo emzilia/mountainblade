@@ -9,69 +9,68 @@
 
 void init_citylist()
 {
-	allcities.cities[0] = &zander;
 	zander.owner = &balder;
+	allcities.cities[0] = &zander;
 
-	allcities.cities[1] = &adriin;
 	adriin.owner = &viscountess;
+	allcities.cities[1] = &adriin;
 
-	allcities.cities[2] = &doxoun;
 	doxoun.owner = &raegai;
+	allcities.cities[2] = &doxoun;
 
-	allcities.cities[3] = &calia;
 	calia.owner = &kieran;
+	allcities.cities[3] = &calia;
 
-	allcities.cities[4] = &grelin;
 	grelin.owner = &usoro;
+	allcities.cities[4] = &grelin;
 
-	allcities.cities[5] = &amelo;
 	amelo.owner = &torace;
+	allcities.cities[5] = &amelo;
 		
-	allcities.cities[6] = &yefhold;
 	yefhold.owner = &viscountess;
+	allcities.cities[6] = &yefhold;
 
-	allcities.cities[7] = &grii;
 	grii.owner = &viscountess;
+	allcities.cities[7] = &grii;
 
-	allcities.cities[8] = &todt;
 	todt.owner = &alinna;
+	allcities.cities[8] = &todt;
 
-	allcities.cities[9] = &joeton;
 	joeton.owner = &alinna;
+	allcities.cities[9] = &joeton;
 
-	allcities.cities[10] = &salls;
 	salls.owner = &torace;
+	allcities.cities[10] = &salls;
 
 	allcities.size = 11;
 }
 
 void init_noblelist()
 {
-	allnobles.nobles[0] = &viscountess;
 	viscountess.fiefs[0] = &adriin;
 	viscountess.fiefs[1] = &grii;
 	viscountess.fiefs[2] = &yefhold;
+	allnobles.nobles[0] = &viscountess;
 
-	allnobles.nobles[1] = &alinna;
 	alinna.fiefs[0] = &joeton;
 	alinna.fiefs[1] = &todt;
+	allnobles.nobles[1] = &alinna;
 
-	allnobles.nobles[2] = &raegai;
 	raegai.fiefs[0] = &doxoun;
+	allnobles.nobles[2] = &raegai;
 
-	allnobles.nobles[3] = &torace;
 	torace.fiefs[0] = &amelo;
 	torace.fiefs[1] = &salls;
+	allnobles.nobles[3] = &torace;
 
-	allnobles.nobles[4] = &balder;
 	balder.fiefs[0] = &zander;
+	allnobles.nobles[4] = &balder;
 
-	allnobles.nobles[5] = &usoro;
 	usoro.fiefs[0] = &grelin;
+	allnobles.nobles[5] = &usoro;
 
-	allnobles.nobles[6] = &kieran;
 	kieran.fiefs[0] = &calia;
-
+	allnobles.nobles[6] = &kieran;
 
 	allnobles.size = 7;
 }
@@ -164,3 +163,15 @@ void set_user_rank(User* list)
 	if (!strcmp(p.title, "Baron")) p.armycap = 150;
 	if (!strcmp(p.title, "Viscount")) p.armycap = 350;
 }
+
+void add_to_inventory(Item thing)
+{
+	if (bag.size < 10) {
+		bag.items[bag.size] = thing;
+		++bag.size;
+	} else {
+		print_event("The inventory is full.");
+	}
+
+}
+

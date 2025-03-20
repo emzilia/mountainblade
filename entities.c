@@ -172,36 +172,42 @@ City salls = {
 	.xy = 11 + 3,
 };
 
-Noble balder = {
-	.name = "Baron Balder",
-};
-
 Noble viscountess = {
 	.name = "The Viscountess",
-};
-
-Noble raegai = {
-	.name = "Baroness Raegai",
-};
-
-Noble kieran = {
-	.name = "Sir Kieran",
+	.totalfiefs = 2,
 };
 
 Noble alinna = {
 	.name = "Marquise Alinna",
+	.totalfiefs = 2,
+};
+Noble nazia = {
+	.name = "Lady Nazia",
+	.totalfiefs = 1,
+};
+
+Noble balder = {
+	.name = "Baron Balder",
+	.totalfiefs = 1,
+};
+Noble raegai = {
+	.name = "Baroness Raegai",
+	.totalfiefs = 1,
 };
 
 Noble torace = {
 	.name = "Baron Torace",
+	.totalfiefs = 2,
+};
+
+Noble kieran = {
+	.name = "Sir Kieran",
+	.totalfiefs = 1,
 };
 
 Noble usoro = {
 	.name = "Sir Usoro",
-};
-
-Noble nazia = {
-	.name = "Lady Nazia",
+	.totalfiefs = 1,
 };
 
 CityList allcities;

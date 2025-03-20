@@ -118,8 +118,54 @@ void print_event(char* text, char* flavor)
 	}
 }
 
-void print_event_args(char* text, char* args)
+char print_event_small(char* text, char* args)
 {
-	wclear(win);
 	wprintw(win, text, args);
+	int response = wgetch(win);
+	return response;
+}
+
+char print_event_args(char* text, char* args)
+{
+	werase(win);
+	wprintw(win, text, args);
+	int response = wgetch(win);
+	return response;
+}
+
+char print_event_args2(char* text, char* textargs1, char* textargs2)
+{
+	char buffer[256];
+	werase(win);
+	sprintf(buffer, text, textargs1, textargs2);
+	wprintw(win, "%s", buffer);
+	int response = wgetch(win);
+	return response;
+}
+
+void print_eventnew(char* text, char* textargs, char* flavor)
+{
+	int eventloop = 1;
+	werase(win);
+	wprintw(win, text, textargs);
+	wprintw(win, "\n\n\n\n(b) %s", flavor);
+	while (eventloop) {
+		int response = wgetch(win);
+		switch (response) {
+			case 'b':
+				eventloop = 0;
+				break;
+		}
+	}
+}
+
+void print_event_long(
+        char* title, char* titleargs, 
+        char* body, char* bodyargs, 
+        char* foot, char* footargs)
+{
+        wclear(win);
+        wprintw(win, title, titleargs);
+        wprintw(win, body, bodyargs);
+        wprintw(win, foot, footargs);
 }

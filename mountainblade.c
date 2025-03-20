@@ -56,10 +56,10 @@ void input_mainloop()
 	} else if (!p.intown) {
 		switch (response) {
 			case '1':
-				//action_setup_camp();
+				action_setup_camp();
 				break;
 			case '2':
-				//action_draft_letter();
+				action_draft_letter();
 				break;
 		}
 	}

@@ -21,17 +21,13 @@ void action_enter_city(City town)
 		mvwprintw(win, 0, 0, "%s", p.location);
 		mvwprintw(win, 1, 0, "%s", town.wealthnote);
 		mvwprintw(win, 4, 0, "Who would you like to see?");
-		mvwprintw(win, 6, 0, "n. %s", town.owner->name);
-		mvwprintw(win, 8, 0, "1. Guild Master");
-		mvwprintw(win, 9, 0, "2. Tailor");
-		mvwprintw(win, 10, 0, "3. Blacksmith");
-		mvwprintw(win, 11, 0, "4. Stablekeeper");
-		mvwprintw(win, 13, 0, "(b) to go back");
+		mvwprintw(win, 6, 0, "1. Guild Master");
+		mvwprintw(win, 7, 0, "2. Tailor");
+		mvwprintw(win, 8, 0, "3. Blacksmith");
+		mvwprintw(win, 9, 0, "4. Stablekeeper");
+		mvwprintw(win, 12, 0, "(b) to go back");
 		int response = wgetch(win);
 		switch (response) {
-			case 'n':
-				action_enter_city_guildmaster();
-				break;
 			case '1':
 				action_enter_city_guildmaster();
 				break;
@@ -62,8 +58,8 @@ void action_enter_city_guildmaster()
 {
 	wclear(win);
 	wprintw(win,
-		"Guild Master:\n\nGreetings %s, "
-		"how can we help you today?\n",
+		"Guild Master:\n\nIt's good to see you %s, "
+		"how can we help you\non this fine day?\n",
 		p.name
 	);
 	wgetch(win);
@@ -73,8 +69,8 @@ void action_enter_city_tailor()
 {
 	wclear(win);
 	wprintw(win,
-		"Tailor:\n\nHello %s, "
-		"how can we help you today?",
+		"Tailor:\n\nGreetings %s, "
+		"you have an impeccable style, but\nif I may make some suggestions...",
 		p.name
 	);
 	wgetch(win);
@@ -84,7 +80,7 @@ void action_enter_city_blacksmith()
 	wclear(win);
 	wprintw(win,
 	"Blacksmith:\n\nHello %s, "
-	"how can we help you today?",
+	"we have arms and armor that would be\nmost suitable for you.",
 	p.name
 	);
 	wgetch(win);
@@ -94,8 +90,8 @@ void action_enter_city_stablekeeper()
 {
 	wclear(win);
 	wprintw(win,
-	"Stablekeeper:\n\nHello %s, "
-	"how can we help you today?",
+	"Stablekeeper:\n\nHowdy %s, "
+	"interested in the finest horses in\nthe realm?",
 	p.name
 	);
 	wgetch(win);
@@ -258,7 +254,7 @@ void action_view_inventory()
 	} else {
 		int row = 2;
 		for (size_t i = 0; i < bag.size; ++i) {
-			mvwprintw(win, row, 0, "%zu. %s", i + 1, bag.items[i].name);
+			mvwprintw(win, row, 0, "%zu. %s\t%s", i + 1, bag.items[i].name, bag.items[i].info);
 			row += 2;
 		}
 
@@ -279,7 +275,7 @@ void action_view_relations()
 		wprintw(win, "\n");
 	};
 	wgetch(win);
-	add_to_inventory(&sword1);
+	add_to_inventory(&bag, &sword1);
 }
 
 void action_view_quests()

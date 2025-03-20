@@ -9,6 +9,11 @@ void init_buddylist();
 void init_partylist();
 void init_gamelists();
 
+void move_north();
+void move_south();
+void move_west();
+void move_east();
+
 void update_partyupkeep();
 
 int check_location(City* town);

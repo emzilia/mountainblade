@@ -19,27 +19,19 @@ void input_mainloop()
 	switch (response) {
 		case 'k':
 		case KEY_UP:
-			if (p.y > 1)
-				p.y--;
-				advance_hour((rand() % 2) + 2);
+			move_north();
 			break;
 		case 'j':
 		case KEY_DOWN:
-			if (p.y < rows - 2)
-				p.y++; 
-				advance_hour((rand() % 2) + 2);
+			move_south();
 			break;
 		case 'h':
 		case KEY_LEFT:
-			if (p.x > 1)
-				p.x--;
-				advance_hour((rand() % 2) + 2);
+			move_west();
 			break;
 		case 'l':
 		case KEY_RIGHT:
-			if (p.x < columns - 2)
-				p.x++;
-				advance_hour((rand() % 2) + 2);
+			move_east();
 			break;
 	}
 	

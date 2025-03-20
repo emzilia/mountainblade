@@ -6,6 +6,7 @@
 #include "logic.h"
 #include "display.h"
 #include "actions.h"
+#include "gtime.h"
 
 void init_citylist()
 {
@@ -104,6 +105,38 @@ void init_gamelists()
 	init_noblelist();
 	init_buddylist();
 	init_partylist();
+}
+
+void move_north()
+{
+	if (p.y > 1) {
+		p.y--;
+		advance_hour((rand() % 2) + 2);
+	}
+}
+
+void move_south()
+{
+	if (p.y < rows - 2) {
+		p.y++;
+		advance_hour((rand() % 2) + 2);
+	}
+}
+
+void move_west()
+{
+	if (p.x > 1) {
+		p.x--;
+		advance_hour((rand() % 2) + 2);
+	}
+}
+
+void move_east()
+{
+	if (p.x < columns - 2) {
+		p.x++;
+		advance_hour((rand() % 2) + 2);
+	}
 }
 
 void update_partyupkeep()

@@ -7,7 +7,9 @@
 extern City currenttown;
 
 void action_enter_city(City* town);
+void action_enter_citytesting(City* town);
 void action_enter_city_guildmaster(City* town);
+void action_enter_city_guildmastertesting(City* town);
 void action_enter_city_tailor();
 void action_enter_city_blacksmith();
 void action_enter_city_stablekeeper();

@@ -24,7 +24,7 @@ morale effects for troops
 
 **quests:**   
 ~~able to accept two types of quests:~~   
-~~delivery letters to other npcs~~   
+~~deliver letters to other npcs~~   
 ~~kill number of bandits on road~~   
 ~~view quest list~~   
 complete quests for xp + renown   

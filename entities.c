@@ -81,3 +81,5 @@ City grelin = {
 	.y = 3,
 	.xy = 11 + 3,
 };
+
+CityList allcities;

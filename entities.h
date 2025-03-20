@@ -28,6 +28,11 @@ typedef struct {
 	int xy;
 } City;
 
+typedef struct {
+	City cities[6];
+	size_t size;
+} CityList;
+
 extern User p;
 extern City zander;
 extern City talis;
@@ -35,5 +40,6 @@ extern City adriin;
 extern City doxoun;
 extern City calia;
 extern City grelin;
+extern CityList allcities;
 
 #endif

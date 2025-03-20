@@ -1,7 +1,11 @@
 #ifndef ACTIONS_H
 #define ACTIONS_H
 
-void action_enter_city();
+#include "entities.h"
+
+extern City currenttown;
+
+void action_enter_city(City town);
 void action_enter_city_guildmaster();
 void action_enter_city_tailor();
 void action_enter_city_blacksmith();

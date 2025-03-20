@@ -4,26 +4,27 @@
 #include "entities.h"
 #include "actions.h"
 #include "display.h"
+#include "logic.h"
 
-void action_enter_city()
+void action_enter_city(City town)
 {
-	wclear(win);
+	werase(win);
 	wprintw(win,
 		"You approach the gates to the %s\nThe guard ushers"
-		" your party through without complaint.",
+		" your party through without\ncomplaint.",
 		p.location);
 	wrefresh(win);
 	getch();
 
 	int cityloop = 1;
 	while (cityloop) {
-		wclear(win);
+		werase(win);
 		wprintw(win,
-			"%s\n\nWho would you like to see?\n\n"
+			"%s\n%s\n\nWho would you like to see?\n\n"
 			"1. Guild Master\n2. Tailor\n"
 			"3. Blacksmith\n4. Stablekeeper\n"
 			"\n(b) to go back",
-			p.location
+			p.location, town.wealthnote
 		);	
 		wrefresh(win);
 		int response = getch();

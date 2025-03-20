@@ -96,11 +96,84 @@ void action_contact_noble()
 	wgetch(win);
 }
 
-void action_hire_mercs()
+void action_hire_mercs(City town)
 {
 	wclear(win);
 	wprintw(win, "You send messengers to the local taverns,\nhoping to find some troops to hire.");
 	wgetch(win);
+	if (town.iscity) action_hire_mercs_maa();
+	else action_hire_mercs_peasants();
+}
+
+void action_hire_mercs_peasants()
+{
+	int peasants = (rand() % 3) + 2;
+	int cost = peasants * 5;
+	size_t weeklycost = peasants * party.pspearupkeep;
+	wprintw(win, 
+		"\n\n%i locals seem adventurous enough.\n\n"
+		"It'll cost %i denars to equip them,\nas well as an extra %zu denars weekly.\n(Your total: %i)\n\n"
+		"How does that sound?\n\n1. Sure thing\n2. No thanks\n",
+		peasants, cost, weeklycost, p.denars
+	);
+	int response = wgetch(win);
+	switch (response) {
+		case '1':
+			action_hire_mercs_peasants_yes(peasants, cost);
+			break;
+		case '2':
+			break;
+	}
+}
+
+void action_hire_mercs_peasants_yes(int peasants, int cost)
+{
+	int chance = rand() % 11;
+	if (chance > 2) {
+		party.pspear += peasants;
+		wclear(win);
+		wprintw(win, " %i %s have joined your party.", peasants, party.pspearname);
+		if (debug) wprintw(win, "\n%i\n", chance);
+		wgetch(win);
+	} else { 
+		party.pbow += peasants;
+		wclear(win);
+		wprintw(win, " %i %s have joined your party.", peasants, party.pbowname);
+		if (debug) wprintw(win, "\n%i\n", chance);
+		wgetch(win);
+	}
+	p.denars -= cost;
+}
+
+void action_hire_mercs_maa()
+{
+	int maa = (rand() % 3) + 2;
+	int cost = maa * 15;
+	size_t weeklycost = maa * party.maaupkeep;
+	wprintw(win, 
+		"\n\n%i veteral soldiers are seeking work.\n\n"
+		"It'll cost %i denars to equip them,\nas well as an extra %zu denars weekly.\n(Your total: %i)\n\n"
+		"How does that sound?\n\n1. Sure thing\n2. No thanks\n",
+		maa, cost, weeklycost, p.denars
+	);
+	int response = wgetch(win);
+	switch (response) {
+		case '1':
+			action_hire_mercs_maa_yes(maa, cost);
+			break;
+		case '2':
+			break;
+	}
+
+}
+
+void action_hire_mercs_maa_yes(int maa, int cost)
+{
+	party.maa += maa;
+	wclear(win);
+	wprintw(win, " %i %s have joined your party.", maa, party.maaname);
+	wgetch(win);
+	p.denars -= cost;
 }
 
 void action_setup_camp()

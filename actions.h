@@ -13,7 +13,11 @@ void action_enter_city_stablekeeper();
 
 void action_contact_noble();
 
-void action_hire_mercs();
+void action_hire_mercs(City town);
+void action_hire_mercs_peasants();
+void action_hire_mercs_peasants_yes(int peasants, int cost);
+void action_hire_mercs_maa();
+void action_hire_mercs_maa_yes(int maa, int cost);
 
 void action_setup_camp();
 

@@ -189,7 +189,7 @@ City currenttown;
 void calc_city_wealth(City* city)
 {
 	char wealth3[100] = "The streets are bustling with laborers and\ntraders going about their daily business.";
-	char wealth2[100] = "The streets are quiet but well-kept and the\nlocals seem content.";
+	char wealth2[100] = "The streets are quiet and well-kept, the\nlocals seem content.";
 	char wealth1[100] = "The streets are dirty and the locals squint at\nyou with suspicious eyes.";
 
 	if (city->wealth > 0) strcpy(city->wealthnote, wealth1); 
@@ -209,7 +209,7 @@ void set_user_rank(User* list)
 	if (!strcmp(list->title, "Viscount")) p.armycap = 350;
 }
 
-void add_to_inventory(Item* thing)
+void add_to_inventory(Inventory* inventory, Item* thing)
 {
 	if (bag.size < 10) {
 		bag.items[bag.size] = *thing;
@@ -217,5 +217,22 @@ void add_to_inventory(Item* thing)
 	} else {
 		print_event("The inventory is full.");
 	}
+}
+
+void generate_quest1(City* city)
+{
+	if (allquests.totaldel > 4) return;
+	
+	int questtarget = (rand() % 7);
+
+	Quest1 latestdel = {
+		.giver = city->owner,	
+		.target = allnobles.nobles[questtarget],
+		.renown_gain = 3,
+		.relation_buff = 1,
+	};
+
+	allquests.deliveries[allquests.totaldel] = latestdel;
+
 }
 

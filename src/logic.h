@@ -21,6 +21,6 @@ void set_location();
 void calc_city_wealth(City* city);
 void set_user_rank(User* list);
 
-void add_to_inventory(Item* thing);
+void add_to_inventory(Inventory* inventory, Item* thing);
 
 #endif

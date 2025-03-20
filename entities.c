@@ -2,10 +2,11 @@
 
 User p = {
 	.name = "Tony",
-	.army = 12,
-	.armycap = 65,
+	.army = 13,
+	.armycap = 35,
 	.charisma = 5,
 	.denars = 120,
+	.rank = 1,
 	.title = "Esquire",
 	.intown = 0,
 	.x = 1,
@@ -20,20 +21,8 @@ City zander = {
 	.danger = 5,
 	.wealth = 3,
 	.x = 2,
-	.y = 2,
+	.y = 3,
 	.xy = 2 + 2,
-};
-
-City talis = {
-	.name = "Talis",
-	.location = "City of Talis",
-	.noble = "Marquise Alinna",
-	.pop = 7430,
-	.danger = 3,
-	.wealth = 7,
-	.x = 3,
-	.y = 6,
-	.xy = 3 + 6,
 };
 
 City adriin = {
@@ -43,8 +32,8 @@ City adriin = {
 	.pop = 11570,
 	.danger = 1,
 	.wealth = 5,
-	.x = 6,
-	.y = 4,
+	.x = 11,
+	.y = 3,
 	.xy = 6 + 4,
 };
 
@@ -79,8 +68,8 @@ City grelin = {
 	.pop = 870,
 	.danger = 4,
 	.wealth = 1,
-	.x = 11,
-	.y = 3,
+	.x = 3,
+	.y = 6,
 	.xy = 11 + 3,
 };
 
@@ -90,7 +79,7 @@ City amelo = {
 	.noble = "Baron Torace",
 	.pop = 1780,
 	.danger = 4,
-	.wealth = 1,
+	.wealth = 9,
 	.x = 19,
 	.y = 5,
 	.xy = 11 + 3,
@@ -102,7 +91,7 @@ City yefhold = {
 	.noble = "Marquise Alinna",
 	.pop = 11430,
 	.danger = 4,
-	.wealth = 1,
+	.wealth = 5,
 	.x = 16,
 	.y = 2,
 	.xy = 11 + 3,
@@ -114,7 +103,7 @@ City grii = {
 	.noble = "The Viscountess",
 	.pop = 9340,
 	.danger = 4,
-	.wealth = 1,
+	.wealth = 5,
 	.x = 15,
 	.y = 4,
 	.xy = 11 + 3,
@@ -126,7 +115,7 @@ City todt = {
 	.noble = "Sir Usoro",
 	.pop = 2380,
 	.danger = 4,
-	.wealth = 1,
+	.wealth = 9,
 	.x = 24,
 	.y = 1,
 	.xy = 11 + 3,
@@ -138,7 +127,7 @@ City joeton = {
 	.noble = "Lady Nazia",
 	.pop = 11430,
 	.danger = 4,
-	.wealth = 1,
+	.wealth = 9,
 	.x = 25,
 	.y = 3,
 	.xy = 11 + 3,
@@ -150,11 +139,10 @@ City salls = {
 	.noble = "Baron Octirion",
 	.pop = 9340,
 	.danger = 4,
-	.wealth = 1,
+	.wealth = 5,
 	.x = 24,
 	.y = 6,
 	.xy = 11 + 3,
 };
 
 CityList allcities;
-RankList allranks;

@@ -24,7 +24,9 @@ void advance_day(int value)
 
 void advance_week(int value)
 {
-	print_event_args("Weekly wages have been paid out: %i", &party.totalupkeep);
+	char change[6];
+	sprintf(change, "%zu", party.totalupkeep);
+	print_event_args("Weekly wages have been paid out: %s denars", change);
 	p.denars -= party.totalupkeep;
 	gtime.day = 1;
 	gtime.week += value;

@@ -22,6 +22,7 @@ void get_git_status(VarList listRepo);
 void run_git_status(char *command, VarList listRepo, size_t i);
 void send_notif(char *gitFinalResult, VarList listRepo, size_t i);
 
+// Creates a memory safe list of indeterminate size
 void init_safe_array(VarList *list)
 {
 	list->strings = (char**)malloc(INITIAL_CAPACITY * sizeof(char*));
@@ -29,6 +30,7 @@ void init_safe_array(VarList *list)
 	list->capacity = INITIAL_CAPACITY;
 }
 
+// Adds an item to the safe list
 void append_safe_array(VarList *list, const char *repo)
 {
 	if (list->size >= list->capacity) {
@@ -70,7 +72,7 @@ char *get_home(void)
 	return finalResult;
 }
 
-// Adds username between /home/ and /repos/, returns full path to repos dir.
+// Adds '/repos/' to home to create full path to repos dir.
 char *combine_home(char const *home)
 {
 	const char *repos = "/repos/";
@@ -88,7 +90,7 @@ char *combine_home(char const *home)
 	return result;
 }
 
-// Using the full repo path returned by combine_home(), each dir path within is
+// Using the full repo path returned by combine_home, each dir path within is
 // added to the list of repos and the list is returned.
 VarList get_repos(char const *home, VarList list)
 {
@@ -111,6 +113,8 @@ VarList get_repos(char const *home, VarList list)
 	return list;
 }
 
+// Using the list compiled by get_repos, each path is placed between two
+// strings to form the git fetch command, which is then executed
 void get_git_fetch(VarList listRepo)
 {
 	const char *git1 = "git -C ";
@@ -128,9 +132,9 @@ void get_git_fetch(VarList listRepo)
 	}
 
 }
-// Using the list completed by get_repos(), each path is placed between two
-// strings to form the full git command, each full git command is then
-// appended to the listStatusCommand which is returned.
+
+// Using the same list, each path is placed between two strings to form the
+// git status command, which is then executed with the run_git_status func
 void get_git_status(VarList listRepo)
 {
 	const char *git1 = "git -C ";
@@ -148,10 +152,8 @@ void get_git_status(VarList listRepo)
 	}
 }
 
-// Using the listStatusCommand returned by get_gitcommands(), a loop is run and each
-// command opens a pipe and saves the output of git status to the variable
-// gitFinalResult. This variable, along with the original path list and
-// the list index is passed to the send_notif() function.
+// The combined git status command is executed and the output is piped in to
+// the send_notif function, the index of the specific repo is included as well
 void run_git_status(char *command, VarList listRepo, size_t i)
 {
 	const int bufferSize = 128;
@@ -187,7 +189,7 @@ void run_git_status(char *command, VarList listRepo, size_t i)
 	gitResultSize = 0;
 }
 
-// With the gitFinalResult from run_gits(), the string is compared and if the
+// With the gitFinalResult from run_gits, the string is compared and if the
 // status contains specific strings, a notification is sent describing it.
 // The original path list and index are included to give context to the notif.
 void send_notif(char* gitFinalResult, VarList listRepo, size_t i)

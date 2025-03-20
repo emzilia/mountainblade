@@ -7,10 +7,10 @@
 #include "logic.h"
 
 typedef struct {
-	size_t hour;
-	size_t day;
-	size_t week;
-	size_t month;
+	int hour;
+	int day;
+	int week;
+	int month;
 } Time;
 
 extern Time gtime;

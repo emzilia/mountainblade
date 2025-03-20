@@ -17,7 +17,7 @@ void move_east(User* p);
 void update_partyupkeep(PartyList* party);
 void weekly_partyupkeep(User* p);
 
-int check_location(City* town, User* p);
+unsigned int check_location(City* town, User* p);
 void set_location(User* p);
 void calc_city_wealth(City* city);
 void set_user_rank(User* list);
@@ -25,7 +25,7 @@ void set_user_rank(User* list);
 void add_to_inventory(Inventory* inventory, Item* thing);
 
 char* generate_quest1(City* city);
-void complete_quest(City* city, Inventory* bag, int num);
+void complete_quest(City* city, Inventory* bag, unsigned int num);
 
 void generate_quest2(City* city);
 

@@ -156,7 +156,7 @@ void update_partyupkeep(PartyList* party)
 {
 	party->total = party->maa + party->pspear + party->pbow + buddies.size + 1;
 	if (party->total > p.armycap) {
-		int diff = party->total - p.armycap;
+		unsigned int diff = party->total - p.armycap;
 		party->pspear -= diff;
 
 		wclear(win);
@@ -177,7 +177,7 @@ void update_partyupkeep(PartyList* party)
 void weekly_partyupkeep(User* p)
 {
 	char change[6];
-	sprintf(change, "%zu", party.totalupkeep);
+	sprintf(change, "%d", party.totalupkeep);
 	int wagesloop = 1;
 	while (wagesloop) {
 		wclear(win);
@@ -192,7 +192,7 @@ void weekly_partyupkeep(User* p)
 	p->denars -= party.totalupkeep;
 }
 
-int check_location(City* town, User* p)
+unsigned int check_location(City* town, User* p)
 {
 	if (p->x == town->x && p->y == town->y) {
 		p->intown = 1;
@@ -205,7 +205,7 @@ int check_location(City* town, User* p)
 
 void set_location(User* p)
 {
-	for (size_t i = 0; i < allcities.size; ++i) {
+	for (int i = 0; i < allcities.size; ++i) {
 		p->intown = check_location(allcities.cities[i], p);
 		if (p->intown) {
 			currenttown = *allcities.cities[i];
@@ -261,7 +261,7 @@ char* generate_quest1(City* city)
 {
 	if (allquests.totaldel > 4) return city->owner->name;
 	
-	size_t questtarget = (rand() % 7);
+	int questtarget = (rand() % 7);
 	if (allnobles.nobles[questtarget] == city->owner)
 		--questtarget;
 
@@ -293,17 +293,17 @@ char* generate_quest1(City* city)
 
 }
 
-void complete_quest(City* city, Inventory* bag, int num)
+void complete_quest(City* city, Inventory* bag, unsigned int num)
 {
 	if (num == 1)
-		for (size_t i = 0; i < allquests.totaldel; ++i) {
-			for (size_t j = 0; j < bag->size; ++j) {
+		for (int i = 0; i < allquests.totaldel; ++i) {
+			for (int j = 0; j < bag->size; ++j) {
 				if (allquests.deliveries[i].questid == bag->items[i].questid) {
-					for(size_t k = j; k < allquests.totaldel - 1; ++k) {
+					for(int k = j; k < allquests.totaldel - 1; ++k) {
 						allquests.deliveries[k] = allquests.deliveries[k + 1];
 					}
 					--allquests.totaldel;
-					for(size_t k = j; k < bag->size - 1; ++k) {
+					for(int k = j; k < bag->size - 1; ++k) {
 						bag->items[k] = bag->items[k + 1];
 					}
 					--bag->size;
@@ -313,7 +313,7 @@ void complete_quest(City* city, Inventory* bag, int num)
 			}
 		}
 	else if (num == 2)
-		for (size_t i = 0; i < allquests.totaldel; ++i) {
+		for (int i = 0; i < allquests.totaldel; ++i) {
 			if (allquests.deliveries[i].target == bag->items[i].recipient1) {
 			}
 		}

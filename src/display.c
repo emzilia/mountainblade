@@ -88,17 +88,17 @@ void print_userinfo(int currentlocation)
 
 	mvwprintw(win, 12, 9, "Rank: %s", p.title);
 	mvwprintw(win, 12, 29, "Denars: %i", p.denars);
-	mvwprintw(win, 13, 8, "Party: %zu/%zu", party.total, p.armycap);
-	mvwprintw(win, 13, 29, "Upkeep: %zu", party.totalupkeep);
+	mvwprintw(win, 13, 8, "Party: %d/%d", party.total, p.armycap);
+	mvwprintw(win, 13, 29, "Upkeep: %d", party.totalupkeep);
 }
 
 void print_time()
 {
 
-	mvwprintw(win, 15, 9, "Hour: %zu", gtime.hour);
-	mvwprintw(win, 15, 29, " Week:  %zu", gtime.week);
-	mvwprintw(win, 16, 9, "Day:  %zu", gtime.day);
-	mvwprintw(win, 16, 30, "Month: %zu", gtime.month);
+	mvwprintw(win, 15, 9, "Hour: %d", gtime.hour);
+	mvwprintw(win, 15, 29, " Week:  %d", gtime.week);
+	mvwprintw(win, 16, 9, "Day:  %d", gtime.day);
+	mvwprintw(win, 16, 30, "Month: %d", gtime.month);
 }
 
 void print_actions()

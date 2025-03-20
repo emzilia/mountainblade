@@ -183,10 +183,10 @@ void action_hire_mercs_peasants()
 {
 	int peasants = (rand() % 3) + 2;
 	int cost = peasants * 5;
-	size_t weeklycost = peasants * party.pspearupkeep;
+	int weeklycost = peasants * party.pspearupkeep;
 	wprintw(win, 
 		"\n\n%i locals seem adventurous enough.\n\n"
-		"It'll cost %i denars to equip them,\nas well as an extra %zu denars weekly.\n(Your total: %i)\n\n"
+		"It'll cost %i denars to equip them,\nas well as an extra %d denars weekly.\n(Your total: %i)\n\n"
 		"How does that sound?\n\n1. Sure thing\n2. No thanks\n",
 		peasants, cost, weeklycost, p.denars
 	);
@@ -227,10 +227,10 @@ void action_hire_mercs_maa()
 {
 	int maa = (rand() % 3) + 2;
 	int cost = maa * 15;
-	size_t weeklycost = maa * party.maaupkeep;
+	int weeklycost = maa * party.maaupkeep;
 	wprintw(win, 
 		"\n\n%i veteran soldiers are seeking work.\n\n"
-		"It'll cost %i denars to equip them,\nas well as an extra %zu denars weekly.\n(Your total: %i)\n\n"
+		"It'll cost %i denars to equip them,\nas well as an extra %d denars weekly.\n(Your total: %i)\n\n"
 		"How does that sound?\n\n1. Sure thing\n2. No thanks\n",
 		maa, cost, weeklycost, p.denars
 	);
@@ -287,8 +287,8 @@ void action_draft_letter()
 	int letterloop = 1;
 	wclear(win);
 	wprintw(win, "You sit down to draft a letter, who will\nyou address it to?\n\n");
-	for (size_t i = 0; i < allnobles.size; ++i) {
-		wprintw(win, "%zu. %s\n", i + 1, allnobles.nobles[i]->name);	
+	for (int i = 0; i < allnobles.size; ++i) {
+		wprintw(win, "%d. %s\n", i + 1, allnobles.nobles[i]->name);	
 	}
 	mvwprintw(win, 14, 0, "(b) to go back");
 	while (letterloop) {
@@ -355,12 +355,12 @@ void action_view_party()
 {
 	wclear(win);
 	wprintw(win, "Your party:\nYourself, of course\n\nCompanions:\n");
-	for (size_t i = 0; i < buddies.size; ++i) wprintw(win, "%s\n", buddies.buddies[i].name);
+	for (int i = 0; i < buddies.size; ++i) wprintw(win, "%s\n", buddies.buddies[i].name);
 	wprintw(win, "\nTroops:\n");
-	if (!(party.maa == 0)) for (size_t i = 0; i < buddies.size; ++i) wprintw(win, "%zux Men-at-arms\n", party.maa);
-	if (!(party.pspear == 0)) for (size_t i = 0; i < buddies.size; ++i) wprintw(win, "%zux Peasant spearmen\n", party.pspear);
-	if (!(party.pbow == 0))for (size_t i = 0; i < buddies.size; ++i) wprintw(win, "%zux Peasant bowmen", party.pbow);
-	wprintw(win, "\n\nTotal: %zu", buddies.size + party.maa + party.pspear + party.pbow + 1);
+	if (!(party.maa == 0)) for (int i = 0; i < buddies.size; ++i) wprintw(win, "%dx Men-at-arms\n", party.maa);
+	if (!(party.pspear == 0)) for (int i = 0; i < buddies.size; ++i) wprintw(win, "%dx Peasant spearmen\n", party.pspear);
+	if (!(party.pbow == 0))for (int i = 0; i < buddies.size; ++i) wprintw(win, "%dx Peasant bowmen", party.pbow);
+	wprintw(win, "\n\nTotal: %d", buddies.size + party.maa + party.pspear + party.pbow + 1);
 	wprintw(win, "\n\n\n\nPress (b) to go back");
 	int partyloop = 1;
 	while (partyloop) {
@@ -379,8 +379,8 @@ void action_view_character()
 	mvwprintw(win, 0, 0, "Character Info:");
 	mvwprintw(win, 2, 0, "Name:\t %s", p.name);
 	mvwprintw(win, 4, 0, "Rank:\t %s", p.title);
-	mvwprintw(win, 6, 0, "Level:\t %zu", p.level);
-	mvwprintw(win, 16, 0, "Prowess: %zu", p.prowess);
+	mvwprintw(win, 6, 0, "Level:\t %d", p.level);
+	mvwprintw(win, 16, 0, "Prowess: %d", p.prowess);
 	mvwprintw(win, 18, 0, "Kills:\t %d", p.kills);
 	mvwprintw(win, 10, 0, "Renown:\t %d", p.renown);
 	mvwprintw(win, 12, 0, "Honor:\t %d", p.honor);
@@ -406,9 +406,9 @@ void action_view_inventory()
 		mvwprintw(win, 2, 0, "Your bag is currently empty.");
 	} else {
 		row = 2;
-		for (size_t i = 0; i < bag.size; ++i) {
+		for (int i = 0; i < bag.size; ++i) {
 			mvwprintw(
-				win, row, 0, "%zu. %s  \t- %s\n", i + 1, 
+				win, row, 0, "%d. %s  \t- %s\n", i + 1, 
 				bag.items[i].name, bag.items[i].info
 			);
 			row += 3;
@@ -431,10 +431,10 @@ void action_view_relations()
 	int relationloop = 1;
 	wclear(win);
 	wprintw(win, "Relevant Nobles:\n\n");
-	for (size_t i = 0; i < allnobles.size; ++i) {
+	for (int i = 0; i < allnobles.size; ++i) {
 		Noble* noble = allnobles.nobles[i];
 		wprintw(win, "%s\t\t      Relations: %d\n", noble->name, noble->relations);	
-		for (size_t f = 0; f < noble->totalfiefs; ++f) {
+		for (int f = 0; f < noble->totalfiefs; ++f) {
 			wprintw(win, "\t - %s\n", (*allnobles.nobles[i]).fiefs[f]->location);
 		}; 
 		wprintw(win, "\n");
@@ -458,7 +458,7 @@ void action_view_quests()
 	if (allquests.totaldel == 0 && allquests.totalsla == 0) 
 		wprintw(win, "You don't currently have any quests.\n\n");
 	if (allquests.totaldel > 0) {
-		for (size_t i = 0; i < allquests.totaldel; ++i) {
+		for (int i = 0; i < allquests.totaldel; ++i) {
 			wprintw(
 				win, "Deliver a letter to %s\n\t- From %s\n\n", 
 				allquests.deliveries[i].target->name, allquests.deliveries[i].giver->name
@@ -466,7 +466,7 @@ void action_view_quests()
 		}
 	}
 	if (allquests.totalsla > 0) {
-		for (size_t i = 0; i < allquests.totalsla; ++i) {
+		for (int i = 0; i < allquests.totalsla; ++i) {
 			wprintw(
 				win, "Slay %i bandits on the road\n\t- For %s\n\n", 
 				allquests.slayings[i].to_kill, allquests.slayings[i].giver->location
@@ -493,7 +493,7 @@ void action_enter_debug(User* p, Time* gtime)
 		wclear(win);
 		wprintw(win,
 			"debug menu\n\n"
-			"1. give 125 denars\n2. advance time 1 month\n\n(b) to go back"
+			"1. give 125 denars\n2. advance time 1 month\n3. teleport to map\n\n(b) to go back"
 		);
 		int response = wgetch(win);
 		switch (response) {
@@ -502,6 +502,10 @@ void action_enter_debug(User* p, Time* gtime)
 				break;
 			case '2':
 				++gtime->month;
+				break;
+			case '3':
+				p->x = 3;
+				p->y = 3;
 				break;
 			case 'b':
 				debugloop = 0;

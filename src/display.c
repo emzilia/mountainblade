@@ -14,8 +14,8 @@ void init_window()
 {
 	initscr();
 	refresh();
-	borderwin = newwin(45, 55, 1, 1);
-	win = newwin(42, 50, 2, 2);
+	borderwin = newwin(40, 55, 1, 1);
+	win = newwin(38, 50, 2, 3);
 	noecho();	
 	curs_set(0);
 	keypad(win, TRUE);
@@ -97,10 +97,11 @@ void print_actions()
 		mvwprintw(win, 18, 9, "1. Setup fortified camp");
     		mvwprintw(win, 19, 9, "2. Draft correspondence");
 	}
-	mvwprintw(win, 22, 9, "p. View Party\n"); 
+	mvwprintw(win, 22, 9, "c. View Character Info\n"); 
 	mvwprintw(win, 23, 9, "i. View Inventory\n"); 
-	mvwprintw(win, 24, 9, "r. View Relevant Nobles\n"); 
-	mvwprintw(win, 25, 9, "q. View Current Quests\n");
+	mvwprintw(win, 24, 9, "p. View Party\n"); 
+	mvwprintw(win, 26, 9, "q. View Current Quests\n");
+	mvwprintw(win, 27, 9, "r. View Relevant Nobles\n"); 
 }
 
 void print_event(char* text)

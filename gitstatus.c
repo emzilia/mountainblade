@@ -12,11 +12,11 @@ typedef struct {
 	size_t capacity;
 } RepoList;
 
-char *get_user();
+char *get_user(void);
 char *get_home(char const *user);
-void *get_repos(char const *home, RepoList list);
+RepoList get_repos(char const *home, RepoList list);
 
-char *get_user()
+char *get_user(void)
 {
 	const int bufferSize = 128;
 	char buffer[bufferSize];
@@ -81,7 +81,7 @@ void append_repolist(RepoList* list, const char* repo)
 	list->size++;
 }
 
-void *get_repos(char const *home, RepoList list)
+RepoList get_repos(char const *home, RepoList list)
 {
 	DIR *d;
 	struct dirent *dir;
@@ -99,6 +99,7 @@ void *get_repos(char const *home, RepoList list)
 		}
 	closedir(d);
 	}
+	return list;
 	for (size_t i = 0; i < list.size; i++) {
 		printf("%s\n", list.strings[i]);
 	}
@@ -107,10 +108,20 @@ void *get_repos(char const *home, RepoList list)
 void run_gits(RepoList list)
 {
 	const char* git1 = "git -C ";
-	const char* git2 = "status";
+	const char* git2 = " status";
+
+	for (size_t i = 0; i < list.size; i++) {
+		size_t resultSize = (
+			strlen(git1) + strlen(list.strings[i]) + strlen(git2) + 1
+			);
+		char* result = (char*)malloc(resultSize);
+		sprintf(result, "%s%s%s", git1, list.strings[i], git2);
+		printf("%s", result);
+	}
+	
 }
 
-int main()
+int main(void)
 {
 	char *home;
 	char *user;
@@ -120,6 +131,7 @@ int main()
 	user = get_user();
 	home = get_home(user);
 
-	get_repos(home, list);
+	list = get_repos(home, list);
+	run_gits(list);
 }
 

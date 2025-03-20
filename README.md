@@ -1,6 +1,6 @@
 # mountain blade
 
-![mountainblade](https://i.ibb.co/4S54nsK/mountainblade-0-1-4.png)
+![mountainblade](https://i.ibb.co/rtrbRBS/mountainblade-0-1-5.png)
 
 based on the hit game of the same name. very early access
 
@@ -12,7 +12,8 @@ implement cash shop
 **movement:**  
 ~~move around on map~~  
 speed based on party size/configuration  
-speed affected by terrain  
+speed affected by terrain     
+~~speed affected by season~~    
 
 **party:**   
 ~~basic party system, basic troop types~~   
@@ -36,7 +37,7 @@ terrain affects location and adds modifiers
 
 **time:**  
 ~~basic time, movement advances hours, which advances days, weeks, months, etc~~  
-yearly seasonal cycle  
+~~yearly seasonal cycle~~  
 terrain and prosperity affected by seasonal cycle  
 
 **combat:**  

@@ -31,5 +31,9 @@ void action_view_inventory();
 void action_view_relations();
 void action_view_quests();
 
-void action_enter_debug(User* p, Time* gtime);
+void action_view_debug(User* p, Time* gtime);
+void action_view_debug_stats(User* p, Time* gtime);
+void action_view_debug_cities();
+void action_view_debug_nobles();
+void action_view_debug_quests();
 #endif

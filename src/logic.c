@@ -318,6 +318,7 @@ void complete_quest(City* city, Inventory* bag, unsigned int num)
 			for (int j = 0; j < bag->size; ++j) {
 				// we're looking for an inventory item with a questid that matches the
 				// questid of a current quest, if nothing found, don't do anything
+				// if there's a match, remove it from both the quest list and inventory
 				if (allquests.deliveries[i].questid == bag->items[i].questid) {
 					for(int k = j; k < allquests.totaldel - 1; ++k) {
 						allquests.deliveries[k] = allquests.deliveries[k + 1];
@@ -328,6 +329,7 @@ void complete_quest(City* city, Inventory* bag, unsigned int num)
 					}
 					--bag->size;
 
+					// after quest is complete, increase relations with quest giver
 					allquests.deliveries[i].giver->relations += allquests.deliveries[i].relation_buff;
 				}
 			}
@@ -342,10 +344,13 @@ void complete_quest(City* city, Inventory* bag, unsigned int num)
 
 void generate_quest2(City* city)
 {
+	// max of 4 bandit slaying quests at a time
 	if (allquests.totalsla > 4) return;
 	
+	// random amount of bandits to kill
 	int questtarget = (rand() % 5) + 3;
 
+	// bandit slaying quests are given by city guildmasters
 	Quest2 latestsla = {
 		.renown_gain = 3,
 		.relation_buff = 1,

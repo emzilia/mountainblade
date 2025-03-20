@@ -1,4 +1,4 @@
-# mountainblade
+# mountain blade
 
 based on the hit game of the same name. very early access
 

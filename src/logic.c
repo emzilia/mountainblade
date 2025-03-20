@@ -257,23 +257,31 @@ void add_to_inventory(Inventory* inventory, Item* thing)
 	}
 }
 
-void generate_quest1(City* city)
+char* generate_quest1(City* city)
 {
-	if (allquests.totaldel > 4) return;
+	if (allquests.totaldel > 4) return city->owner->name;
 	
-	int questtarget = (rand() % 7);
+	size_t questtarget = (rand() % 7);
+	if (allnobles.nobles[questtarget] == city->owner)
+		--questtarget;
+
+	int questid = (rand() % 200);
 
 	Quest1 latestdel = {
 		.renown_gain = 3,
 		.relation_buff = 1,
+		.questid = questid,
 		.giver = city->owner,	
 		.target = allnobles.nobles[questtarget],
 	};
+
+	allnobles.nobles[questtarget]->fiefs[0]->hasdel = 1;
 
 	allquests.deliveries[allquests.totaldel] = latestdel;
 	++allquests.totaldel;
 
 	Item quest_letter = {
+		.questid = questid,
 		.name = "Elegant Letter",
 		.info = "Bearing noble insignia",
 		.recipient1 = city->owner,
@@ -281,6 +289,34 @@ void generate_quest1(City* city)
 
 	add_to_inventory(&bag, &quest_letter);
 
+	return allnobles.nobles[questtarget]->name;
+
+}
+
+void complete_quest(City* city, Inventory* bag, int num)
+{
+	if (num == 1)
+		for (size_t i = 0; i < allquests.totaldel; ++i) {
+			for (size_t j = 0; j < bag->size; ++j) {
+				if (allquests.deliveries[i].questid == bag->items[i].questid) {
+					for(size_t k = j; k < allquests.totaldel - 1; ++k) {
+						allquests.deliveries[k] = allquests.deliveries[k + 1];
+					}
+					--allquests.totaldel;
+					for(size_t k = j; k < bag->size - 1; ++k) {
+						bag->items[k] = bag->items[k + 1];
+					}
+					--bag->size;
+
+					city->owner->relations += allquests.deliveries[i].relation_buff;
+				}
+			}
+		}
+	else if (num == 2)
+		for (size_t i = 0; i < allquests.totaldel; ++i) {
+			if (allquests.deliveries[i].target == bag->items[i].recipient1) {
+			}
+		}
 }
 
 void generate_quest2(City* city)
@@ -296,6 +332,8 @@ void generate_quest2(City* city)
 		.to_kill = questtarget,
 	};
 
+	city->hassla = 2;
+
 	allquests.slayings[allquests.totalsla] = latestsla;
 	++allquests.totalsla;
 
@@ -304,6 +342,7 @@ void generate_quest2(City* city)
 		.info = "By local authority",
 		.recipient2 = city,
 	};
+
 
 	add_to_inventory(&bag, &writ_justice);
 }

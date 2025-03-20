@@ -24,7 +24,9 @@ void set_user_rank(User* list);
 
 void add_to_inventory(Inventory* inventory, Item* thing);
 
-void generate_quest1(City* city);
+char* generate_quest1(City* city);
+void complete_quest(City* city, Inventory* bag, int num);
+
 void generate_quest2(City* city);
 
 void logic_draft_letter(Noble* noble);

@@ -5,7 +5,7 @@
 
 void init_window();
 void print_title();
-int print_map(char arr[][28], int rows, int columns);
+int print_map(char map[][28], int rows, int columns);
 void print_userinfo(int currentlocation);
 void print_time();
 void print_actions();

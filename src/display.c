@@ -53,17 +53,17 @@ void print_title()
 	werase(win);
 }
 
-int print_map(char arr[][28], int rows, int columns) {
+int print_map(char map[][28], int rows, int columns) {
 	int currentlocation = 1;
 	mvwprintw(win, 0, 17, "Dutchy of Tania\n");
 	for (int r = 0; r < rows; r++) {
 		wprintw(win, "           ");
 		for (int c = 0; c < columns; c++) {
 			if (r == p.y && c == p.x) {
-				currentlocation = arr[r][c];
+				currentlocation = map[r][c];
 				waddch(win, '@');
 			} else
-				wprintw(win, "%c", arr[r][c]);
+				wprintw(win, "%c", map[r][c]);
 		}
 	waddch(win, '\n'); }
 	if (debug) wprintw(win, "  %d, %d\n", p.x, p.y);

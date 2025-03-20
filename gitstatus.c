@@ -14,14 +14,30 @@ typedef struct {
 
 char *get_home(void);
 char *combine_home(char const *home);
-void init_safearray(VarList* listRepo);
-void append_safearray(VarList* listRepo, const char* repo);
+void init_safe_array(VarList *listRepo);
+void append_safe_array(VarList *listRepo, const char* repo);
 VarList get_repos(char const *home, VarList listRepo);
-VarList get_gitfetchcommands(VarList listRepo, VarList listFetchCommand);
-VarList get_gitstatuscommands(VarList listRepo, VarList listStatusCommand);
-void run_gitfetch(VarList listFetchCommand, VarList listRepo);
-void run_gitstatus(VarList listStatusCommand, VarList listRepo);
-void send_notif(char* gitFinalResult, VarList listRepo, size_t i);
+void get_git_fetch(VarList listRepo);
+void get_git_status(VarList listRepo);
+void run_git_status(char *command, VarList listRepo, size_t i);
+void send_notif(char *gitFinalResult, VarList listRepo, size_t i);
+
+void init_safe_array(VarList *list)
+{
+	list->strings = (char**)malloc(INITIAL_CAPACITY * sizeof(char*));
+	list->size = 0;
+	list->capacity = INITIAL_CAPACITY;
+}
+
+void append_safe_array(VarList *list, const char *repo)
+{
+	if (list->size >= list->capacity) {
+		list->capacity *= 3;
+		list->strings = (char**)realloc(list->strings, list->capacity * sizeof(char*));
+	}
+	list->strings[list->size] = strdup(repo);
+	list->size++;
+}
 
 // Gets home by echoing $HOME'.
 char *get_home(void)
@@ -57,7 +73,7 @@ char *get_home(void)
 // Adds username between /home/ and /repos/, returns full path to repos dir.
 char *combine_home(char const *home)
 {
-	const char* repos = "/repos/";
+	const char *repos = "/repos/";
 
 	char *pch = strstr(home, "\n");
 	if(pch != NULL) strncpy(pch, "\0", 1);
@@ -65,30 +81,11 @@ char *combine_home(char const *home)
 	size_t resultSize = (
 		strlen(home) + strlen(repos) + 1
 		);
-	char* result = (char*)malloc(resultSize);
+	char *result = (char*)malloc(resultSize);
 
 	sprintf(result, "%s%s", home, repos);
 	
 	return result;
-}
-
-// Initializes a list of indeterminate size, for repo list and command list.
-void init_safearray(VarList* list)
-{
-	list->strings = (char**)malloc(INITIAL_CAPACITY * sizeof(char*));
-	list->size = 0;
-	list->capacity = INITIAL_CAPACITY;
-}
-
-// Appends an item to a list of indeterminate size.
-void append_safearray(VarList* list, const char* repo)
-{
-	if (list->size >= list->capacity) {
-		list->capacity *= 3;
-		list->strings = (char**)realloc(list->strings, list->capacity * sizeof(char*));
-	}
-	list->strings[list->size] = strdup(repo);
-	list->size++;
 }
 
 // Using the full repo path returned by combine_home(), each dir path within is
@@ -104,102 +101,90 @@ VarList get_repos(char const *home, VarList list)
 			size_t resultSize = (
 				strlen(home) + strlen(p) + 1
 				);
-			char* result = (char*)malloc(resultSize);
+			char *result = (char*)malloc(resultSize);
 			sprintf(result, "%s%s", home, p);
-            
-            if (strlen(p) > 2) append_safearray(&list, result);
+ 
+	if (strlen(p) > 2) append_safe_array(&list, result);
 		}
 	closedir(d);
 	}
 	return list;
 }
 
-VarList get_gitfetchcommands(VarList listRepo, VarList listFetchCommand)
+void get_git_fetch(VarList listRepo)
 {
-	const char* git1 = "git -C ";
-	const char* git2 = " fetch &";
-	char* commandResult;
+	const char *git1 = "git -C ";
+	const char *git2 = " fetch &";
+	char *fetchResult;
 
 	for (size_t i = 0; i < listRepo.size; i++) {
 		size_t resultSize = (
 			strlen(git1) + strlen(listRepo.strings[i]) + strlen(git2) + 1
 			);
-		commandResult = (char*)malloc(resultSize);
-		sprintf(commandResult, "%s%s%s", git1, listRepo.strings[i], git2);
-		append_safearray(&listFetchCommand, commandResult);
+		fetchResult = (char*)malloc(resultSize);
+		sprintf(fetchResult, "%s%s%s", git1, listRepo.strings[i], git2);
+		
+		system(fetchResult);
 	}
-	return listFetchCommand;
 
 }
 // Using the list completed by get_repos(), each path is placed between two
 // strings to form the full git command, each full git command is then
 // appended to the listStatusCommand which is returned.
-VarList get_gitstatuscommands(VarList listRepo, VarList listStatusCommand)
+void get_git_status(VarList listRepo)
 {
-	const char* git1 = "git -C ";
-	const char* git2 = " status &";
-	char* commandResult;
+	const char *git1 = "git -C ";
+	const char *git2 = " status &";
+	char *statusResult;
 
 	for (size_t i = 0; i < listRepo.size; i++) {
 		size_t resultSize = (
 			strlen(git1) + strlen(listRepo.strings[i]) + strlen(git2) + 1
 			);
-		commandResult = (char*)malloc(resultSize);
-		sprintf(commandResult, "%s%s%s", git1, listRepo.strings[i], git2);
-		append_safearray(&listStatusCommand, commandResult);
+		statusResult = (char*)malloc(resultSize);
+		sprintf(statusResult, "%s%s%s", git1, listRepo.strings[i], git2);
+		
+		run_git_status(statusResult, listRepo, i);	
 	}
-	return listStatusCommand;
-
-}
-
-void run_gitfetch(VarList listFetchCommand, VarList listRepo)
-{
-    for (size_t i = 0; i < listFetchCommand.size; i++) {
-        system(listFetchCommand.strings[i]);
-    }
 }
 
 // Using the listStatusCommand returned by get_gitcommands(), a loop is run and each
 // command opens a pipe and saves the output of git status to the variable
 // gitFinalResult. This variable, along with the original path list and
 // the list index is passed to the send_notif() function.
-void run_gitstatus(VarList listStatusCommand, VarList listRepo)
+void run_git_status(char *command, VarList listRepo, size_t i)
 {
 	const int bufferSize = 128;
 	char buffer[bufferSize];
 	char *gitResult = NULL;
 	size_t gitResultSize = 0;
 
-	for (size_t i = 0; i < listStatusCommand.size; i++) {
-		char *gitFinalResult = NULL;
+	char *gitFinalResult = NULL;
 
-		FILE *p = popen( listStatusCommand.strings[i], "r");
-		if (p == NULL) exit(1);
+	FILE *p = popen( command, "r");
+	if (p == NULL) exit(1);
 
-		while (fgets(buffer, bufferSize, p) != NULL) {
-			size_t fragmentSize = strlen(buffer);
-			char *newResult = realloc(
-				gitResult, gitResultSize + fragmentSize + 1
-			);
-			gitResult = newResult;
-			memcpy(gitResult + gitResultSize, buffer, fragmentSize);
-			gitResultSize += fragmentSize;
-		}	
+	while (fgets(buffer, bufferSize, p) != NULL) {
+		size_t fragmentSize = strlen(buffer);
+		char *newResult = realloc(
+			gitResult, gitResultSize + fragmentSize + 1
+		);
+		gitResult = newResult;
+		memcpy(gitResult + gitResultSize, buffer, fragmentSize);
+		gitResultSize += fragmentSize;
+	}	
 
-		int status = pclose(p);
-		if (status == -1) free(gitResult);
+	int status = pclose(p);
+	if (status == -1) free(gitResult);
 
-		gitFinalResult = malloc(gitResultSize + 1);
-		memcpy(gitFinalResult, gitResult, gitResultSize);
-		gitFinalResult[gitResultSize] = '\0';
-	
-		send_notif(gitFinalResult, listRepo, i);
+	gitFinalResult = malloc(gitResultSize + 1);
+	memcpy(gitFinalResult, gitResult, gitResultSize);
+	gitFinalResult[gitResultSize] = '\0';
 
-		free(gitFinalResult);
-		gitResultSize = 0;
-	}
-	free(gitResult);
+	send_notif(gitFinalResult, listRepo, i);
 
+	free(gitFinalResult);
+	gitResultSize = 0;
 }
 
 // With the gitFinalResult from run_gits(), the string is compared and if the
@@ -270,21 +255,15 @@ void send_notif(char* gitFinalResult, VarList listRepo, size_t i)
 
 int main(void)
 {
-	char *home, *homerepo;
-	VarList listRepo, listStatusCommand, listFetchCommand;
+	char *home, *homeRepo;
+	VarList listRepo;
 
-	init_safearray(&listRepo);
-	init_safearray(&listStatusCommand);
-	init_safearray(&listFetchCommand);
+	init_safe_array(&listRepo);
 
 	home = get_home();
-	homerepo = combine_home(home);
+	homeRepo = combine_home(home);
+	listRepo = get_repos(homeRepo, listRepo);
 
-	listRepo = get_repos(homerepo, listRepo);
-	listFetchCommand = get_gitfetchcommands(listRepo, listFetchCommand);
-	listStatusCommand = get_gitstatuscommands(listRepo, listStatusCommand);
-
-	run_gitfetch(listFetchCommand, listRepo);
-	run_gitstatus(listStatusCommand, listRepo);
+	get_git_fetch(listRepo);
+	get_git_status(listRepo);
 }
-

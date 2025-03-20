@@ -13,7 +13,7 @@ int debug = 0;
 
 void input_mainloop()
 {
-	int response = getch();
+	int response = wgetch(win);
 	switch (response) {
 		case 'k':
 		case KEY_UP:
@@ -65,6 +65,9 @@ void input_mainloop()
 	}
 	
 	switch (response) {
+		case 'p':
+			action_view_party();
+			break;
 		case 'i':
 			action_view_inventory();
 			break;
@@ -74,7 +77,7 @@ void input_mainloop()
 		case 'q':
 			action_view_quests();
 			break;
-		case 'p':
+		case '/':
 			endwin();
 			exit(0);
 	}
@@ -93,10 +96,10 @@ int main(void)
 		set_location();
 		print_userinfo();
 		print_actions();
-		wrefresh(win);
 		input_mainloop();
 		wrefresh(win);
 		werase(win);
+		set_user_rank(&p);
 	};
 
 	endwin();

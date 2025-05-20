@@ -134,7 +134,7 @@ Event1 event_city2_sk1 = {
 Event1 event_city2_nb1_noquest = {
 	.response = 3,
 	.text = "You approach the estate of the local\nnoble, %s\n\n"
-			"1. Request and audience\n2. Offer to deliver a letter\n"
+			"1. Request an audience\n2. Offer to deliver a letter\n"
 			"\n\n\n(b) to go back",
 	.arg1 = " " 
 };

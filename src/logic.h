@@ -28,7 +28,7 @@ void add_to_inventory(Inventory* inventory, Item* thing);
 
 int generate_unique_questid();
 char* generate_quest1(City* city);
-void complete_quest(City* city, Inventory* bag, int num);
+int complete_quest(City* city, Inventory* bag, int num);
 
 void generate_quest2(City* city);
 

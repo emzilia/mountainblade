@@ -374,7 +374,7 @@ void generate_quest2(City* town)
 }
 
 // turn in either a delivery or slaying quest
-void complete_quest(City* city, Inventory* bag, int num)
+int complete_quest(City* city, Inventory* bag, int num)
 {
 	// if turning in a delivery quest
 	if (num == 1)
@@ -400,6 +400,7 @@ void complete_quest(City* city, Inventory* bag, int num)
 
 					// after quest is complete, increase relations with quest giver
 					allquests.deliveries[i].giver->relations += allquests.deliveries[i].relation_buff;
+					return 1;
 				}
 			}
 		}
@@ -418,8 +419,10 @@ void complete_quest(City* city, Inventory* bag, int num)
 				--allquests.totalsla;
 				// after quest is complete, increase relations with quest giver
 				allquests.slayings[i].giver->owner->relations += allquests.slayings[i].relation_buff;
+				return 1;
 			}
 		}
+	return 0;
 }
 
 void logic_draft_letter(Noble* noble)

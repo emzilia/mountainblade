@@ -73,8 +73,11 @@ void action_enter_city_gm(City* town)
 				guildloop = 0;
 				break;
 			case '3':
-				complete_quest(town, &bag, 2);
-				print_event_small(event_city2_gm1_small3.text, " ");
+				if (complete_quest(town, &bag, 2)) {
+					print_event_small(event_city2_gm1_small3.text, " ");
+				} else {
+					print_event_small(event_city2_gm1_small4.text, " ");
+				}
 				guildloop = 0;
 				break;
 			case 'b':

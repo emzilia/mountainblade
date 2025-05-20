@@ -94,6 +94,13 @@ Event1 event_city2_gm1_small3 = {
 	.arg1 = " " 
 };
 
+Event1 event_city2_gm1_small4 = {
+	.response = 0,
+	.text = "\n\nwtf you didn't do SHIT yet",
+	.arg1 = " " 
+};
+
+
 
 // Tailor
 

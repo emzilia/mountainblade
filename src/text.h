@@ -14,6 +14,7 @@ extern Event2 event_city2_gm1_yesquest;
 extern Event1 event_city2_gm1_small1;
 extern Event1 event_city2_gm1_small2;
 extern Event1 event_city2_gm1_small3;
+extern Event1 event_city2_gm1_small4;
 
 extern Event1 event_city2_ta1;
 

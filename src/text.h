@@ -31,6 +31,13 @@ extern Event1 event_city2_nb1_noquest_small1;
 
 
 extern Event1 event_merc;
+extern Event2 event_merc_yes;
 extern Event4 event_merc_p1;
+extern Event1 event_merc_yes_cost;
+extern Event4 event_merc_m1;
+extern Event1 event_setup_camp1;
+extern Event4 event_setup_camp2;
+extern Event1 event_draft_letter1;
+extern Event1 event_draft_letter2;
 
 #endif

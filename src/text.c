@@ -183,8 +183,64 @@ Event4 event_merc_p1 = {
 			"It'll cost %s denars to equip them,\nas well as "
 			"an extra %s denars weekly.\n(Your total: %s)\n\n"
 			"How does that sound?\n\n1. Sure thing\n2. No thanks\n",
+	.arg1 = " ", // peasants
+	.arg2 = " ", // cost
+	.arg3 = " ", // weeklycost
+	.arg4 = " ", // denars
+};
+
+Event1 event_merc_yes_cost = {
+	.response = 0,
+	.text = "You can't afford that price right now.",
+	.arg1 = "to continue"
+};
+
+
+Event2 event_merc_yes = {
+	.response = 0,
+	.text = "%s %s have joined your party.",
+	.arg1 = " ", // peasants, maa
+	.arg2 = " ", // party.pbowname, party.pspearname, party.maaname
+};
+
+Event4 event_merc_m1 = {
+	.response = 1,
+	.text = "%s veteran soldiers are seeking work.\n\n"
+			"It'll cost %s denars to equip them,\nas well as "
+			"an extra %s denars weekly.\n(Your total: %s)\n\n"
+			"How does that sound?\n\n1. Sure thing\n2. No thanks\n",
+	.arg1 = " ", // maa
+	.arg2 = " ", // cost
+	.arg3 = " ", // weeklycost
+	.arg4 = " ", // denars
+};
+
+Event1 event_setup_camp1 = {
+	.response = 0,
+	.text = "You order your troops to construct some\nhasty fortifications",
+	.arg1 = "to continue"
+};
+
+Event4 event_setup_camp2 = {
+	.response = 1,
+	.text = "Fortified Camp\n\n"
+			"Your troops are waiting in defensive positions.\n\n1. Wait some time\n"
+			"2. Break camp\n\n"
+			"Hour: %-4s        Week: %-4s\n Day: %-4s       Month: %-4s\n",
 	.arg1 = " ",
 	.arg2 = " ",
 	.arg3 = " ",
-	.arg4 = " "
+	.arg4 = " ",
+};
+
+Event1 event_draft_letter1 = {
+	.response = 0,
+	.text = "You sit down to draft a letter, who will\nyou address it to?\n\n",
+        .arg1 = "(b) to go back",
+};
+
+Event1 event_draft_letter2 = {
+	.response = 0,
+	.text = "You carefully write out the letter and\nstow it in your bag",
+	.arg1 = "to continue...",
 };

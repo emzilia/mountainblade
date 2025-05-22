@@ -1,6 +1,5 @@
 #include <stdlib.h>
 #include <ncurses.h>
-#include <string.h>
 
 #include "entities.h"
 #include "actions.h"
@@ -211,23 +210,31 @@ void action_hire_mercs_peasants()
 
 void action_hire_mercs_peasants_yes(int peasants, int cost)
 {
+	char* str_peasants = convert_string(peasants);
+
 	if (cost > p.denars) {
-		print_event("You can't afford that price right now.", "to continue");
+		print_event(event_merc_yes_cost.text, event_merc_yes_cost.arg1);
 		return;
 	}
 	int chance = rand() % 11;
 	if (chance > 2) {
 		party.pspear += peasants;
-		werase(win);
-		wprintw(win, " %i %s have joined your party.", peasants, party.pspearname);
-		if (debug) wprintw(win, "\n\n DEBUG: %i/10\n", chance);
-		wgetch(win);
+		event_merc_yes.arg1 = str_peasants;
+		event_merc_yes.arg2 = party.pspearname;
+		print_event_args2(
+			event_merc_yes.text,
+			event_merc_yes.arg1,
+			event_merc_yes.arg2
+		);
 	} else { 
 		party.pbow += peasants;
-		werase(win);
-		wprintw(win, " %i %s have joined your party.", peasants, party.pbowname);
-		if (debug) wprintw(win, "\n\n DEBUG: %i/10\n", chance);
-		wgetch(win);
+		event_merc_yes.arg1 = str_peasants;
+		event_merc_yes.arg2 = party.pbowname;
+                print_event_args2(
+			event_merc_yes.text,
+			event_merc_yes.arg1,
+			event_merc_yes.arg2
+		);
 	}
 	p.denars -= cost;
 }
@@ -237,14 +244,24 @@ void action_hire_mercs_maa()
 	int maa = (rand() % 3) + 2;
 	int cost = maa * 15;
 	int weeklycost = maa * party.maaupkeep;
-	werase(win);
-	wprintw(win, 
-		"%i veteran soldiers are seeking work.\n\n"
-		"It'll cost %i denars to equip them,\nas well as an extra %d denars weekly.\n(Your total: %i)\n\n"
-		"How does that sound?\n\n1. Sure thing\n2. No thanks\n",
-		maa, cost, weeklycost, p.denars
-	);
-	int response = wgetch(win);
+
+	char* str_maa = convert_string(maa);
+	char* str_cost = convert_string(cost);
+	char* str_weeklycost = convert_string(weeklycost);
+	char* str_denars = convert_string(p.denars);
+
+	event_merc_m1.arg1 = str_maa;
+	event_merc_m1.arg2 = str_cost;
+	event_merc_m1.arg3 = str_weeklycost;
+	event_merc_m1.arg4 = str_denars;
+	
+	int response = print_event_args4(
+		event_merc_m1.text,
+		event_merc_m1.arg1,
+		event_merc_m1.arg2,
+		event_merc_m1.arg3,
+		event_merc_m1.arg4
+        );	
 	switch (response) {
 		case '1':
 			action_hire_mercs_maa_yes(maa, cost);
@@ -258,29 +275,47 @@ void action_hire_mercs_maa()
 void action_hire_mercs_maa_yes(int maa, int cost)
 {
 	if (cost > p.denars) {
-		print_event("You can't afford that price right now.", "to continue");
+		print_event(event_merc_yes_cost.text, event_merc_yes_cost.arg1);
 		return;
 	}
 	party.maa += maa;
-	werase(win);
-	wprintw(win, " %i %s have joined your party.", maa, party.maaname);
-	wgetch(win);
+	char* str_maa = convert_string(maa);
+	
+	event_merc_yes.arg1 = str_maa;
+	event_merc_yes.arg2 = party.maaname;
+	
+	print_event_args2(
+		event_merc_yes.text,
+		event_merc_yes.arg1,
+		event_merc_yes.arg2
+	);
 	p.denars -= cost;
 }
 
 void action_setup_camp()
 {
-	print_event("You order your troops to construct some\nhasty fortifications", "to continue");
-	werase(win);
+	print_event(event_setup_camp1.text, event_setup_camp1.arg1);
+	
 	int camploop = 1;
-	while (camploop) {
-		werase(win);
-		wprintw(win, 
-			"Fortified Camp\n\n"
-			"Your troops are waiting in defensive positions.\n\n1. Wait some time\n2. Break camp\n"
+	
+	while (camploop) {	
+		char* str_hour = convert_string(gtime.hour);
+		char* str_day = convert_string(gtime.day);
+		char* str_week = convert_string(gtime.week);
+		char* str_month = convert_string(gtime.month);
+
+		event_setup_camp2.arg1 = str_hour;
+		event_setup_camp2.arg2 = str_week;
+		event_setup_camp2.arg3 = str_day;
+		event_setup_camp2.arg4 = str_month;
+
+	      	int response = print_event_args4(
+			event_setup_camp2.text,
+			event_setup_camp2.arg1,
+			event_setup_camp2.arg2,
+			event_setup_camp2.arg3,
+			event_setup_camp2.arg4
 		);
-		print_time();
-		int response = wgetch(win);
 		switch (response) {
 			case '1':
 				advance_hour(&gtime, 1);
@@ -296,62 +331,48 @@ void action_draft_letter()
 {
 	int letterloop = 1;
 	werase(win);
-	wprintw(win, "You sit down to draft a letter, who will\nyou address it to?\n\n");
+	wprintw(win, event_draft_letter1.text);
 	for (int i = 0; i < allnobles.size; ++i) {
 		wprintw(win, "%d. %s\n", i + 1, allnobles.nobles[i]->name);	
 	}
-	mvwprintw(win, 14, 0, "(b) to go back");
+	mvwprintw(win, 14, 0, event_draft_letter1.arg1);
 	while (letterloop) {
 		int response = wgetch(win);
 		switch (response) {
 			case '1':
 				letterloop = 0;
 				logic_draft_letter(allnobles.nobles[0]);
-				print_event("You carefully write out the letter and\n"
-						"stow it in your bag", "to continue..."
-				);
+				print_event(event_draft_letter2.text, event_draft_letter2.arg1);
 				break;
 			case '2':
 				letterloop = 0;
 				logic_draft_letter(allnobles.nobles[1]);
-				print_event("You carefully write out the letter and\n"
-						"stow it in your bag", "to continue..."
-				);
+				print_event(event_draft_letter2.text, event_draft_letter2.arg1);
 				break;
 			case '3':
 				letterloop = 0;
 				logic_draft_letter(allnobles.nobles[2]);
-				print_event("You carefully write out the letter and\n"
-						"stow it in your bag", "to continue..." 
-				);
+				print_event(event_draft_letter2.text, event_draft_letter2.arg1);
 				break;
 			case '4':
 				letterloop = 0;
 				logic_draft_letter(allnobles.nobles[3]);
-				print_event("You carefully write out the letter and\n"
-						"stow it in your bag", "to continue..." 
-				);
+				print_event(event_draft_letter2.text, event_draft_letter2.arg1);
 				break;
 			case '5':
 				letterloop = 0;
 				logic_draft_letter(allnobles.nobles[4]);
-				print_event("You carefully write out the letter and\n"
-						"stow it in your bag", "to continue..." 
-				);
+				print_event(event_draft_letter2.text, event_draft_letter2.arg1);
 				break;
 			case '6':
 				letterloop = 0;
 				logic_draft_letter(allnobles.nobles[5]);
-				print_event("You carefully write out the letter and\n"
-						"stow it in your bag", "to continue..."  
-				);
+				print_event(event_draft_letter2.text, event_draft_letter2.arg1);
 				break;
 			case '7':
 				letterloop = 0;
 				logic_draft_letter(allnobles.nobles[6]);
-				print_event("You carefully write out the letter and\n"
-						"stow it in your bag", "to continue..."  
-				);
+				print_event(event_draft_letter2.text, event_draft_letter2.arg1);
 				break;
 			case 'b':
 				letterloop = 0;

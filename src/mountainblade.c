@@ -74,7 +74,10 @@ void input_mainloop()
 		case 'd':
 			action_view_debug(&p, &gtime);
 			break;
-		case '/':
+	        case '>':
+			action_save_game();
+			break;
+	        case '/':
 			endwin();
 			exit(0);
 	}

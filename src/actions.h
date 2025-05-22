@@ -31,6 +31,7 @@ void action_view_inventory();
 void action_view_relations();
 void action_view_quests();
 
+void action_save_game();
 void action_view_debug(User* p, Time* gtime);
 void action_view_debug_stats(User* p, Time* gtime);
 void action_view_debug_cities();

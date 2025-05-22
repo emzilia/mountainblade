@@ -509,6 +509,11 @@ void action_view_quests()
 
 }
 
+void action_save_game()
+{
+	print_event("Game saved successfully!\n\nJust kidding this doesn't do anything yet", "to confirm");
+}
+
 void action_view_debug(User* player, Time* gametime)
 {
 	werase(win);

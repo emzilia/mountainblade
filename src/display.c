@@ -76,10 +76,10 @@ void print_time()
 {
 
 	mvwprintw(win, 15, 9, "Hour: %d", gtime.hour);
-	mvwprintw(win, 15, 29, " Week:  %d", gtime.week);
-	mvwprintw(win, 16, 9, "Day:  %d", gtime.day);
+	mvwprintw(win, 15, 30, " Week: %d", gtime.week);
+	mvwprintw(win, 16, 10, "Day: %d", gtime.day);
 	mvwprintw(win, 16, 30, "Month: %d", gtime.month);
-	mvwprintw(win, 17, 30, "Year: %d", gtime.year);
+	mvwprintw(win, 17, 31, "Year: %d", gtime.year);
 }
 
 void print_actions()
@@ -98,6 +98,8 @@ void print_actions()
 	mvwprintw(win, 25, 9, "p. View Party\n"); 
 	mvwprintw(win, 27, 9, "q. View Current Quests\n");
 	mvwprintw(win, 28, 9, "r. View Relevant Nobles\n"); 
+	mvwprintw(win, 33, 9, ">. Save\n"); 
+	mvwprintw(win, 33, 30, "/. Quit\n"); 
 	
 	if (debug) mvwprintw(win, 32, 9, "d. View Debug Menu\n"); 
 }

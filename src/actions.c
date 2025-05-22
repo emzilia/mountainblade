@@ -138,8 +138,8 @@ void action_contact_noble(City* town)
 			}
 		} else {
 			int response = print_event_args1(
-				event_city2_nb1_yesquest.text,
-				event_city2_nb1_yesquest.arg1
+				event_city2_nb1_noquest.text,
+				event_city2_nb1_noquest.arg1
 			);
 			char* recipient;
 			switch (response) {

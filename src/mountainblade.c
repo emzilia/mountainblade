@@ -78,8 +78,7 @@ void input_mainloop()
 			action_save_game();
 			break;
 	        case '/':
-			endwin();
-			exit(0);
+			action_quit_game();
 	}
 }
 

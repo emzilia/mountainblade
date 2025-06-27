@@ -536,7 +536,14 @@ void action_save_game()
 }
 
 void action_quit_game()
-	print_event("Are you sure you want to quit the game?\n\n\n1. yeah that's why I pressed it\n2. wait shit no"
+{
+	int response;
+	response = print_event_args1("Are you sure you want to quit the game?\n\n\n1. yeah that's why I pressed it\n2. wait shit no", "");
+	if (response == '1') {
+		endwin();
+		exit(0);
+	}
+}
 
 void action_view_debug(User* player, Time* gametime)
 {

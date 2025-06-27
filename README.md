@@ -1,6 +1,6 @@
 # mountain blade
 
-![mountainblade](https://i.ibb.co/rtrbRBS/mountainblade-0-1-5.png)
+![mountainblade](https://files.catbox.moe/zb5mf8.png)
 
 based on the hit game of the same name. very early access. requires ncurses.
 

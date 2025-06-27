@@ -54,6 +54,6 @@ lose condition via player wealth?
 
 **nobles:**  
 ~~nobles own settlements which can all be viewed~~  
-relations system where nobles have opinion level of you  
-take quests from nobles to increase their opinion  
+~~relations system where nobles have opinion level of you~~  
+~~take quests from nobles to increase their opinion~~  
 turn game into dating sim (tentative)

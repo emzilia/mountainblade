@@ -28,7 +28,7 @@ int columns = sizeof(map[0]) / sizeof(map[0][0]);
 
 void print_title()
 {
-	wprintw(win, "%s", titlescreen);
+	wprintw(win, "%s\n\n\nc. Start Game\n\nd. Debug Mode", titlescreen);
 	if (wgetch(win) == 'd') debug = 1;
 	werase(win);
 }

@@ -535,6 +535,9 @@ void action_save_game()
 	print_event("Game saved successfully!\n\nJust kidding this doesn't do anything yet", "to confirm");
 }
 
+void action_quit_game()
+	print_event("Are you sure you want to quit the game?\n\n\n1. yeah that's why I pressed it\n2. wait shit no"
+
 void action_view_debug(User* player, Time* gametime)
 {
 	werase(win);
